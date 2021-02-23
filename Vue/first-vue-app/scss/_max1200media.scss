@@ -1,0 +1,20 @@
+@media (max-width: 1200px){
+    .container{
+        width: 960px;
+    }
+
+    .cards{
+        width: 670px;
+        padding-top: 60px;
+    }
+
+    .card-list{
+        grid-template-columns: 1fr 1fr;
+        row-gap: auto;
+
+        &-item{
+            margin: 0 auto;
+        }
+    }
+}
+
