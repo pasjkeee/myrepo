@@ -42,6 +42,27 @@ const logOut = () => {
     }
 }
 
+const changeTasks = (taskData) => {
+    return{
+        type: 'CHANGE_TASKS',
+        taskData: taskData
+    }
+}
+
+const isMounted = () => {
+    console.log("ismount");
+    return{
+        type: 'IS_MOUNTED'
+    }
+}
+
+const notMounted = () => {
+    console.log("notmount");
+    return{
+        type: 'NOT_MOUNTED'
+    }
+}
+
 export {
     closeModal,
     openModal,
@@ -49,5 +70,8 @@ export {
     prevMonth,
     toggleCal,
     logIn,
-    logOut
+    logOut,
+    changeTasks,
+    isMounted,
+    notMounted
 };

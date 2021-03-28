@@ -4,6 +4,7 @@ import WithRestoService from '../../hoc';
 import styled from 'styled-components';
 import CoursesMainItem from '../courses-main-item';
 import RestoService from '../../../services/resto-service';
+import {changeTasks,isMounted,notMounted} from '../../../actions';
 import Img1 from './Asset 103.svg';
 import Img2 from './Asset 104.svg';
 import Img3 from './Asset 105.svg';
@@ -16,42 +17,56 @@ class CoursesMain extends React.Component{
     constructor(props) {
         super(props);
         this.server = new RestoService();
+        this.state = {
+            data: []
+        }
     }
 
+    _isMounted = false;
+
     async componentDidMount(){
+
+        this._isMounted = true;
         try {
             const data = await this.server.getData('/api/auth/subjects');
-            console.log(data);
+            console.log(data.tasks);
+            if (this._isMounted) {
+                this.setState({
+                    data: [...data.subjects]
+                })
+                this.props.changeTasks(data.tasks);
+                this.props.isMounted();
+            }
         } catch(e) {
             console.log(e.message);
         }
     }
 
-    // loadInfo = async (e) => {
-    //     e.preventDefault();
+    componentWillUnmount() {
+        this._isMounted = false;
+        this.props.notMounted();
+    }
+
+    loadInfo = async (e) => {
+        e.preventDefault();
         
-    // }
+    }
 
     render(){
 
         return(
             <>
-                <CoursesMainItem
-                    imgUrl = {Img1}
-                    text = {"Автоматизация проектирования цифровых устройств (Лешихина И.Е., экзамен, 5ЗЕ)"}
-                />
-                <CoursesMainItem
-                    imgUrl = {Img2}
-                    text = {"Компьютерные сети (Рыбинцев В.О., экзамен, 5ЗЕ)"}
-                />
-                <CoursesMainItem
-                    imgUrl = {Img3}
-                    text = {"Микропроцессорные системы (Курдин В.А., экзамен, 5ЗЕ)"}
-                />
-                <CoursesMainItem
-                    imgUrl = {Img4}
-                    text = {"ЭВМ и периферийные устройства (Ожогин М.А., зачёт с оценкой, 4ЗЕ)"}
-                />
+                {
+                    this.state.data.map((item) => {
+                        return (
+                            <CoursesMainItem
+                                key = {item.subject_id}
+                                imgUrl = {Img1}
+                                text = {`${item.subject} (${item.teachers})`}
+                            />
+                        )
+                    })
+                }
             </>
         )
     }
@@ -64,7 +79,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    
+    changeTasks,
+    isMounted,
+    notMounted
 };
 
 

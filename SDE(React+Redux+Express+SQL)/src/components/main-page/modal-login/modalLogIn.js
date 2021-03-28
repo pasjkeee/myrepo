@@ -210,9 +210,6 @@ class ModalLogIn extends React.Component{
                         <ModalButton type="submit" onClick={this.registerHandler}>
                             Войти
                         </ModalButton>
-                        <button type="button" onClick={this.props.logOut}>
-                            Logout
-                        </button>
                     </Form>
                 </ModalDialog>
             </Modal>

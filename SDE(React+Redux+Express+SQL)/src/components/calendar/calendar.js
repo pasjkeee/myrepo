@@ -32,82 +32,58 @@ const CalWrapper = styled.div`
     height: 100%;
 `
 
-const obj = [{
-    subj: "Терия систем математического управления",
-    date: "25.02.2021",
-    endDate: "5.03.2021",
-    title: "Реляционные базы данных",
-    type: "Тест0",
-    text: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.", 
-    id: 0
-
-},
-{
-    subj: "Терия систем математического управления",
-    date: "17.02.2021",
-    endDate: "22.02.2021",
-    title: "Реляционные базы данных",
-    type: "Тест1",
-    text: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.", 
-    id: 1 
-
-},
-{
-    subj: "Терия систем математического управления",
-    date: "11.02.2021",
-    endDate: "11.02.2021",
-    title: "Реляционные базы данных",
-    type: "Тест2",
-    text: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",  
-    id: 2
-
-},
-{
-    subj: "Терия систем математического управления",
-    date: "24.01.2021",
-    endDate: "2.02.2021",
-    title: "Реляционные базы данных",
-    type: "Тест3",
-    text: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",  
-    id: 3
-
-},
-{
-    subj: "Терия систем математического управления",
-    date: "14.04.2021",
-    endDate: "19.04.2021",
-    title: "Реляционные базы данных",
-    type: "Тест3",
-    text: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",  
-    id: 4
-
-},
-{
-    subj: "Терия систем математического управления",
-    date: "5.01.2021",
-    endDate: "10.01.2021",
-    title: "Реляционные базы данных",
-    type: "Тест3",
-    text: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",  
-    id: 5
-
-}
-]
-
-
 class Calendar extends React.Component{
+
+    _isMounted = false;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            datas: {}
+        }
+    }
+
+    componentDidMount(){
+        if(this.props.isMounted === true){
+            const datas = this.props.obj.map(data => {
+                const date = data.date.split('.');
+                const endDate = data.end_date.split('.');
+                date[0] = +date[0]; date[1] = +date[1]; endDate[0] = +endDate[0]; endDate[1] = +endDate[1];
+                return{
+                    date,
+                    endDate
+                }
+            });
+            this.setState({
+                datas: datas
+            });
+        }
+    }
+
+        componentDidUpdate(prevProps){
+        if(prevProps.isMounted !== this.props.isMounted){
+            const datas = this.props.obj.map(data => {
+                const date = data.date.split('.');
+                const endDate = data.end_date.split('.');
+                date[0] = +date[0]; date[1] = +date[1]; endDate[0] = +endDate[0]; endDate[1] = +endDate[1];
+                return{
+                    date,
+                    endDate
+                }
+            });
+            this.setState({
+                datas: datas
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     render(){
 
-        const datas = this.props.obj.map(data => {
-            const date = data.date.split('.');
-            const endDate = data.endDate.split('.');
-            date[0] = +date[0]; date[1] = +date[1]; endDate[0] = +endDate[0]; endDate[1] = +endDate[1];
-            return{
-                date,
-                endDate
-            }
-        });
+            
 
         let calDisplay = {
             transform: ((this.props.calDisplay) ? "translate(-50%, 0%)" : "translate(-50%, -150%)")
@@ -117,7 +93,7 @@ class Calendar extends React.Component{
                 <Cal style={calDisplay}>
                     <CalWrapper>
                         <CalTasks date={this.props.obj}></CalTasks>
-                        <CalContainer date={datas}></CalContainer>
+                        <CalContainer date={this.state.datas} mounted={this.props.isMounted}></CalContainer>
                     </CalWrapper>
                 </Cal>
             )
@@ -129,7 +105,8 @@ class Calendar extends React.Component{
 const mapStateToProps = (state) => {
     return {
         calDisplay: state.calDisplay,
-        obj: state.obj
+        obj: state.obj,
+        isMounted: state.isMounted
     }
 }
 

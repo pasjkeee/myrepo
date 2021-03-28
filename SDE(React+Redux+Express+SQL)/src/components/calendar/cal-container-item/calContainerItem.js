@@ -55,152 +55,13 @@ class CalContainerItem extends React.Component{
         this.digits = ["01", "02", "03" ,"04", "05", "06", "07" ,"08" ,"09" ,"10", "11","12"];
     }
 
-    componentDidMount(){
+        componentDidUpdate(prevProps){
+        if(prevProps.month !== this.props.month || prevProps.mounted !== this.props.mounted){
+            console.log("did upd", this.props.mounted);
 
         const datas = this.props.obj.map(data => {
             const date = data.date.split('.');
-            const endDate = data.endDate.split('.');
-            date[0] = +date[0]; date[1] = +date[1]; endDate[0] = +endDate[0]; endDate[1] = +endDate[1];
-            return{
-                date,
-                endDate
-            }
-        });
-        console.log(datas);
-        
-        const nowYear = this.props.envYear,
-        nowMonth = this.props.envMonth,
-        prevMonth = nowMonth - 1,
-        nowDay = this.props.envDay,
-        nowStartDay = new Date(nowYear, nowMonth, 1),
-        nowStartDayNum = nowStartDay.getDay() === 0 ? 7 : nowStartDay.getDay();
-
-        let days = [];
-        let datasArr = [];
-
-        function findNumOfDay(){
-            const roll1 = [0, 4, 6, 7, 9, 11];
-            const roll2 = [2, 3, 5, 8, 10];
-            let n;
-            if(roll1.includes(nowMonth)){
-                n = 31;
-            } else if(roll2.includes(nowMonth)){
-                n = 30;
-            } else if(nowYear%4 === 0){
-                n = 29;
-            } else {
-                n = 28;
-            }
-            return n;
-        }
-
-        findNumOfDay();
-        let nPrev;
-        const n = findNumOfDay();
-        if(n === 30){
-            nPrev = 31;
-        } else if(nowMonth === 0 || nowMonth === 7) {
-            nPrev = 31;
-        } else if(nowYear%4 === 0 && nowMonth === 2) {
-            nPrev = 29;
-        } else if(nowMonth === 2) {
-            nPrev = 28;
-        }else {
-            nPrev = 30;
-        }
-
-        function write(d) {
-            let daynum = d-1; 
-            if(d===0)
-            {
-                daynum = 6;
-            }
-        
-            let kCount = 1;
-            for(let i = 0; i<daynum; i++){
-                days[i] =  nPrev-daynum + kCount;
-                datasArr[i] = false;
-                for(let item of datas){
-                    if(nowMonth == item.date[1] && nowMonth+1 == item.endDate[1]){
-                        if(days[i] >= item.date[0]){
-                            datasArr[i] = true;
-                        }
-                    }
-                    if(nowMonth == item.date[1] && nowMonth == item.endDate[1]){
-                        if(days[i] >= item.date[0] && days[i] <= item.endDate[0]){
-                            datasArr[i] = true;
-                        }
-                    }
-                }
-                kCount++;
-            }
-        
-            for(let i = 0; i < n; i++){
-                days[daynum] = i+1+"";
-                datasArr[daynum] = false;
-                for(let item of datas){
-                    if(nowMonth == item.date[1] && nowMonth+1 == item.endDate[1]){
-                        if(+days[daynum] <= item.endDate[0]){
-                            datasArr[daynum] = true;
-                        }
-                    }
-
-                    if(nowMonth+1 == item.date[1] && nowMonth+2 == item.endDate[1]){
-                        if(days[daynum] >= item.date[0]){
-                            datasArr[daynum] = true;
-                        }
-                    } 
-
-                    if(nowMonth+1 == item.date[1] && nowMonth+1 == item.endDate[1]){
-                        if(days[daynum] >= item.date[0] && days[daynum] <= item.endDate[0]){
-                            datasArr[daynum] = true
-                        }
-                    } 
-                }
-                daynum++;
-            }
-
-            let dig = 1;
-            for(let i = daynum; i<42; i++){
-                days[i] = dig;
-                datasArr[i] = false;
-                for(let item of datas){
-                    if(nowMonth+1 == item.date[1] && nowMonth+2 == item.endDate[1]){
-                        if(+days[i] <= item.endDate[0] ){
-                            datasArr[i] = true;
-                        }
-                    }
-
-                    if(nowMonth+2 == item.date[1] && nowMonth+2 == item.endDate[1]){
-                        if(+days[i] >= item.date[0] && +days[i] <= item.endDate[0] ){
-                            datasArr[i] = true;
-                        }
-                    }
-                }
-                dig++;
-            }
-        }
-        
-        write(+nowStartDayNum);
-
-
-        this.setState({
-            year: nowYear,
-            month: nowMonth,
-            day: nowDay,
-            startDay: nowStartDay,
-            startDayNum: nowStartDayNum,
-            days: days,
-            datas: datasArr
-        });
-    }
-
-    componentDidUpdate(prevProps){
-        if(prevProps.month !== this.props.month){
-
-        const datas = this.props.obj.map(data => {
-            const date = data.date.split('.');
-            const endDate = data.endDate.split('.');
+            const endDate = data.end_date.split('.');
             date[0] = +date[0]; date[1] = +date[1]; endDate[0] = +endDate[0]; endDate[1] = +endDate[1];
             return{
                 date,
@@ -265,7 +126,6 @@ class CalContainerItem extends React.Component{
                             datasArr[i] = true;
                         }
                     }
-                    console.log(item, "qqqq");
                     if(nowMonth == item.date[1] && nowMonth == item.endDate[1]){
                         if(days[i] >= item.date[0] && days[i] <= item.endDate[0]){
                             datasArr[i] = true;
@@ -340,6 +200,7 @@ class CalContainerItem extends React.Component{
     
 
     render(){
+        console.log("renderer", this.state.datas, this.state.days);
 
         const {days, datas} = this.state;
 
@@ -362,7 +223,8 @@ const mapStateToProps = (state) => {
         envYear: state.envYear,
         envMonth: state.envMonth,
         envDay: state.envDay,
-        obj: state.obj
+        obj: state.obj,
+        mounted: state.isMounted
     }
 }
 

@@ -89,8 +89,6 @@ class CoursesPage extends React.Component{
 
     render(){
 
-
-
         return(
             <CoursesPageWrapper>
                 <Container>
@@ -103,7 +101,7 @@ class CoursesPage extends React.Component{
                         </Burger>
                     </CoursesHeader>
                     <CoursesMain></CoursesMain>
-                    <Calendar></Calendar>
+                    <Calendar isMounted={this.props.isMounted}></Calendar>
                 </Container>
                 <BackImgWrapper src={BgImg}></BackImgWrapper>
             </CoursesPageWrapper>
@@ -114,7 +112,7 @@ class CoursesPage extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        
+        isMounted: state.isMounted
     }
 }
 

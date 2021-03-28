@@ -23,12 +23,12 @@ class CalTasks extends React.Component{
                 {
                     this.props.date.map(objItem => {
                         return (
-                            <CalTasksItem key={objItem.id}
-                            subj={objItem.subj}
+                            <CalTasksItem key={objItem.task_id}
+                            subj={objItem.subject}
                             date={objItem.date}
-                            title={objItem.title}
-                            type={objItem.type}
-                            text={objItem.text}
+                            title={objItem.task}
+                            type={objItem.task_type}
+                            text={objItem.description}
                             />
                         )
                     })

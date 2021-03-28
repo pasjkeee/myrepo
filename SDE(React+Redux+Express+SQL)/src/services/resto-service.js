@@ -11,6 +11,7 @@ export default class RestoService {
             if( !response.ok ) {
                 throw new Error(data.message || 'Что-то пошло не так');
             } 
+            console.log("data", data);
             return data;
         } 
         catch (e) {
