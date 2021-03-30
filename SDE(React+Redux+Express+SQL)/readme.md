@@ -4,3 +4,4 @@
 ![LoginIn](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/logIn.JPG "LogIn")​
 ![Courses](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/courses.JPG "Список предметов")​
 ![Calendar](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/calendar.JPG "Календарь")​
+![Tasks](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/taskExample.JPG "Пример страницы предмета")​
