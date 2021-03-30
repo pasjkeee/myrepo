@@ -44,7 +44,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.01.2001",
         end_date: "2.01.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "test"
     },
     {
@@ -55,7 +55,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.02.2001",
         end_date: "2.02.2002",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "lection"
     },
     {
@@ -66,7 +66,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.01.2002",
         end_date: "2.02.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "presentation"
     },
     {
@@ -77,7 +77,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "2.01.2001",
         end_date: "5.01.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "test"
     },
     {
@@ -88,7 +88,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.01.2001",
         end_date: "5.01.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "test"
     },
     {
@@ -99,7 +99,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.01.2001",
         end_date: "2.05.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "presentation"
     },
     {
@@ -110,7 +110,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.01.2001",
         end_date: "2.05.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "video"
     },
     {
@@ -121,7 +121,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.05.2001",
         end_date: "2.05.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "lection"
     },
     {
@@ -132,7 +132,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "7.01.2001",
         end_date: "2.07.2001",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "test"
     },
     {
@@ -143,7 +143,7 @@ const obj = [
         task: "Реляционные базы данных",
         date: "1.01.2007",
         end_date: "2.01.2003",
-        description: "В этом тесте мы увидим на сколько вы не знаете наш предмет и 100% будете его переписывать. Удачи.",
+        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
         type: "test"
     },
 ]
@@ -155,8 +155,40 @@ class TasksTheme extends React.Component {
         super(props);
         this.state = {
             dropdownOpen: false,
-            toggle: false
+            toggle: false,
+            currentFiletr: "all",
+            enabled: [true, false, false, false, false]
         };
+        this.changeFilter = this.changeFilter.bind(this);
+    }
+
+    changeFilter(e){
+        let currentNum = [false, false, false, false, false];
+        if(e.target.name){
+
+            switch(e.target.name){
+                case 'lection':
+                    currentNum[1] = true;
+                    break;
+                case 'test':
+                    currentNum[2] = true;
+                    break;
+                case 'presentation':
+                    currentNum[3] = true;
+                    break;
+                case 'video':
+                    currentNum[4] = true;
+                    break;
+                default: 
+                    currentNum[0] = true;
+                    break;
+            }
+
+            this.setState({
+                currentFiletr: e.target.name,
+                enabled: currentNum
+            })
+        }
     }
 
     render(){
@@ -171,38 +203,35 @@ class TasksTheme extends React.Component {
         }
         newSet = [...newSet];
 
-        console.log(newSet);
-        console.log(newObj);
-
         return(
             <>   
                 <DataFilter>
                     <form>
-                        <label>
-                            <RadioCustom color="#ABAEB3" enabled="true"/>
+                        <label onClick={(e)=>{this.changeFilter(e)}}>
+                            <RadioCustom color="#ABAEB3" enabled={this.state.enabled[0]}/>
                              <input name="all" type="radio" /> Все
                         </label>
-                        <label>
-                            <RadioCustom color="#FEB83C"/>
-                            <input name="lections" type="radio" /> Лекции
+                        <label onClick={(e)=>{this.changeFilter(e)}}>
+                            <RadioCustom color="#FEB83C" enabled={this.state.enabled[1]}/>
+                            <input name="lection" type="radio" /> Лекции
                         </label>
-                        <label>
-                            <RadioCustom color="#28D65D"/>
-                            <input name="tests" type="radio" /> Тесты
+                        <label onClick={(e)=>{this.changeFilter(e)}}>
+                            <RadioCustom color="#28D65D" enabled={this.state.enabled[2]}/>
+                            <input name="test" type="radio" /> Тесты
                         </label>
-                        <label>
-                            <RadioCustom color="#BF58E6"/>
-                            <input name="presentations" type="radio" /> Презентации
+                        <label onClick={(e)=>{this.changeFilter(e)}}>
+                            <RadioCustom color="#BF58E6" enabled={this.state.enabled[3]}/>
+                            <input name="presentation" type="radio" /> Презентации
                         </label>
-                        <label>
-                            <RadioCustom color="#D40000"/>
+                        <label onClick={(e)=>{this.changeFilter(e)}}>
+                            <RadioCustom color="#D40000" enabled={this.state.enabled[4]}/>
                             <input name="video" type="radio" /> Видеo
                         </label>
                     </form>
                 </DataFilter>
                 {
                     newSet.map(item => {
-                        return <ThemeContent key={item} data={newObj[item]}/>
+                        return <ThemeContent key={item} data={newObj[item]} filter={this.state.currentFiletr}/>
                     })
                 }
             </>

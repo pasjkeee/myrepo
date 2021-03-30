@@ -53,24 +53,45 @@ class ThemeContent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            active: false
         };
+        this.OnActiveChange = this.OnActiveChange.bind(this);
+    }
+
+    OnActiveChange(){
+        let active = !this.state.active;
+        this.setState({
+            active: active
+        })
     }
 
     render(){
 
-        return(
-            <>
-                <DataContentTitle>
+        if(!this.state.active){
+            return(
+                <DataContentTitle onClick={()=>{this.OnActiveChange()}}>
                     <FontAwesomeIcon icon={faCaretRight} size="2x" color="#2E3D54;" />
                     <ThemeName>
                         {this.props.data[0].theme}
                     </ThemeName>
                 </DataContentTitle>
-                <DataContent>
+            )
+        }
+
+        console.log(this.props.filter);
+
+        return(
+            <>
+                <DataContentTitle onClick={()=>{this.OnActiveChange()}}>
+                <FontAwesomeIcon icon={faCaretRight} size="2x" rotation={90} color="#2E3D54;" />
+                    <ThemeName>
+                        {this.props.data[0].theme}
+                    </ThemeName>
+                </DataContentTitle>
+                <DataContent >
                     {
                         this.props.data.map(item => {
-                            return <DataContentItem key={item.task_id} data={item}/>
+                            return <DataContentItem key={item.task_id} data={item} filter={this.props.filter}/>
                         })
                     }
                 </DataContent>

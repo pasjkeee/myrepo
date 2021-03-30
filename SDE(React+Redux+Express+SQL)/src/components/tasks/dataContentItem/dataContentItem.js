@@ -75,37 +75,72 @@ class DataContentItem extends React.Component {
     render(){
 
 
-        const {date, end_date, task, subject, description, type} = this.props.data
+        const {date, end_date, task, subject, description, type} = this.props.data;
 
-        return(
-            <>
-                <DataContentItemContainer>
-                    <div className="dataHeader"> 
-                        <TypeCircle type={type}/>
-                        <div className="dataHeaderTitle">
-                            {task}
-                            <div className="subjectName">
-                                {subject}
+        console.log(this.props.filter, type);
+
+        if(this.props.filter === "all"){
+            return(
+                <>
+                    <DataContentItemContainer>
+                        <div className="dataHeader"> 
+                            <TypeCircle type={type}/>
+                            <div className="dataHeaderTitle">
+                                {task}
+                                <div className="subjectName">
+                                    {subject}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="dataDescription">
-                        {description}
-                    </div>
-                    <div className="dateContainer">
-                        <div className="fromDate">
-                            <span>C</span> {date}
+                        <div className="dataDescription">
+                            {description}
                         </div>
-                        <div className="toDate">
-                            <span>До</span> {end_date}
+                        <div className="dateContainer">
+                            <div className="fromDate">
+                                <span>C</span> {date}
+                            </div>
+                            <div className="toDate">
+                                <span>До</span> {end_date}
+                            </div>
                         </div>
-                    </div>
-                    <Flag type={type}/>
-                </DataContentItemContainer>
-            </>
-        )
+                        <Flag type={type}/>
+                    </DataContentItemContainer>
+                </>
+            )
+        }
 
+        if(this.props.filter === type){
+            return(
+                <>
+                    <DataContentItemContainer>
+                        <div className="dataHeader"> 
+                            <TypeCircle type={type}/>
+                            <div className="dataHeaderTitle">
+                                {task}
+                                <div className="subjectName">
+                                    {subject}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="dataDescription">
+                            {description}
+                        </div>
+                        <div className="dateContainer">
+                            <div className="fromDate">
+                                <span>C</span> {date}
+                            </div>
+                            <div className="toDate">
+                                <span>До</span> {end_date}
+                            </div>
+                        </div>
+                        <Flag type={type}/>
+                    </DataContentItemContainer>
+                </>
+            )
+        }
+        return false;
     }
+
 
 }
 
