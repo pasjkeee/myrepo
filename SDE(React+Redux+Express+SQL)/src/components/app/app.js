@@ -4,6 +4,7 @@ import WithRestoService from '../hoc';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import CoursesPage from '../courses-page';
 import MainPage from '../main-page';
+import Tasks from '../tasks';
 
 
 
@@ -18,6 +19,7 @@ const App = (props) => {
         return (
             <Switch>
                 <Route path="/courses" exact component={CoursesPage}/>
+                <Route path="/courses/:courseId" exact component={Tasks}/>
                 <Redirect to="/courses"/>
             </Switch>
         )

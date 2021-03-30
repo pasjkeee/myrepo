@@ -23,7 +23,7 @@ class TasksData extends React.Component {
     render(){
         return(
             <TasksDataContainer>
-                <TasksTheme></TasksTheme>
+                <TasksTheme subjId={this.props.subjId}></TasksTheme>
             </TasksDataContainer>
         )
     }

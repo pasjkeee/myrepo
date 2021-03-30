@@ -5,7 +5,6 @@ const Todo = require('../models/todo');
 const bcrypt = require ('bcrypt-nodejs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
-const session = require('express-session');
 
 //Создание новой задачи
 router.post('/register',

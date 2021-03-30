@@ -1,7 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import WithRestoService from '../../hoc';
-import styled from 'styled-components';
+
+import { Link } from 'react-router-dom'
+
 import CoursesMainItem from '../courses-main-item';
 import RestoService from '../../../services/resto-service';
 import {changeTasks,isMounted,notMounted} from '../../../actions';
@@ -59,11 +61,13 @@ class CoursesMain extends React.Component{
                 {
                     this.state.data.map((item) => {
                         return (
-                            <CoursesMainItem
-                                key = {item.subject_id}
-                                imgUrl = {Img1}
-                                text = {`${item.subject} (${item.teachers})`}
-                            />
+                            <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }}>
+                                <CoursesMainItem
+                                    key = {item.subject_id}
+                                    imgUrl = {Img1}
+                                    text = {`${item.subject} (${item.teachers})`}
+                                />    
+                            </Link>
                         )
                     })
                 }

@@ -104,6 +104,10 @@ const Task = sequelize.define('task', {
     link: {
         type: Sequelize.TEXT,
         allowNull: false,
+    },
+    theme_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
     }
 });
 
@@ -132,6 +136,22 @@ Task.belongsToMany(User, {through: 'event', foreignKey: 'task_id'});
 User.belongsToMany(Task, {through: 'event', foreignKey: 'user_id'});
 Teacher.hasMany(Event, {foreignKey: 'teacher_id', sourceKey: 'teacher_id'});
 User_group.hasMany(Event, {foreignKey: 'user_group_id', sourceKey: 'user_group_id'});
+
+
+const Theme = sequelize.define('theme', {
+    theme_id:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.INTEGER
+    },
+    theme:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    }
+});
+
+Theme.hasMany(Task, {foreignKey: 'theme_id', sourceKey: 'theme_id'});
 
 
 

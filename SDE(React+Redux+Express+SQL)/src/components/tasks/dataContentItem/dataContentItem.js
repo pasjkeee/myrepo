@@ -75,16 +75,16 @@ class DataContentItem extends React.Component {
     render(){
 
 
-        const {date, end_date, task, subject, description, type} = this.props.data;
+        const {date, end_date, task, subject, description, task_type} = this.props.data;
 
-        console.log(this.props.filter, type);
+        console.log(this.props.filter, task_type);
 
         if(this.props.filter === "all"){
             return(
                 <>
                     <DataContentItemContainer>
                         <div className="dataHeader"> 
-                            <TypeCircle type={type}/>
+                            <TypeCircle type={task_type}/>
                             <div className="dataHeaderTitle">
                                 {task}
                                 <div className="subjectName">
@@ -103,18 +103,18 @@ class DataContentItem extends React.Component {
                                 <span>До</span> {end_date}
                             </div>
                         </div>
-                        <Flag type={type}/>
+                        <Flag type={task_type}/>
                     </DataContentItemContainer>
                 </>
             )
         }
 
-        if(this.props.filter === type){
+        if(this.props.filter === task_type){
             return(
                 <>
                     <DataContentItemContainer>
                         <div className="dataHeader"> 
-                            <TypeCircle type={type}/>
+                            <TypeCircle type={task_type}/>
                             <div className="dataHeaderTitle">
                                 {task}
                                 <div className="subjectName">
@@ -133,7 +133,7 @@ class DataContentItem extends React.Component {
                                 <span>До</span> {end_date}
                             </div>
                         </div>
-                        <Flag type={type}/>
+                        <Flag type={task_type}/>
                     </DataContentItemContainer>
                 </>
             )

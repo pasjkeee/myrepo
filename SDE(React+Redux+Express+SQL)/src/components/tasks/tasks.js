@@ -30,12 +30,11 @@ class Tasks extends React.Component {
     }
 
     render(){
-
         return(
             <Wrapper>
                 <TasksContainer>
                     <TasksNavBar></TasksNavBar>
-                    <TasksData></TasksData>
+                    <TasksData subjId={this.props.match.params}></TasksData>
                 </TasksContainer>
             </Wrapper>
         )

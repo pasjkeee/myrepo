@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import RadioCustom from '../radioCustom';
 import ThemeContent from '../themeContent';
 
+import RestoService from '../../../services/resto-service';
+
 
 const DataFilter = styled.div`
     width: 100%;
@@ -37,6 +39,7 @@ const DataFilter = styled.div`
 
 const obj = [
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 1,
         theme: "Часть 1 Введение в БД",
@@ -48,6 +51,7 @@ const obj = [
         type: "test"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 1,
         theme: "Часть 1 Введение в БД",
@@ -59,6 +63,7 @@ const obj = [
         type: "lection"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 1,
         theme: "Часть 1 Введение в БД",
@@ -70,6 +75,7 @@ const obj = [
         type: "presentation"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 2,
         theme: "Часть 2 Введение в БД",
@@ -81,6 +87,7 @@ const obj = [
         type: "test"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 2,
         theme: "Часть 2 Введение в БД",
@@ -92,6 +99,7 @@ const obj = [
         type: "test"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 2,
         theme: "Часть 2 Введение в БД",
@@ -103,6 +111,7 @@ const obj = [
         type: "presentation"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 3,
         theme: "Часть 3 Введение в БД",
@@ -114,6 +123,7 @@ const obj = [
         type: "video"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 3,
         theme: "Часть 3 Введение в БД",
@@ -125,6 +135,7 @@ const obj = [
         type: "lection"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 4,
         theme: "Часть 4 Введение в БД",
@@ -136,6 +147,7 @@ const obj = [
         type: "test"
     },
     {
+        subject_id: "1",
         subject: "Базы данных",
         theme_id: 4,
         theme: "Часть 4 Введение в БД",
@@ -157,10 +169,27 @@ class TasksTheme extends React.Component {
             dropdownOpen: false,
             toggle: false,
             currentFiletr: "all",
-            enabled: [true, false, false, false, false]
+            enabled: [true, false, false, false, false],
+            data: []
         };
+        this.server = new RestoService();
         this.changeFilter = this.changeFilter.bind(this);
     }
+
+    async componentDidMount(){
+
+        try {
+
+        const data = await this.server.getData('/api/tasks/tasks?subjId=1');
+        this.setState({
+            data: data
+        })
+
+        } catch(e) {
+            console.log(e.message);
+        }
+    }
+
 
     changeFilter(e){
         let currentNum = [false, false, false, false, false];
@@ -194,12 +223,12 @@ class TasksTheme extends React.Component {
     render(){
         let newSet = new Set();
         let newObj = {};
-        for(let i=0; i<obj.length; i++){
-            if(!newSet.has(obj[i].theme_id)){
-                newSet.add(obj[i].theme_id)
-                newObj[`${obj[i].theme_id}`] = [];
+        for(let i=0; i<this.state.data.length; i++){
+            if(!newSet.has(this.state.data[i].theme_id)){
+                newSet.add(this.state.data[i].theme_id)
+                newObj[`${this.state.data[i].theme_id}`] = [];
             }
-            newObj[`${obj[i].theme_id}`].push(obj[i]);
+            newObj[`${this.state.data[i].theme_id}`].push(this.state.data[i]);
         }
         newSet = [...newSet];
 
