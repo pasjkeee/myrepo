@@ -61,7 +61,7 @@ class CoursesMain extends React.Component{
                 {
                     this.state.data.map((item) => {
                         return (
-                            <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }}>
+                            <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }} key = {item.subject_id}>
                                 <CoursesMainItem
                                     key = {item.subject_id}
                                     imgUrl = {Img1}

@@ -1,46 +1,12 @@
-const {User, Subject, Teacher, Task, Task_type, Event} = require('../models/todo');
+const {User, Subject, Teacher} = require('../models/todo');
 const {Router, response} = require('express');
 const router = Router();
-const Todo = require('../models/todo');
 const bcrypt = require ('bcrypt-nodejs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 
-//Создание новой задачи
-router.post('/register',
-    [
-        check('email', 'Некорректный email').isEmail(),
-        check('password', 'Минимальная длина пароля 6 символов').isLength({ min: 6 })
-    ], 
-    async (req, res) => {
-    try {
-
-        const errors = validationResult(req);
-
-        if(!errors.isEmpty()) {
-            return res.status(400).json({errors: errors.array(), message: 'Некорректные данные при регистрации'})
-        }
-
-        const {email, password} = req.body;
-
-        const data = await User.findOne({email});
-
-        if(data){
-            return res.status(400).json({message: "Такой пользователь уже существует"})
-        }
-
-        const hashedPass = await bcrypt.hash(password, "12");
-        const user = new Todo({email, password: hashedPass})
-
-        await user.save();
-
-        res.status(201).json({message: "Пользователь создан"});
-
-    } 
-    catch (e) {
-        res.status(500).json({message: 'ЧТо-то пошло не так, попробуйте снова'})
-    }
-})
+const sequelize = require('../utils/database');
+const { QueryTypes } = require('sequelize');
 
 
 router.post('/login',
@@ -56,44 +22,26 @@ router.post('/login',
             return res.status(400).json({errors: errors.array(), message: 'Некорректные данные при входе в систему lol'})
         }
 
-        console.log(req.sessionID, "hi");
-
         const {email, pas} = req.body;
 
         const data = await User.findOne({where: { email: email }});
-
-        console.log(data);
-
+        
         if(!data){
             return res.status(400).json({message: "Пользователь не найден"})
         }
-        
-        
-        let isMatch = true; 
-        let hashedPass = await bcrypt.genSalt(12, async function(err, salt) {
+                
+        await bcrypt.compare(pas, data.dataValues.password, function(err, result) {
+                 
+            if(!result){
+                return res.status(400).json({message: "Неверный пароль, попробуйте снова"})
+            }
             
-                await bcrypt.hash(pas, salt, null, async function(err, hash) {
-                    
-                     await bcrypt.compare(pas, data.dataValues.password, function(err, result) {
-                         console.log(result);
-                            if(!result){
-                                isMatch = false;
-                            }
-                            if(!isMatch){
-                                return res.status(400).json({message: "Неверный пароль, попробуйте снова"})
-                            }
-    
-                            const token = jwt.sign({userId: data.user_id}, "pavel", { expiresIn: '15m' });
-
-                            req.session.authenticated = true;
-                            req.session.user = data.user_id;
-                            req.session.access_lvl = data.access_lvl;
-                        
-                            console.log(req.session);
-                            res.json({ token, userId: data.user_id});
-                        });
-                }
-            ); 
+            const token = jwt.sign({userId: data.user_id}, "pavel", { expiresIn: '15m' });
+            req.session.authenticated = true;
+            req.session.user = data.user_id;
+            req.session.access_lvl = data.access_lvl;
+                
+            res.json({ token, userId: data.user_id});
         });
     } 
     catch (e) {
@@ -119,49 +67,19 @@ async (req, res) => {
                     for(let j = 0; j < dataTeacher.length; j++){
                     teacher.add(`${dataTeacher[j].first_name} ${dataTeacher[j].last_name[0]}. ${dataTeacher[j].patronymic[0]}.`);
                     }
-                    
-
                     resData.subjects.push({...data[i].dataValues, teachers: [...teacher].join(' ,')});
                 }
+                
+                let dataTask = await sequelize.query(`SELECT tasks.task_id, tasks.task, tasks.task_type_id, tasks.theme_id, tasks.date, tasks.end_date, tasks.description, tasks.link, themes.theme, subjects.subject, task_types.task_type FROM tasks JOIN subjects JOIN themes JOIN task_types ON tasks.subject_id = subjects.subject_id AND tasks.theme_id = themes.theme_id AND tasks.task_type_id = task_types.task_type_id`, { type: QueryTypes.SELECT });
 
-                let newItem;
-                let dataTaskType = await Task_type.findAll();
-                let dataTasks = await Task.findAll().then(
-                    item => {
-                        newItem = item.map(prod => prod.dataValues);
-                        
-                        newItem.forEach(itemDate => {
-                            itemDate.date = itemDate.date.toLocaleDateString();
-                            itemDate.end_date = itemDate.end_date.toLocaleDateString();
-                        })
-                            
-                        data.forEach(dataItem => {
-                            
-                            newItem = newItem.map( itemTask => {
+                let newDataTask = dataTask.map(item => {
+                    let newItem = {...item};
+                    newItem.date = newItem.date.toLocaleDateString();
+                    newItem.end_date = newItem.end_date.toLocaleDateString();
+                    return newItem;
+                })
 
-                                if(dataItem.dataValues.subject_id === itemTask.subject_id){
-                                    itemTask.subject = dataItem.dataValues.subject;
-                                }
-
-                                return itemTask;
-                            });
-                            
-                        });
-
-                        dataTaskType.forEach(dataTaskTypeItem => {
-                            newItem = newItem.map( itemTask => {
-
-                                if(dataTaskTypeItem.dataValues.task_type_id === itemTask.task_type_id){
-                                    itemTask.task_type = dataTaskTypeItem.dataValues.task_type;
-                                }
-
-                                return itemTask;
-                            });
-                        })
-                    }
-                )
-
-                resData.tasks = newItem;
+                resData.tasks = newDataTask;
 
                 res.json(resData);
             }

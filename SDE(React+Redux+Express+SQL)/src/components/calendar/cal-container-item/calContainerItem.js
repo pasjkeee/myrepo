@@ -56,8 +56,12 @@ class CalContainerItem extends React.Component{
     }
 
         componentDidUpdate(prevProps){
-        if(prevProps.month !== this.props.month || prevProps.mounted !== this.props.mounted){
-            console.log("did upd", this.props.mounted);
+        if(prevProps.month !== this.props.month || prevProps.mounted !== this.props.mounted){  
+
+        //Парсим дату в 2 массива 
+        //date[0] - День
+        //date[1] - Мусяц
+        //date[2] - Год
 
         const datas = this.props.obj.map(data => {
             const date = data.date.split('.');
@@ -70,14 +74,15 @@ class CalContainerItem extends React.Component{
         });
 
         const nowYear = this.props.envYear,
-        nowMonth = this.props.envMonth,
-        nowDay = this.props.envDay,
-        nowStartDay = new Date(nowYear, nowMonth, 1),
-        nowStartDayNum = nowStartDay.getDay() === 0 ? 7 : nowStartDay.getDay();
+              nowMonth = this.props.envMonth,
+              nowDay = this.props.envDay,
+              nowStartDay = new Date(nowYear, nowMonth, 1),
+              nowStartDayNum = nowStartDay.getDay() === 0 ? 7 : nowStartDay.getDay();
 
-        let days = [];
-        let datasArr = [];
+        let days = [],
+            datasArr = [];
 
+        //Кол-во дней в месяце
         function findNumOfDay(){
             const roll1 = [0, 4, 6, 7, 9, 11];
             const roll2 = [2, 3, 5, 8, 10];
@@ -95,6 +100,8 @@ class CalContainerItem extends React.Component{
         }
 
         findNumOfDay();
+
+        //Кол-во дней в предыдущем месяце
         let nPrev;
         const n = findNumOfDay();
         if(n === 30){
@@ -117,6 +124,9 @@ class CalContainerItem extends React.Component{
             }
         
             let kCount = 1;
+
+            //Плато состоит 6x6
+            //Дни предыдущего месяца на плато
             for(let i = 0; i<daynum; i++){
                 days[i] =  nPrev-daynum + kCount;
                 datasArr[i] = false;
@@ -134,6 +144,9 @@ class CalContainerItem extends React.Component{
                 }
                 kCount++;
             }
+
+            //Дни текущего месяца на плато
+            //Массив из строк для выделения
             for(let i = 0; i < n; i++){
                 days[daynum] = i+1+"";
                 datasArr[daynum] = false
@@ -160,6 +173,8 @@ class CalContainerItem extends React.Component{
             }
 
             let dig = 1;
+
+            //Дни следующего месяца на плато
             for(let i = daynum; i<42; i++){
                 days[i] = dig;
                 datasArr[i] = false;
