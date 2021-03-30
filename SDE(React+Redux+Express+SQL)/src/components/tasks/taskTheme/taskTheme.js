@@ -37,129 +37,6 @@ const DataFilter = styled.div`
     }
 `
 
-const obj = [
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 1,
-        theme: "Часть 1 Введение в БД",
-        task_id: 1,
-        task: "Реляционные базы данных",
-        date: "1.01.2001",
-        end_date: "2.01.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "test"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 1,
-        theme: "Часть 1 Введение в БД",
-        task_id: 2,
-        task: "Реляционные базы данных",
-        date: "1.02.2001",
-        end_date: "2.02.2002",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "lection"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 1,
-        theme: "Часть 1 Введение в БД",
-        task_id: 3,
-        task: "Реляционные базы данных",
-        date: "1.01.2002",
-        end_date: "2.02.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "presentation"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 2,
-        theme: "Часть 2 Введение в БД",
-        task_id: 4,
-        task: "Реляционные базы данных",
-        date: "2.01.2001",
-        end_date: "5.01.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "test"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 2,
-        theme: "Часть 2 Введение в БД",
-        task_id: 5,
-        task: "Реляционные базы данных",
-        date: "1.01.2001",
-        end_date: "5.01.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "test"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 2,
-        theme: "Часть 2 Введение в БД",
-        task_id: 6,
-        task: "Реляционные базы данных",
-        date: "1.01.2001",
-        end_date: "2.05.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "presentation"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 3,
-        theme: "Часть 3 Введение в БД",
-        task_id: 7,
-        task: "Реляционные базы данных",
-        date: "1.01.2001",
-        end_date: "2.05.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "video"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 3,
-        theme: "Часть 3 Введение в БД",
-        task_id: 8,
-        task: "Реляционные базы данных",
-        date: "1.05.2001",
-        end_date: "2.05.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "lection"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 4,
-        theme: "Часть 4 Введение в БД",
-        task_id: 9,
-        task: "Реляционные базы данных",
-        date: "7.01.2001",
-        end_date: "2.07.2001",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "test"
-    },
-    {
-        subject_id: "1",
-        subject: "Базы данных",
-        theme_id: 4,
-        theme: "Часть 4 Введение в БД",
-        task_id: 10,
-        task: "Реляционные базы данных",
-        date: "1.01.2007",
-        end_date: "2.01.2003",
-        description: "Тест на основе двух первых лекций. Основные понятия о первых базах данных и реляционные базы данных.",
-        type: "test"
-    },
-]
-
 
 class TasksTheme extends React.Component {
 
@@ -179,8 +56,8 @@ class TasksTheme extends React.Component {
     async componentDidMount(){
 
         try {
-
-        const data = await this.server.getData('/api/tasks/tasks?subjId=1');
+            console.log(this.props.subjId);
+        const data = await this.server.getData(`/api/tasks/tasks?subjId=${this.props.subjId.courseId}`);
         this.setState({
             data: data
         })
