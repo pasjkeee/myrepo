@@ -140,7 +140,7 @@ $THIS
 
 Пример страницы с наведением на карточку
 -----------------------------------
-![Tasks2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/taskExample2.JPG "Пример страницы предмета")​
+![Tasks2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/taskExample2.jpg "Пример страницы предмета")​
 
 Пример сортировки
 -----------------------------------
