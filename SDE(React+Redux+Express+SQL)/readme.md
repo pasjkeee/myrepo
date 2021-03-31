@@ -39,6 +39,9 @@ $THIS
 │       ├── error-boundry/                 //обработчик ошибок на фронт части (TODO)
 │       ├── hoc/                           //Context consumer
 │       ├── main-page/                     //Главная страница
+│           ├── modal-login/               //Модальное окно для входа
+│           ├── nav-bar/                   //Компонент навигационное меню
+│           └── mainPage.js                
 │       ├── resto-service-context/         //createContext
 │       └── tasks/                         //Страница предмета в заданиями
 │           ├── dataContentItem/           //Компонент карточки задания
