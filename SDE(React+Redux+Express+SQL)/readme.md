@@ -1,3 +1,51 @@
+Дипломный проект "Система дистанционного обучения"
+=====================
+
+
+Используемый стек:
+-----------------------------------
+* React + Redux
+* Styled-components
+* ExpressJS
+* MySQL
+
+Структура файло:
+-----------------------------------
+
+<pre>
+$THIS
+├── index.js                               //настройка сервера
+├── package.json
+├── package-lock.json
+├── README.md  
+├── models/    
+│   └── todo.js                            //модель базы данный sequelize
+├── public/                                //HTML файл проекта
+├── routes/                                //роуты для серверной части (будет дорабаьываться)
+│   ├── auth.routes.js                     //авторизация + вывод предметов
+│   └── tasks.routes.js                    //вывод заданий по предмету
+├── src/                                   //sourse файлы React
+│   ├── index.js                           //главный компонент
+│   ├── store.js                           //создание store redux
+│   ├── index.scss                         //подгрузка шрифтов + обнуление margin/padding и выставление border-box
+│   ├── actions/                           //actions redux
+│   ├── reducers/                          //reducer redux + state
+│   ├── services/                          //запросы к серверу с фронт части
+│       └── resto-service.js               //fetch запрос
+│   └── components/                        //компоненты react  
+│       ├── app/                           //роуты
+│       ├── calendar/                      //календарь на странице с курсами
+│       ├── courses-page/                  //страница с курсами
+│       ├── error-boundry/                 //обработчик ошибок на фронт части (TODO)
+│       ├── hoc/                           //Context consumer
+│       ├── main-page/                     //Главная страница
+│       ├── resto-service-context/         //createContext
+│       └── tasks/                         //Страница предмета в заданиями
+└── utils/                                 //Database init
+
+</pre>
+
+
 
 Главная страница
 -----------------------------------
