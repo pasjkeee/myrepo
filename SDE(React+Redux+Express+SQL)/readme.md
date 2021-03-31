@@ -41,6 +41,15 @@ $THIS
 │       ├── main-page/                     //Главная страница
 │       ├── resto-service-context/         //createContext
 │       └── tasks/                         //Страница предмета в заданиями
+│           ├── dataContentItem/           //Компонент карточки задания
+│           ├── flag/                      //Компонент флага типа задания
+│           ├── radioCustom/               //Компонент кастомной радиокнопки
+│           ├── taskTheme/                 //Wrapper для тем и заданий + фильтр (fetch запрос при загрузке)
+│           ├── tasksData/                 //Wrapper для тем
+│           ├── tasksNavBar/               //Компонент header
+│           ├── themeContent/              //Компонент тем
+│           ├── typeCircle/                //Компонент типа задания
+│           └── tasks.js                   
 └── utils/                                 //Database init
 
 </pre>
