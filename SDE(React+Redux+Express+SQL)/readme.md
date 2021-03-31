@@ -35,7 +35,16 @@ $THIS
 │   └── components/                        //компоненты react  
 │       ├── app/                           //роуты
 │       ├── calendar/                      //календарь на странице с курсами
-│       ├── courses-page/                  //страница с курсами
+│           ├── cal-container/             //Компонент контейнер для плато календаря
+│           ├── cal-container-item/        //Плато календаря
+│           ├── cal-tasks/                 //Компонент контейнер для списка заданий
+│           ├── cal-tasks-item/            //Компонент карточки с заданием
+│           ├── cal-span/                  //Компонент окаршивания необходимой даты (TODO better)
+│           └── calendar.js             
+│       ├── courses-page/                  //страница с доступными предметами
+│           ├── courses-main/              //Warpper для списка предметов + (fetch запрос при загрузке)
+│           ├── courses-main-item/         //Компонент карточки предмета
+│           └── coursesPage.js             
 │       ├── error-boundry/                 //обработчик ошибок на фронт части (TODO)
 │       ├── hoc/                           //Context consumer
 │       ├── main-page/                     //Главная страница
@@ -47,7 +56,7 @@ $THIS
 │           ├── dataContentItem/           //Компонент карточки задания
 │           ├── flag/                      //Компонент флага типа задания
 │           ├── radioCustom/               //Компонент кастомной радиокнопки
-│           ├── taskTheme/                 //Wrapper для тем и заданий + фильтр (fetch запрос при загрузке)
+│           ├── taskTheme/                 //Wrapper для тем и заданий + фильтр + (fetch запрос при загрузке)
 │           ├── tasksData/                 //Wrapper для тем
 │           ├── tasksNavBar/               //Компонент header
 │           ├── themeContent/              //Компонент тем
