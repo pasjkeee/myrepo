@@ -215,7 +215,6 @@ class CalContainerItem extends React.Component{
     
 
     render(){
-        console.log("renderer", this.state.datas, this.state.days);
 
         const {days, datas} = this.state;
 

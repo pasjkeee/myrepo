@@ -8,10 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretRight} from "@fortawesome/free-solid-svg-icons";
 
 import DataContentItem from '../dataContentItem';
+import ThemeBtns from '../theme-btns';
+import TaskBtns from '../task-btns';
 
 
 
 const DataContentTitle = styled.div`
+    position: relative;
     cursor: pointer;
     border-radius: 10px;
     border: 1px solid rgba(226, 232, 255, 0.5);
@@ -74,6 +77,7 @@ class ThemeContent extends React.Component {
                     <ThemeName>
                         {this.props.data[0].theme}
                     </ThemeName>
+                    <ThemeBtns type="edit"/>
                 </DataContentTitle>
             )
         }
@@ -87,6 +91,7 @@ class ThemeContent extends React.Component {
                     <ThemeName>
                         {this.props.data[0].theme}
                     </ThemeName>
+                    <ThemeBtns type="edit"/>
                 </DataContentTitle>
                 <DataContent >
                     {
@@ -94,6 +99,7 @@ class ThemeContent extends React.Component {
                             return <DataContentItem key={item.task_id} data={item} filter={this.props.filter}/>
                         })
                     }
+                    <TaskBtns/>
                 </DataContent>
             </>
         )

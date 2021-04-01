@@ -8,17 +8,19 @@ import {toggleCal} from '../../actions';
 import BgImg from './Business_SVG.svg';
 
 import Calendar from '../calendar'
+import CoursesMainItemBtns from './courses-main-item-btns';
+import CoursesMainItemModalAdd from './courses-main-item-modal-add';
 
 const Container = styled.div`
     margin: 0 auto;
     width: 1140px;
     min-height: 100vh;
-    padding-bottom: 100px;
+    padding-bottom: 150px;
 `
 
 const CoursesHeader = styled.div`
     padding-top: 90px;
-    margin-bottom: 120px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
 `
@@ -102,6 +104,8 @@ class CoursesPage extends React.Component{
                     </CoursesHeader>
                     <CoursesMain></CoursesMain>
                     <Calendar isMounted={this.props.isMounted}></Calendar>
+                    <CoursesMainItemModalAdd/>
+                    <CoursesMainItemBtns/>
                 </Container>
                 <BackImgWrapper src={BgImg}></BackImgWrapper>
             </CoursesPageWrapper>

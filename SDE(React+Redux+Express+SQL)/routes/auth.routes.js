@@ -35,7 +35,7 @@ router.post('/login',
             if(!result){
                 return res.status(400).json({message: "Неверный пароль, попробуйте снова"})
             }
-            
+
             const token = jwt.sign({userId: data.user_id}, "pavel", { expiresIn: '15m' });
             req.session.authenticated = true;
             req.session.user = data.user_id;
@@ -53,7 +53,11 @@ router.get('/subjects',
 async (req, res) => {
         try {
             console.log(req.session);
-            const {access_lvl, user} = req.session;
+            const {access_lvl, user, authenticated} = req.session;
+
+            if(!authenticated){
+                res.status(401);
+            }
             
             if(access_lvl === 1){
                 let data = await Subject.findAll();

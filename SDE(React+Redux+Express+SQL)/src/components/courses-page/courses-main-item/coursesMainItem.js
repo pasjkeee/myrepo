@@ -3,10 +3,14 @@ import {connect} from 'react-redux';
 import WithRestoService from '../../hoc';
 import styled from 'styled-components';
 
+import CoursesMainItemBtns from '../courses-main-item-btns'; 
+
 const CoursesMainItemDiv = styled.div`
+    position: relative;
     border: 0.1px solid #E2E8FF;
     border-radius: 10px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin: 40px 0px;
     background-color: #FFFFFF;
@@ -16,6 +20,12 @@ const CoursesMainItemDiv = styled.div`
     cursor: pointer;
     box-shadow: 0 2px 8px rgb(125 159 244 / 50%);
     color: #4056B9;
+
+    .courses-text{
+        display: flex;
+        align-items: center;
+        max-width: 80%;
+    }
 
     :hover{
         background-color: #e1e7ff;
@@ -39,9 +49,12 @@ class CoursesMainItem extends React.Component{
 
         return(
             <CoursesMainItemDiv>
-                
-                <CoursesMainItemImg src={this.props.imgUrl}/>
-                {this.props.text}</CoursesMainItemDiv>
+                <div className="courses-text">
+                    <CoursesMainItemImg src={this.props.imgUrl}/>
+                    {this.props.text}
+                </div>
+                <CoursesMainItemBtns type="edit"/>
+            </CoursesMainItemDiv>
         )
     }
 }

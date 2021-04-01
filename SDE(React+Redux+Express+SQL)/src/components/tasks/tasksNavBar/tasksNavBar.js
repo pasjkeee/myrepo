@@ -105,15 +105,15 @@ class TasksNavBar extends React.Component {
                         <div className="title">Преподаватели:</div>
                         <Teachers>
                             <TeacherName>
-                                Бородин Г.А.
+                                Иванов И.И.
                                 <TeacherEmail>
-                                BorodinGA@mpei.ru
+                                IvanovII@mpei.ru
                                 </TeacherEmail>
                             </TeacherName>
                             <TeacherName>
-                                Андреева И.Н
+                                Иванова И.И
                                 <TeacherEmail>
-                                AndreevaEN@mpei.ru
+                                IvanovaII@mpei.ru
                                 </TeacherEmail>
                             </TeacherName>
                         </Teachers>

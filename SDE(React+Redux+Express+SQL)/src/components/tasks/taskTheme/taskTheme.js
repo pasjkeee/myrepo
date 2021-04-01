@@ -6,6 +6,7 @@ import RadioCustom from '../radioCustom';
 import ThemeContent from '../themeContent';
 
 import RestoService from '../../../services/resto-service';
+import ThemeBtns from '../theme-btns';
 
 
 const DataFilter = styled.div`
@@ -140,6 +141,7 @@ class TasksTheme extends React.Component {
                         return <ThemeContent key={item} data={newObj[item]} filter={this.state.currentFiletr}/>
                     })
                 }
+                <ThemeBtns/>
             </>
         )
     }

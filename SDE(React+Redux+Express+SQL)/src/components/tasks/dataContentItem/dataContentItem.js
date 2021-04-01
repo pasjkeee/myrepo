@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 
 import Flag from '../flag';
 import TypeCircle from '../typeCircle';
+import TaskBtns from '../task-btns';
 
 const DataContentItemContainer = styled.div`
 
@@ -60,6 +61,26 @@ const DataContentItemContainer = styled.div`
         border-top: 1px solid #EBEBEB;
     }
 
+    .blur-container{
+        display: none;
+    }
+
+    :hover{
+        .dataHeader, .dataDescription, .dateContainer{
+            filter: blur(2px);
+        }
+
+        
+        .blur-container{
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0px;
+            top: 0px;
+        }
+    }
+
     
 `
 
@@ -104,7 +125,11 @@ class DataContentItem extends React.Component {
                             </div>
                         </div>
                         <Flag type={task_type}/>
+                        <div className="blur-container">
+                            <TaskBtns type="edit" className="not-blur"/>
+                        </div>
                     </DataContentItemContainer>
+
                 </>
             )
         }

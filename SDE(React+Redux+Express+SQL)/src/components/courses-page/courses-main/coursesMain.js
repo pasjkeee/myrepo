@@ -24,34 +24,23 @@ class CoursesMain extends React.Component{
         }
     }
 
-    _isMounted = false;
-
     async componentDidMount(){
 
-        this._isMounted = true;
         try {
             const data = await this.server.getData('/api/auth/subjects');
             console.log(data.tasks);
-            if (this._isMounted) {
                 this.setState({
                     data: [...data.subjects]
                 })
                 this.props.changeTasks(data.tasks);
                 this.props.isMounted();
-            }
         } catch(e) {
             console.log(e.message);
         }
     }
 
     componentWillUnmount() {
-        this._isMounted = false;
         this.props.notMounted();
-    }
-
-    loadInfo = async (e) => {
-        e.preventDefault();
-        
     }
 
     render(){
@@ -63,7 +52,7 @@ class CoursesMain extends React.Component{
                         return (
                             <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }} key = {item.subject_id}>
                                 <CoursesMainItem
-                                    key = {item.subject_id}
+                                key = {item.subject_id}
                                     imgUrl = {Img1}
                                     text = {`${item.subject} (${item.teachers})`}
                                 />    
