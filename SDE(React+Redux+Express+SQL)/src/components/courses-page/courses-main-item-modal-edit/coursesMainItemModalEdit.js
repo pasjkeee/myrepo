@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import {connect} from 'react-redux';
+import WithRestoService from '../../hoc';
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes} from "@fortawesome/free-solid-svg-icons";
 
 import InputImg from '../input-img';
-
 import TeachersData from '../teachers-data';
 
 const Wrapper = styled.div`
@@ -25,7 +27,8 @@ const ModalAddContainer = styled.div`
     border: 0.1px solid #E2E8FF;
     border-radius: 10px;
     display: flex;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;
     background-color: #FFFFFF;
     position: relative;
     left: 50%;
@@ -41,12 +44,19 @@ const ModalAddContainer = styled.div`
         position: relative;
     }
 
-    .add-content{
+    .edit-content{
         display: flex;
         justify-content: space-around;
         align-items: center;
         width: 100%;
         position: relative;
+    }
+
+    .teacher{
+        margin-top: 20px;
+        margin-left: 30px;
+        color: #7D9FF4;
+        font-size: 18px;
     }
 
     textarea{
@@ -65,7 +75,7 @@ const ModalAddContainer = styled.div`
         width: 150px;
         height: 30px;
         right: 30px;
-        bottom: -45px;
+        bottom: -50px;
         background-color: #7D9FF4;
         border: 1px solid #7D9FF4;
         color: white;
@@ -80,12 +90,11 @@ const ModalAddContainer = styled.div`
     }
 
     .title{
-        position: relative;
-        left: 30px;
         margin-bottom: 20px;
+        margin-left: 30px;
+        position: relative;
         color: #7D9FF4;
-        font-size: 26px;
-        display: inline-block;
+        font-size: 18px;
     }
     
 `
@@ -96,14 +105,13 @@ const ModalAddClose = styled.div`
     top: 10px;
     display: inline-block; 
     cursor: pointer;
-    z-index: 10;
 
     :hover{
         transform: scale(1.1);
     }
 `
 
-export default class CoursesMainItemModalAdd extends React.Component{
+class CoursesMainItemModalEdit extends React.Component{
 
     constructor(props) {
         super(props);
@@ -117,6 +125,14 @@ export default class CoursesMainItemModalAdd extends React.Component{
         this.OnTextareaChange = this.OnTextareaChange.bind(this);
         this.ChangeImgActiveTrue = this.ChangeImgActiveTrue.bind(this);
         this.ChangeImgActiveFalse = this.ChangeImgActiveFalse.bind(this);
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.active !== prevProps.active){
+            this.setState({
+                textareaText: this.props.currentEditCourse.text
+            });
+        }
     }
 
     getImgNum(imgNum){
@@ -146,25 +162,36 @@ export default class CoursesMainItemModalAdd extends React.Component{
     render(){
 
         let style = (this.props.active) ? { display: "block" } : { display: "none" };
+        console.log(this.props.currentEditCourse);
 
         return(
             <Wrapper  style={style}>
                 <ModalAddContainer>
-                    <ModalAddClose onClick={()=>{this.props.OnCloseBtnClick()}}>
+                    <ModalAddClose onClick={()=>{this.props.OnEditCloseBtnClick()}}>
                         <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4"/>
                     </ModalAddClose>
                         <form>
-                            <div className="title">Добавить новый предмет</div>
-                            <div className="add-content">
-                                <InputImg getImgNum={this.getImgNum} textTeacherActive={this.state.textTeacherActive}/>
-                                <textarea name="textarea" rows="2" placeholder="Введите название предмета" required onChange={(e)=>{this.OnTextareaChange(e)}}></textarea>
+                            <div className="title">Изменить предмет <b>{this.props.currentEditCourse.text}</b></div>
+                            <div className="edit-content">
+                                <InputImg getImgNum={this.getImgNum} currentImgId={this.props.currentEditCourse.imgId}/>
+                                <textarea name="textarea" rows="2" placeholder="Введите название предмета" required onChange={(e)=>{this.OnTextareaChange(e)}} value={this.state.textareaText}></textarea>
                                 <input type="button" name="btn" className="btn" value="Добавить" onClick={()=>{console.log(this.state)}}/>
                                 <input type="hidden" name="imgNum" value={this.state.imgNum}/>
                             </div>
-                            <TeachersData ChangeImgActiveTrue={this.ChangeImgActiveTrue} ChangeImgActiveFalse={this.ChangeImgActiveFalse} type="add"/>
+                            <TeachersData  ChangeImgActiveTrue={this.ChangeImgActiveTrue} ChangeImgActiveFalse={this.ChangeImgActiveFalse} type="edit" />
                         </form>
                 </ModalAddContainer>
             </Wrapper>
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        currentEditCourse: state.currentEditCourse
+    }
+}
+
+
+
+export default WithRestoService()(connect(mapStateToProps)(CoursesMainItemModalEdit));

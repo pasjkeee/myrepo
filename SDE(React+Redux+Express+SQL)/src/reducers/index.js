@@ -10,7 +10,9 @@ const initialState = {
     userId: "",
     isAutorized: false,
     obj: [],
-    isMounted: false
+    isMounted: false,
+    currentEditCourse: {},
+    teachersData: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -96,6 +98,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isMounted: false
+            };
+
+        case 'SET_CURRENT_EDIT_COURSE':
+            return {
+                ...state,
+                currentEditCourse: action.data
+            };
+
+        case 'GET_TEACHERS_DATA':
+            return {
+                ...state,
+                teachersData: action.teachersData
             };
        
         default: 

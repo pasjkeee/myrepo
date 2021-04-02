@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
+
 const ButtonGroup = styled.div`
     width: 80px;
     height: 30px;
@@ -60,13 +61,23 @@ export default class CoursesMainItemBtns extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            
+            num: this.props.num
         };
         this.OnEditClick = this.OnEditClick.bind(this);
+        this.OnAddClick = this.OnAddClick.bind(this);
+        this.OnDeleteClick = this.OnDeleteClick.bind(this);
+        this.OnEditBtnClick = this.props.OnEditBtnClick;
+    }
+
+    OnAddClick(e){
+        e.preventDefault();
     }
 
     OnEditClick(e){
         e.preventDefault();
+        console.log(this.state.num);
+        this.props.getCourse();
+        this.props.OnEditBtnClick();
     }
 
     OnDeleteClick(e){
@@ -75,12 +86,13 @@ export default class CoursesMainItemBtns extends React.Component{
 
     render(){
 
+
         if(this.props.type === "edit"){
             return(
 
                 <ButtonGroup>
                     <ButtonEdit onClick={(e)=>{this.OnEditClick(e)}}>
-                        <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF" className="on-hover"/>
+                        <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF"/>
                     </ButtonEdit>
                     <ButtonDelete onClick={(e)=>{this.OnDeleteClick(e)}}>
                         <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
@@ -91,7 +103,7 @@ export default class CoursesMainItemBtns extends React.Component{
         }
 
         return(
-                <ButtonAdd onClick={(e)=>{this.OnEditClick(e)}}>
+                <ButtonAdd onClick={()=>{this.props.OnAddBtnClick()}}>
                     Добавить новый предмет
                 </ButtonAdd>
         )

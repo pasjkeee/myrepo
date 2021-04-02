@@ -10,6 +10,7 @@ import BgImg from './Business_SVG.svg';
 import Calendar from '../calendar'
 import CoursesMainItemBtns from './courses-main-item-btns';
 import CoursesMainItemModalAdd from './courses-main-item-modal-add';
+import CoursesMainItemModalEdit from './courses-main-item-modal-edit';
 
 const Container = styled.div`
     margin: 0 auto;
@@ -89,6 +90,41 @@ const BurgerSpan = styled.span`
 
 class CoursesPage extends React.Component{
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            addActive: false,
+            editActive: false
+        };
+        this.OnAddBtnClick = this.OnAddBtnClick.bind(this);
+        this.OnEditBtnClick = this.OnEditBtnClick.bind(this);
+        this.OnEditCloseBtnClick = this.OnEditCloseBtnClick.bind(this);
+    }
+
+    OnAddBtnClick(){
+        const active = !this.state.addActive;
+        this.setState({
+            addActive: active
+        });
+        console.log(active, "hi");
+    }
+
+    OnEditCloseBtnClick(){
+        this.setState({
+            editActive: false
+        });
+    }
+
+    OnEditBtnClick(){
+        this.setState({
+            editActive: true
+        });
+    }
+
+    GetCurrenEditCourse(item){
+        console.log(item);
+    }
+
     render(){
 
         return(
@@ -102,10 +138,11 @@ class CoursesPage extends React.Component{
                             <BurgerSpan/>
                         </Burger>
                     </CoursesHeader>
-                    <CoursesMain></CoursesMain>
+                    <CoursesMain OnEditBtnClick={this.OnEditBtnClick}></CoursesMain>
                     <Calendar isMounted={this.props.isMounted}></Calendar>
-                    <CoursesMainItemModalAdd/>
-                    <CoursesMainItemBtns/>
+                    <CoursesMainItemModalAdd active={this.state.addActive} OnCloseBtnClick={this.OnAddBtnClick}/>
+                    <CoursesMainItemModalEdit active={this.state.editActive} OnEditCloseBtnClick={this.OnEditCloseBtnClick} GetCurrenEditCourse={this.GetCurrenEditCourse}/>
+                    <CoursesMainItemBtns OnAddBtnClick={this.OnAddBtnClick}/>
                 </Container>
                 <BackImgWrapper src={BgImg}></BackImgWrapper>
             </CoursesPageWrapper>

@@ -50,16 +50,28 @@ const changeTasks = (taskData) => {
 }
 
 const isMounted = () => {
-    console.log("ismount");
     return{
         type: 'IS_MOUNTED'
     }
 }
 
 const notMounted = () => {
-    console.log("notmount");
     return{
         type: 'NOT_MOUNTED'
+    }
+}
+
+const setCurrentEditCourse = (data) => {
+    return{
+        type: 'SET_CURRENT_EDIT_COURSE',
+        data: data
+    }
+}
+
+const getTeachersData = (teachersData) => {
+    return{
+        type: 'GET_TEACHERS_DATA',
+        teachersData: teachersData
     }
 }
 
@@ -73,5 +85,7 @@ export {
     logOut,
     changeTasks,
     isMounted,
-    notMounted
+    notMounted,
+    setCurrentEditCourse,
+    getTeachersData
 };

@@ -11,6 +11,8 @@ import Img4 from '../courses-main/Asset 106.svg';
 import Img5 from '../courses-main/Asset 107.svg';
 import Img6 from '../courses-main/Asset 108.svg';
 
+const Img = [Img1, Img2, Img3, Img4, Img5, Img6];
+
 const InputImgButton = styled.div`
     cursor: pointer;
     width: 90px;
@@ -82,10 +84,19 @@ export default class InputImg extends React.Component{
         this.choosedIcon(e.target.getAttribute("data-num"));
     }
 
+    componentDidUpdate(prevProps){
+        if(this.props.textTeacherActive !== prevProps.textTeacherActive && this.props.textTeacherActive === true){
+            this.setState({
+                active: false
+            })
+        }
+    }
+
 
 
     render(){
         let icon;
+
         
         switch(this.state.choosedIcon){
             case "1":
@@ -107,7 +118,11 @@ export default class InputImg extends React.Component{
                 icon = <img src={Img6} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="6"/>;
                 break;
             default:
-                icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>
+                if(this.props.currentImgId){
+                    icon = <img src={Img[this.props.currentImgId-1]} alt="img"/>;
+                } else {
+                    icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>
+                }
         }
 
         if(!this.state.active){
@@ -118,20 +133,15 @@ export default class InputImg extends React.Component{
             )
         }
 
+        let container = (!this.props.textTeacherActive) ? <div className="img-container"> { Img.map((item, i) => <img src={item} key={i} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num={i+1}/>) } </div> : false;
 
+        
 
         return(
             <>
                 <InputImgButton onClick={()=>{this.OnActive()}}>
                     {icon}
-                    <div className="img-container">
-                        <img src={Img1} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="1"/>
-                        <img src={Img2} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="2"/>
-                        <img src={Img3} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="3"/>
-                        <img src={Img4} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="4"/>
-                        <img src={Img5} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="5"/>
-                        <img src={Img6} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="6"/>
-                    </div>
+                    {container}
                 </InputImgButton>
             </>
         )

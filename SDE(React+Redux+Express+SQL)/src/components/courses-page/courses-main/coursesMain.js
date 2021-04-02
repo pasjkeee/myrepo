@@ -6,11 +6,7 @@ import { Link } from 'react-router-dom'
 
 import CoursesMainItem from '../courses-main-item';
 import RestoService from '../../../services/resto-service';
-import {changeTasks,isMounted,notMounted} from '../../../actions';
-import Img1 from './Asset 103.svg';
-import Img2 from './Asset 104.svg';
-import Img3 from './Asset 105.svg';
-import Img4 from './Asset 106.svg';
+import {changeTasks,isMounted,notMounted, getTeachersData} from '../../../actions';
 
 
 
@@ -28,12 +24,28 @@ class CoursesMain extends React.Component{
 
         try {
             const data = await this.server.getData('/api/auth/subjects');
-            console.log(data.tasks);
-                this.setState({
-                    data: [...data.subjects]
-                })
-                this.props.changeTasks(data.tasks);
-                this.props.isMounted();
+
+            const teachersData = [{
+                teacher_id: 1,
+                teacher: "Иванов И.И"
+            },{
+                teacher_id: 2,
+                teacher: "Иванова И.И"
+            },{
+                teacher_id: 3,
+                teacher: "Петров И.И"
+            },{
+                teacher_id: 4,
+                teacher: "Кузюкин И.И"
+            }]
+            
+            this.setState({
+                data: [...data.subjects]
+            })
+            this.props.getTeachersData(teachersData);
+            this.props.changeTasks(data.tasks);
+            this.props.isMounted();
+
         } catch(e) {
             console.log(e.message);
         }
@@ -49,12 +61,18 @@ class CoursesMain extends React.Component{
             <>
                 {
                     this.state.data.map((item) => {
+                        console.log(item.subject_id);
+
+
+
                         return (
                             <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }} key = {item.subject_id}>
                                 <CoursesMainItem
-                                key = {item.subject_id}
-                                    imgUrl = {Img1}
-                                    text = {`${item.subject} (${item.teachers})`}
+                                    courseKey = {item.subject_id}
+                                    imgId="2"
+                                    text = {item.subject}
+                                    teacher = {` (${item.teachers})`}
+                                    OnEditBtnClick={this.props.OnEditBtnClick}
                                 />    
                             </Link>
                         )
@@ -74,7 +92,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     changeTasks,
     isMounted,
-    notMounted
+    notMounted,
+    getTeachersData
 };
 
 
