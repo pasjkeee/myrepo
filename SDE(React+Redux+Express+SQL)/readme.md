@@ -136,13 +136,13 @@ $THIS
 
 ![AddNewCourse2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/addNewCourse2.JPG "Добавление нового предмета")​
 
-![AddNewCourse3](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/addNewCourse3.JPG "Добавление нового предмета")​
+![AddNewCourse3](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/addNewCourse3.jpg "Добавление нового предмета")​
 
 Изменение предмета
 -----------------------------------
 ![EditCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/editCourse.JPG "Добавление нового предмета")​
 
-![EditCourse2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/editCourse2.JPG "Добавление нового предмета")​
+![EditCourse2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/editCourse2.jpg "Добавление нового предмета")​
 
 Календарь событий
 -----------------------------------
