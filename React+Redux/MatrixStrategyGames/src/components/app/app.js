@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import WithRestoService from '../hoc';
 
@@ -32,7 +32,7 @@ const Container = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    margin: 100px 100px;
+    margin-top: 100px;
 
     .select-container{
         display: flex;
@@ -53,74 +53,33 @@ const EditContainer = styled.div`
 `
 
 
-class App extends React.Component{
+const App = (props) => {
 
+    let [current, setCurrent] = useState([0, 0]);
+    let [editActive, setEditActive] = useState(false);
+    let [edit1, setEdit1] = useState("");
+    let [edit2, setEdit2] = useState("");
+    let [list, setList] = useState([]);
+    let [MAXMINA, setMAXMINA] = useState([]);
+    let [MINMAXA, setMINMAXA] = useState([]);
+    let [MAXMINB, setMAXMINB] = useState([]);
+    let [MINMAXB, setMINMAXB] = useState([]);
 
-    constructor( props ){
-        super( props );
-        this.state = {
-            current: [],
-            editActive: false,
-            edit1: "",
-            edit2: "",
-            list: [],
-            MAXMINA: [],
-            MINMAXA: [],
-            MAXMINB: [],
-            MINMAXB: []
-        }
-        this.changeCurrent = this.changeCurrent.bind(this);
-        this.closeEdit= this.closeEdit.bind(this);
-        this.changeEdit1 = this.changeEdit1.bind(this);
-        this.changeEdit2 = this.changeEdit2.bind(this);
-        this.onClickEdit = this.onClickEdit.bind(this);
-        this.updDomination = this.updDomination.bind(this);
-        this.findMinIndex = this.findMinIndex.bind(this);
-        this.findMaxIndex = this.findMaxIndex.bind(this);
-        this.setMINMAX = this.setMINMAX.bind(this);
-        this.findMAXMINIndex = this.findMAXMINIndex.bind(this);
-        this.findMINMAXIndex = this.findMINMAXIndex.bind(this);
-        
-      }
+    const {rows, columns, table, choosed} = props;
     
-    changeCurrent(i, j){
-        this.setState({
-            editActive: true,
-            edit1: this.props.table[i][j][0],
-            edit2: this.props.table[i][j][1],
-            current: [i, j]
-        })
+    const changeCurrent = (i, j) => {
+        setEditActive(true);
+        setEdit1(props.table[i][j][0]);
+        setEdit2(props.table[i][j][1]);
+        setCurrent([i, j]);
     }
 
-    changeEdit1(e){
-        this.setState({
-            edit1: +e.target.value
-        });
-        console.log(e.target.value)
+    const onClickEdit = () => {
+        props.editTable(current[0],current[1], edit1, edit2);
+        setEditActive(false);
     }
 
-    changeEdit2(e){
-        this.setState({
-            edit2: +e.target.value
-        });
-        console.log(e.target.value)
-    }
-
-    closeEdit(){
-        this.setState({
-            editActive: false
-        })
-    }
-
-    onClickEdit(){
-        const {current, edit1, edit2 } = this.state;
-        this.props.editTable(current[0],current[1], edit1, edit2);
-        this.setState({
-            editActive: false
-        })
-    }
-
-    findDomination(rows, columns, table, index, list, player, type){
+    const findDomination = (rows, columns, table, index, list, player, type) => {
         let countMin = 0, countEq = 0;
         let resList = [...list];
         for(let i=0; i<((type === "rows") ? rows : columns);i++){
@@ -138,7 +97,7 @@ class App extends React.Component{
                         }
                     }
                 }
-                console.log(countMin, countEq, columns, rows);
+                
                 if(countMin === ((type === "rows") ? columns : rows)){
                     resList.push(`${player}${i} СИЛЬНО доминируемый относительно ${player}${k}`);
                 } else if(countEq+countMin === ((type === "rows") ? columns : rows)){
@@ -150,23 +109,21 @@ class App extends React.Component{
         return resList
     }
 
-    updDomination(){
-        let list = [];
-        const {rows, columns, table} = this.props;
+    const updDomination = () => {
+        let newList = [];
+        console.log(choosed);
         
-        if(this.props.choosed === "one"){
-            list = [...list, ...this.findDomination(rows, columns, table, 0, list, "B", "rows")];
-            list = [...list, ...this.findDomination(rows, columns, table, 0, list, "A", "columns")];
+        if(choosed === "one"){
+            newList = [...newList, ...findDomination(rows, columns, table, 0, newList, "B", "rows")];
+            newList = [...newList, ...findDomination(rows, columns, table, 0, newList, "A", "columns")];
         } else {
-            list = [...list, ...this.findDomination(rows, columns, table, 1, list, "B", "rows")];
-            list = [...list, ...this.findDomination(rows, columns, table, 0, list, "A", "columns")];
+            newList = [...newList, ...findDomination(rows, columns, table, 1, newList, "B", "rows")];
+            newList = [...newList, ...findDomination(rows, columns, table, 0, newList, "A", "columns")];
         } 
-        this.setState({
-            list: list
-        })
+        setList(newList);
     }
 
-    findMinIndex(rows, columns, table, index){
+    const findMinIndex = (rows, columns, table, index) => {
         let minIndex = [];
         for(let i=0; i<rows;i++){
             let min = Number.MAX_SAFE_INTEGER;
@@ -181,11 +138,10 @@ class App extends React.Component{
                 }
             }
         }
-        console.log(minIndex)
-        return minIndex
+        return minIndex;
     }
 
-    findMaxIndex(rows, columns, table, index){
+    const findMaxIndex = (rows, columns, table, index) => {
         let maxIndex = [];
         for(let i=0; i<columns;i++){
             let max = Number.MIN_SAFE_INTEGER;
@@ -199,12 +155,11 @@ class App extends React.Component{
                     maxIndex.push([j, i, +table[j][i][index]]);
                 }
             }
-            console.log(maxIndex)
         }
-        return maxIndex
+        return maxIndex;
     }
 
-    findMINMAXIndex(minIndex){
+    const findMINMAXIndex = (minIndex) => {
         let max = Number.MIN_SAFE_INTEGER;
         let newMINMAXIndex = [];
 
@@ -218,11 +173,10 @@ class App extends React.Component{
                     newMINMAXIndex.push(minIndex[i][0], minIndex[i][1], minIndex[i][2]); 
                 }
             }
-                console.log(newMINMAXIndex);
         return newMINMAXIndex;
     }
 
-    findMAXMINIndex(maxIndex){
+    const findMAXMINIndex = (maxIndex) => {
         let min = Number.MAX_SAFE_INTEGER;
         let newMAXMINIndex = [];
 
@@ -236,94 +190,82 @@ class App extends React.Component{
                 newMAXMINIndex.push(maxIndex[i][0], maxIndex[i][1], maxIndex[i][2]); 
             }
         }
-        console.log(newMAXMINIndex);
         return newMAXMINIndex;
     }
 
-    setMINMAX(){
+    const setMINMAX = () => {
 
-        const {rows, columns, table} = this.props;
+            let minIndexA = findMinIndex(rows, columns, table, 0);
+            let MINMAXIndexA = findMINMAXIndex(minIndexA);
 
-        if(this.props.choosed === "one"){
-            let minIndex = this.findMinIndex(rows, columns, table, 0);
-            let MINMAXIndex = this.findMINMAXIndex(minIndex);
-
-            let maxIndex = this.findMaxIndex(rows, columns, table, 0);
-            let MAXMINIndex = this.findMAXMINIndex(maxIndex);
+            let maxIndexA = findMaxIndex(rows, columns, table, 0);
+            let MAXMINIndexA = findMAXMINIndex(maxIndexA);
             
-            this.setState({
-                MINMAXA: MINMAXIndex,
-                MAXMINA: MAXMINIndex
-            })
+            setMINMAXA(MINMAXIndexA);
+            setMAXMINA(MAXMINIndexA);
 
-        } else {
+            if(choosed === "two"){
+                let minIndexB = findMinIndex(rows, columns, table, 1);
+                let MINMAXIndexB = findMINMAXIndex(minIndexB);
 
-            let minIndexA = this.findMinIndex(rows, columns, table, 0);
-            let MINMAXIndexA = this.findMINMAXIndex(minIndexA, );
+                let maxIndexB = findMaxIndex(rows, columns, table, 1);
+                let MAXMINIndexB = findMAXMINIndex(maxIndexB);
 
-            let maxIndexA = this.findMaxIndex(rows, columns, table, 0);
-            let MAXMINIndexA = this.findMAXMINIndex(maxIndexA);
+                setMINMAXB(MINMAXIndexB);
+                setMAXMINB(MAXMINIndexB);
+            }
 
-            let minIndexB = this.findMinIndex(rows, columns, table, 1);
-            let MINMAXIndexB = this.findMINMAXIndex(minIndexB);
+            
+    }
 
-            let maxIndexB = this.findMaxIndex(rows, columns, table, 1);
-            let MAXMINIndexB = this.findMAXMINIndex(maxIndexB);
-           
+    const labelFor = (props.choosed === "one") ? "for 1 number" : "for 2 number (A/B)";
 
-            this.setState({
-                MINMAXA: MINMAXIndexA,
-                MAXMINA: MAXMINIndexA,
-                MINMAXB: MINMAXIndexB,
-                MAXMINB: MAXMINIndexB
-            })
-        }
+    const editFuildStyle = {
+        backgroundColor: "white", 
+        width: "120px", 
+        marginRight: "20px"
+    }
+
+    const tableContainerStyle = {
+        maxWidth: "1000px", 
+        position: "relative", 
+        margin: "100px"
     }
 
 
-    render(){
+    const edit = editActive && (
+        <EditContainer>
+            <TextField id="filled-basic1" label="Change field" variant="filled" style={editFuildStyle} value={edit1}
+                        onChange={(e)=>setEdit1(+e.target.value)}/>
 
-        const labelFor = (this.props.choosed === "one") ? "for 1 number" : "for 2 number (A/B)";
+            {(choosed === "two") ? (
+            <TextField  id="filled-basic2" label="Change field" variant="filled" style={editFuildStyle} value={edit2}
+                onChange={(e)=>setEdit2(+e.target.value)}/>) : false}
 
-        const editFuildStyle = {
-            backgroundColor: "white", 
-            width: "120px", 
-            marginRight: "20px"
-        }
+            <ButtonGroup orientation="vertical" color="primary" aria-label="vertical outlined primary button group">
+                <Button style={{backgroundColor: "white"}} onClick={()=>{onClickEdit()}}>Edit</Button>
+                <Button style={{backgroundColor: "white"}} onClick={()=>{setEditActive(false)}}>Cancel</Button>
+            </ButtonGroup>
+        </EditContainer>);
 
-        const edit = (this.state.editActive === true) ? (
-            <EditContainer>
-                <TextField id="filled-basic1" label="Change field" variant="filled" style={editFuildStyle} value={this.state.edit1}
-                            onChange={(e)=>this.changeEdit1(e)}/>
-
-                {(this.props.choosed === "two") ? (
-                <TextField  id="filled-basic2" label="Change field" variant="filled" style={editFuildStyle} value={this.state.edit2}
-                    onChange={(e)=>this.changeEdit2(e)}/>) : false}
-
-                <ButtonGroup orientation="vertical" color="primary" aria-label="vertical outlined primary button group">
-                    <Button style={{backgroundColor: "white"}} onClick={()=>{this.onClickEdit()}}>Edit</Button>
-                    <Button style={{backgroundColor: "white"}} onClick={()=>{this.closeEdit()}}>Cancel</Button>
-                </ButtonGroup>
-            </EditContainer>) : false;
-
-        return(
+    return(
         <>
             <Container>
-                <TableContainer component={Paper} style={{maxWidth: "1000px", position: "relative", marginRight: "20px"}}>
+                <TableContainer component={Paper} style={tableContainerStyle}>
                     <Table size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">{labelFor}</TableCell>
-                                {this.props.table[0].map((item, i) => <TableCell key={i} align="center">A{i}</TableCell> )}
+                                {table[0].map((item, i) => <TableCell key={i} align="center">A{i}</TableCell> )}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {
-                                this.props.table.map((items, i) => {
+                                table.map((items, i) => {
                                     let com = <TableCell component="th" scope="row">B{i}</TableCell >
-                                    let com2 = items.map((row, j) => <TableCell style={{cursor: "pointer"}} onClick={(e)=>{this.changeCurrent(i, j)}} key={j} align="center">
+                                    let com2 = items.map((row, j) => <TableCell style={{cursor: "pointer"}} onClick={(e)=>{changeCurrent(i, j)}} key={j} align="center">
                                                                         {
-                                                                            (this.props.choosed === "one") ? row[0] : `${row[0]} / ${row[1]}`
+                                                                            (choosed === "one") ? row[0] : `${row[0]} / ${row[1]}`
                                                                         }
                                                                     </TableCell>)
                                     return <TableRow key={i}>{com}{com2}</TableRow>
@@ -336,43 +278,42 @@ class App extends React.Component{
                 <div className="select-container">
                     <FormControl component="fieldset" style={{margin: "20px 0px 0px 20px"}}>
                         <FormLabel component="legend">Режим ввода</FormLabel>
-                        <RadioGroup aria-label="gender" name="mode" value={this.props.choosed} onChange={(event)=>{this.props.chooseMode(event.target.value)}}>
+                        <RadioGroup aria-label="gender" name="mode" value={choosed} onChange={(event)=>{props.chooseMode(event.target.value)}}>
                             <FormControlLabel value="one" control={<Radio />} label="По одному числу" />
                             <FormControlLabel value="two" control={<Radio />} label="По двум числам" />
                         </RadioGroup>
                     </FormControl>
-                    <BtnGroup addMethod={this.props.addColumn} delMethod={this.props.delColumn} textAdd="Добавить столбец" textDel="Убрать столбец"/>
-                    <BtnGroup addMethod={this.props.addRow} delMethod={this.props.delRow} textAdd="Добавить строку" textDel="Убрать строку"/>
+                    <BtnGroup addMethod={props.addColumn} delMethod={props.delColumn} textAdd="Добавить столбец" textDel="Убрать столбец"/>
+                    <BtnGroup addMethod={props.addRow} delMethod={props.delRow} textAdd="Добавить строку" textDel="Убрать строку"/>
                             
-                    <Button  variant="contained" color="secondary" onClick={()=>{this.updDomination()}} >Upd domination</Button>
-                    <Button  variant="contained" color="primary" onClick={()=>{this.setMINMAX()}} >Upd MAXMIN/MINMAX</Button>
+                    <Button  variant="contained" color="secondary" onClick={()=>{updDomination()}} >Upd domination</Button>
+                    <Button  variant="contained" color="primary" onClick={()=>{setMINMAX()}} >Upd MAXMIN/MINMAX</Button>
                 </div> 
             </Container>
-            <TableContainer component={Paper} style={{maxWidth: "1000px", position: "relative", marginLeft: "100px"}}>
+            <TableContainer component={Paper} style={tableContainerStyle}>
                 <Table size="small" aria-label="a dense table">
                     <TableBody>
                         {
-                            this.state.list.map((item) => <TableRow key={item}><TableCell key="item">{item}</TableCell></TableRow>)
+                            list.map((item) => <TableRow key={item}><TableCell key="item">{item}</TableCell></TableRow>)
                         }
-                        <OutTableRows textRow="MINMAX A Строка: " textColumn="MINMAX A Столбец " textValue="MINMAX A Занчение" data={this.state.MINMAXA}/>
-                        <OutTableRows textRow="MAXMIN A Строка: " textColumn="MAXMIN A Столбец " textValue="MAXMIN A Занчение" data={this.state.MAXMINA}/>
+                        <OutTableRows textRow="MINMAX A Строка: " textColumn="MINMAX A Столбец " textValue="MINMAX A Занчение" data={MINMAXA}/>
+                        <OutTableRows textRow="MAXMIN A Строка: " textColumn="MAXMIN A Столбец " textValue="MAXMIN A Занчение" data={MAXMINA}/>
                         {
-                            (this.props.choosed === "two") ? (
-                                <OutTableRows textRow="MINMAX B Строка: " textColumn="MINMAX B Столбец " textValue="MINMAX B Занчение" data={this.state.MINMAXB}/>
+                            (choosed === "two") ? (
+                                <OutTableRows textRow="MINMAX B Строка: " textColumn="MINMAX B Столбец " textValue="MINMAX B Занчение" data={MINMAXB}/>
                             ) : false
                         }
 
                         {
-                            (this.props.choosed === "two") ? (
-                                <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={this.state.MAXMINB}/>
+                            (choosed === "two") ? (
+                                <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={MAXMINB}/>
                             ) : false
                         }
                     </TableBody>
                 </Table>
             </TableContainer>
         </> 
-        )
-    }
+    )
 }
 
 const mapStateToProps = (state) => {
