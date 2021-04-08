@@ -141,8 +141,12 @@ $THIS
 Изменение предмета
 -----------------------------------
 ![EditCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/editCourse.JPG "Добавление нового предмета")​
-
 ![EditCourse2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/editCourse2.jpg "Добавление нового предмета")​
+
+Удаление предмета
+-----------------------------------
+![DeleteCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/deleteCourse.JPG "Удаление предмета")​
+
 
 Календарь событий
 -----------------------------------
