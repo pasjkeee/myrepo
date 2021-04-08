@@ -299,15 +299,10 @@ const App = (props) => {
                         <OutTableRows textRow="MINMAX A Строка: " textColumn="MINMAX A Столбец " textValue="MINMAX A Занчение" data={MINMAXA}/>
                         <OutTableRows textRow="MAXMIN A Строка: " textColumn="MAXMIN A Столбец " textValue="MAXMIN A Занчение" data={MAXMINA}/>
                         {
-                            (choosed === "two") ? (
+                            (choosed === "two") ? (<>
                                 <OutTableRows textRow="MINMAX B Строка: " textColumn="MINMAX B Столбец " textValue="MINMAX B Занчение" data={MINMAXB}/>
-                            ) : false
-                        }
-
-                        {
-                            (choosed === "two") ? (
                                 <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={MAXMINB}/>
-                            ) : false
+                            </>) : false
                         }
                     </TableBody>
                 </Table>
