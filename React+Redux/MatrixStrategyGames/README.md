@@ -30,7 +30,7 @@ $THIS
     ├── actions/                           //actions redux
     ├── reducers/                          //reducer redux + state
     └── components/                        //компоненты react  
-        ├── app/                           //роуты
+        ├── app/                           //
             ├── app.tsx                    //Компонент с основной реализацией
             ├── btnGroup.tsx               //Компонент контейнер для группы кнопок
             └── outTableRows.tsx           //Компонент для вывода трок таблицы результатов
