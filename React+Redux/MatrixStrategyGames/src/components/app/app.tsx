@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {connect} from 'react-redux';
 import WithRestoService from '../hoc';
 
 
-import {chooseMode, addRow, delRow, addColumn, delColumn, editTable} from '../../actions';
+import {chooseMode, addRow, delRow, addColumn, delColumn, editTable, removeStrongDomination, removeDom, randomRefilling} from '../../actions';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
@@ -30,24 +29,34 @@ import OutTableRows from './outTableRows.tsx';
 // @ts-ignore
 import BtnGroup from './btnGroup.tsx';
 
+import MyTable from './table';
+
 interface IProps {
     rows: number,
     columns: number,
     table: [[[number, number]]],
     choosed: string,
+    filters: {},
     addColumn(): {},
     delColumn(): {},
     addRow(): {},
     delRow(): {},
+    randomRefilling(): {},
     chooseMode(e: string): {},
-    editTable(a: number, b: number, edit1: number, edit2: number): {}
+    editTable(a: number, b: number, edit1: number, edit2: number): {},
+    removeStrongDomination(a: [number, string][]): {},
+    removeDom(a: string): {},
+    rowsStrategy: number[],
+    columnsStrategy: number[]
 }
 
 interface IState {
     rows: number,
     columns: number,
     table: [[[number, number]]],
-    choosed: string
+    choosed: string,
+    rowsStrategy: number[],
+    columnsStrategy: number[]
 }
 
 const App: React.FC<IProps> = (props: IProps) => {
@@ -57,10 +66,17 @@ const App: React.FC<IProps> = (props: IProps) => {
     let [edit1, setEdit1] = useState<number>(0);
     let [edit2, setEdit2] = useState<number>(0);
     let [list, setList] = useState<string[]>([]);
+    let [listStrongDomintaion, setListStrongDomintaion] = useState<Array<[number, string]>>([[-1,""]]); 
+    let [listWeaklyDomintaion, setListWeaklyDomintaion] = useState<Array<[number, string]>>([[-1,""]]);
     let [MAXMINA, setMAXMINA] = useState<number[]>([]);
     let [MINMAXA, setMINMAXA] = useState<number[]>([]);
     let [MAXMINB, setMAXMINB] = useState<number[]>([]);
     let [MINMAXB, setMINMAXB] = useState<number[]>([]);
+    let [rerenderTable, setRerenderTable] = useState<boolean>(false);
+
+    
+    let newListStrongDomintaionSet = useMemo(()=>new Set<[number, string]>(), []);
+    let newListWeaklyDomintaionSet = useMemo(()=>new Set<[number, string]>(), []);
 
     const {rows, columns, table, choosed} = props;
     
@@ -76,18 +92,38 @@ const App: React.FC<IProps> = (props: IProps) => {
         setEditActive(false);
     }
 
-    const findDomination = (rows: number, columns: number, table: [[[number, number]]], index: number, list: string[], player: string, type: string) => {
+    const findDomination = useCallback((rows: number, columns: number, table: [[[number, number]]],index: number, list: string[], player: string, type: string) => {
         let countMin: number, countEq: number;
-        let resList: string[] = [...list];
+    
+        let columnsSet = new Set<string>();
+        let rowsSet = new Set<string>();
+
+        let resList: string[] = [];
+        let resListSet = new Set<string>();
+
+        let newTable: [[number[]]] = [[[]]];
+
+        if(player === "B" && choosed === "one"){
+            for(let i=0; i<rows; i++){
+                newTable[i] = [[]]; 
+                for(let j=0; j<rows; j++){
+                    newTable[i][j] = [];
+                    newTable[i][j][0] = -table[i][j][0];
+                }
+            } 
+        } else {
+            newTable = table;
+        }
+
         for(let i=0; i<((type === "rows") ? rows : columns); i++){
             for(let k=0; k<((type === "rows") ? rows : columns); k++){
                 countMin = 0;
                 countEq = 0;
                 for(let j=0; j<((type === "rows") ? columns : rows);j++){
                     if(k!==i){
-                        if(((type === "rows") ? (table[i][j][index] > table[k][j][index]) : (table[j][i][index] > table[j][k][index]))){
+                        if(((type === "rows") ? (newTable[i][j][index] > newTable[k][j][index]) : (newTable[j][i][index] > newTable[j][k][index]))){
                             break;
-                        } else if(((type === "rows") ? (table[i][j][index] === table[k][j][index]) : (table[j][i][index] === table[j][k][index]))){
+                        } else if(((type === "rows") ? (newTable[i][j][index] === newTable[k][j][index]) : (newTable[j][i][index] === newTable[j][k][index]))){
                             countEq++;
                         } else {
                             countMin++;
@@ -96,30 +132,47 @@ const App: React.FC<IProps> = (props: IProps) => {
                 }
                 
                 if(countMin === ((type === "rows") ? columns : rows)){
-                    resList.push(`${player}${i} СИЛЬНО доминируемый относительно ${player}${k}`);
+                    resListSet.add(`${player}${props.columnsStrategy[i]} СИЛЬНО доминируемый относительно ${player}${props.columnsStrategy[k]}`);
+
+                    let count: number = columnsSet.size;
+                    columnsSet.add(`${i}${type}`);
+
+                    if(count !== columnsSet.size){
+                        newListStrongDomintaionSet.add([i, type]);
+                    }
                 } else if(countEq+countMin === ((type === "rows") ? columns : rows)){
-                    resList.push(`${player}${i} СЛАБО доминируемый относительно ${player}${k}`);
+                    resListSet.add(`${player}${props.rowsStrategy[i]} СЛАБО доминируемый относительно ${player}${props.rowsStrategy[k]}`);
+
+                    let count: number = rowsSet.size;
+                    rowsSet.add(`${i}${type}`);
+
+                    if(count !== rowsSet.size){
+                        newListWeaklyDomintaionSet.add([i, type]);
+                    }
                 }
             }
         }
+        setListStrongDomintaion(Array.from(newListStrongDomintaionSet.values()));
+        setListWeaklyDomintaion(Array.from(newListWeaklyDomintaionSet.values()));
 
+        resList = Array.from(resListSet.values());
         return resList
-    }
+    }, [newListStrongDomintaionSet, newListWeaklyDomintaionSet, props.columnsStrategy, props.rowsStrategy])
 
-    const updDomination = () => {
+    const updDomination = useCallback(() => {
         let newList: string[] = [];
         
         if(choosed === "one"){
-            newList = [...findDomination(rows, columns, table, 0, newList, "B", "rows")];
-            newList = [...newList, ...findDomination(rows, columns, table, 0, newList, "A", "columns")];
+            newList = [...findDomination(rows, columns, props.table, 0, newList, "B", "rows")];
+            newList = [...newList, ...findDomination(rows, columns, props.table, 0, newList, "A", "columns")];
         } else {
-            newList = [...findDomination(rows, columns, table, 1, newList, "B", "rows")];
-            newList = [...newList, ...findDomination(rows, columns, table, 0, newList, "A", "columns")];
+            newList = [...findDomination(rows, columns, props.table, 1, newList, "B", "rows")];
+            newList = [...newList, ...findDomination(rows, columns, props.table, 0, newList, "A", "columns")];
         } 
         setList(newList);
-    }
+    }, [choosed, rows, columns, findDomination, props.table])
 
-    const findMinIndex = (rows: number, columns: number, table: [[[number, number]]], index: number): [number, number, number][] => {
+    const findMinIndexRow = (rows: number, columns: number, table: [[[number, number]]], index: number): [number, number, number][] => {
         let minIndex: [number, number, number][] = [];
         for(let i=0; i<rows;i++){
             let min = Number.MAX_SAFE_INTEGER;
@@ -137,7 +190,26 @@ const App: React.FC<IProps> = (props: IProps) => {
         return minIndex;
     }
 
-    const findMaxIndex = (rows: number, columns: number, table: [[[number, number]]], index: number): [number, number, number][] => {
+    const findMaxIndexRow = (rows: number, columns: number, table: [[[number, number]]], index: number): [number, number, number][] => {
+        let maxIndex: [number, number, number][] = [];
+        for(let i=0; i<rows;i++){
+            let max = Number.MIN_SAFE_INTEGER;
+            for(let j=0; j<columns;j++){
+                if(+table[i][j][index] >= max) {
+                    max = +table[i][j][index];
+                }
+            }
+            for(let j=0; j<columns;j++){
+                if(+table[i][j][0] === max) {
+                    maxIndex.push([i, j, +table[i][j][index]]);
+                }
+            }
+        }
+        return maxIndex;
+    }
+
+
+    const findMaxIndexColumn = (rows: number, columns: number, table: [[[number, number]]], index: number): [number, number, number][] => {
         let maxIndex: [number, number, number][] = [];
         for(let i=0; i<columns;i++){
             let max = Number.MIN_SAFE_INTEGER;
@@ -153,6 +225,24 @@ const App: React.FC<IProps> = (props: IProps) => {
             }
         }
         return maxIndex;
+    }
+
+    const findMinIndexColumn = (rows: number, columns: number, table: [[[number, number]]], index: number): [number, number, number][] => {
+        let minIndex: [number, number, number][] = [];
+        for(let i=0; i<columns;i++){
+            let min = Number.MAX_SAFE_INTEGER;
+            for(let j=0; j<rows;j++){
+                if(+table[j][i][index] <= min) {
+                    min = +table[j][i][index];
+                }
+            }
+            for(let j=0; j<rows;j++){
+                if(+table[j][i][index] === min) {
+                    minIndex.push([j, i, +table[j][i][index]]);
+                }
+            }
+        }
+        return minIndex;
     }
 
     const findMINMAXIndex = (minIndex: [number, number, number][]): number[] => {
@@ -191,20 +281,25 @@ const App: React.FC<IProps> = (props: IProps) => {
 
     const setMINMAX = () => {
 
-            let minIndexA = findMinIndex(rows, columns, table, 0);
+            let minIndexA = findMinIndexColumn(rows, columns, table, 0);
+            let maxIndexA = findMaxIndexColumn(rows, columns, table, 0);
+            let minIndexB = findMinIndexRow(rows, columns, table, 0);
+            let maxIndexB = findMaxIndexRow(rows, columns, table, 0);
             let MINMAXIndexA = findMINMAXIndex(minIndexA);
-
-            let maxIndexA = findMaxIndex(rows, columns, table, 0);
             let MAXMINIndexA = findMAXMINIndex(maxIndexA);
+            let MAXMINIndexB = findMINMAXIndex(minIndexB);
+            let MINMAXIndexB = findMAXMINIndex(maxIndexB);
             
             setMINMAXA(MINMAXIndexA);
             setMAXMINA(MAXMINIndexA);
+            setMINMAXB(MINMAXIndexB);
+            setMAXMINB(MAXMINIndexB);
 
             if(choosed === "two"){
-                let minIndexB = findMinIndex(rows, columns, table, 1);
+                let minIndexB = findMinIndexRow(rows, columns, table, 1);
                 let MINMAXIndexB = findMINMAXIndex(minIndexB);
 
-                let maxIndexB = findMaxIndex(rows, columns, table, 1);
+                let maxIndexB = findMinIndexRow(rows, columns, table, 1);
                 let MAXMINIndexB = findMAXMINIndex(maxIndexB);
 
                 setMINMAXB(MINMAXIndexB);
@@ -212,7 +307,21 @@ const App: React.FC<IProps> = (props: IProps) => {
             }
     }
 
-    const labelFor = (props.choosed === "one") ? "for 1 number" : "for 2 number (A/B)";
+    const delDomClick = (item: string) => {
+       
+        props.removeDom(item);
+    }
+
+    const rndRefill = () => {
+        props.randomRefilling();
+        const ren = rerenderTable;
+        setRerenderTable(!ren);
+        updDomination();
+    }
+
+    useEffect(()=>{
+        updDomination();
+    },[props.table, updDomination, edit1, edit2, current]);
 
     const editFuildStyle: React.CSSProperties = {
         backgroundColor: "white", 
@@ -225,7 +334,8 @@ const App: React.FC<IProps> = (props: IProps) => {
         position: "relative",
         display: "flex",
         justifyContent: "flex-start",
-        alignItems: "flex-start"
+        alignItems: "flex-start",
+        margin: "100px"
     }
     const editContainer: React.CSSProperties = {
         position: "absolute",
@@ -239,9 +349,8 @@ const App: React.FC<IProps> = (props: IProps) => {
         backgroundColor: "rgba(0,0,0,0.8)"
     }
     const container: React.CSSProperties = {
-        maxWidth: "1000px", 
         position: "relative", 
-        margin: "100px 0px 0px 100px",
+        margin: "100px 0px 100px 100px",
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "flex-start"
@@ -257,7 +366,7 @@ const App: React.FC<IProps> = (props: IProps) => {
 
     const edit = editActive && (
         <div style={editContainer}>
-            <TextField id="filled-basic1" label="Change field" variant="filled" style={editFuildStyle} value={edit1}
+            <TextField autoFocus id="filled-basic1" label="Change field" variant="filled" style={editFuildStyle} value={edit1}
                         onChange={(e)=>setEdit1(+e.target.value)}/>
 
             {(choosed === "two") ? (
@@ -272,31 +381,8 @@ const App: React.FC<IProps> = (props: IProps) => {
 
     return(
         <>
-            <div style={container}>
-                <TableContainer component={Paper} style={tableContainerStyle}>
-                    <Table size="small" aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="center">{labelFor}</TableCell>
-                                {table[0].map((item, i) => <TableCell key={i} align="center">A{i}</TableCell> )}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                table.map((items, i) => {
-                                    let com = <TableCell component="th" scope="row">B{i}</TableCell >
-                                    let com2 = items.map((row, j) => <TableCell style={{cursor: "pointer"}} onClick={()=>{changeCurrent(i, j)}} key={j} align="center">
-                                                                        {
-                                                                            (choosed === "one") ? row[0] : `${row[0]} / ${row[1]}`
-                                                                        }
-                                                                    </TableCell>)
-                                    return <TableRow key={i}>{com}{com2}</TableRow>
-                                })
-                            }
-                        </TableBody>
-                    </Table>
-                    {edit}
-                </TableContainer>
+            <div style={container} data-prop={props.table}>
+                <MyTable table={props.table} choosed={props.choosed} edit={edit} changeCurrent={changeCurrent} rowsStrategy={props.rowsStrategy} columnsStrategy={props.columnsStrategy}/>
                 
                 <div style={selectContainer}>
                     <FormControl component="fieldset" style={{margin: "20px 0px 0px 20px"}}>
@@ -308,22 +394,29 @@ const App: React.FC<IProps> = (props: IProps) => {
                     </FormControl>
                     <BtnGroup addMethod={props.addColumn} delMethod={props.delColumn} textAdd="Добавить столбец" textDel="Убрать столбец"/>
                     <BtnGroup addMethod={props.addRow} delMethod={props.delRow} textAdd="Добавить строку" textDel="Убрать строку"/>
-                            
                     <Button  variant="contained" color="secondary" onClick={()=>{updDomination()}} >Upd domination</Button>
                     <Button  variant="contained" color="primary" onClick={()=>{setMINMAX()}} >Upd MAXMIN/MINMAX</Button>
+                    <Button  variant="contained" color="secondary" onClick={()=>{rndRefill()}} >RANDOM REFILL</Button>
+                    <Button  variant="contained" color="primary" onClick={()=>{props.removeStrongDomination(listStrongDomintaion)}} disabled>Удалить сильно доминируемые стратегии</Button>  
+                    <Button  variant="contained" color="secondary" onClick={()=>{props.removeStrongDomination(listWeaklyDomintaion)}} disabled>Удалить слабо доминируемые стратегии</Button>  
                     </div>
             </div>
             <TableContainer component={Paper} style={tableContainerStyle}>
                 <Table size="small" aria-label="a dense table">
                     <TableBody>
                         {
-                            list.map((item) => <TableRow key={item}><TableCell key="item">{item}</TableCell></TableRow>)
+                            list.map((item) => <TableRow key={item}><TableCell key="item">
+                                {item}
+                                <Button onClick={()=>{delDomClick(item)}}>Удалить</Button>
+                                </TableCell></TableRow>)
                         }
                         <OutTableRows textRow="MINMAX A Строка: " textColumn="MINMAX A Столбец " textValue="MINMAX A Занчение" data={MINMAXA}/>
-                        <OutTableRows textRow="MAXMIN A Строка: " textColumn="MAXMIN A Столбец " textValue="MAXMIN A Занчение" data={MAXMINA}/>
+                        <OutTableRows textRow="MAXMIN А Строка: " textColumn="MAXMIN А Столбец " textValue="MAXMIN А Занчение" data={MAXMINA}/>
+                        <OutTableRows textRow="MINMAX B Строка: " textColumn="MINMAX B Столбец " textValue="MINMAX B Занчение" data={MINMAXB}/>
+                        <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={MAXMINB}/>
                         {
                             (choosed === "two") ? (<>
-                                <OutTableRows textRow="MINMAX B Строка: " textColumn="MINMAX B Столбец " textValue="MINMAX B Занчение" data={MINMAXB}/>
+                                <OutTableRows textRow="MAXMIN A Строка: " textColumn="MAXMIN A Столбец " textValue="MAXMIN A Занчение" data={MAXMINA}/>
                                 <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={MAXMINB}/>
                             </>) : false
                         }
@@ -339,7 +432,9 @@ const mapStateToProps = (state: IState) => {
         table: state.table,
         choosed: state.choosed,
         rows: state.rows,
-        columns: state.columns
+        columns: state.columns,
+        rowsStrategy: state.rowsStrategy,
+        columnsStrategy: state.columnsStrategy
     }
 }
 
@@ -349,7 +444,10 @@ const mapDispatchToProps = {
     delRow,
     addColumn,
     delColumn,
-    editTable
+    editTable,
+    removeStrongDomination,
+    removeDom,
+    randomRefilling
 };
 
 

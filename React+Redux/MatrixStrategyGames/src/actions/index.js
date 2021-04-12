@@ -41,11 +41,34 @@ const editTable = (i, j, a=0, b=0) => {
     }
 }
 
+const removeStrongDomination = (set) => {
+    return{
+        type: 'REMOVE_STRONG_DOMINATION',
+        set
+    }
+}
+
+const removeDom = (str) => {
+    return{
+        type: 'REMOVE_DOM',
+        str
+    }
+}
+
+const randomRefilling = () => {
+    return{
+        type: 'RANDOM_REFILLING'
+    }
+}
+
 export {
     chooseMode,
     addRow,
     delRow,
     addColumn,
     delColumn,
-    editTable
+    editTable,
+    removeStrongDomination,
+    removeDom,
+    randomRefilling
 };
