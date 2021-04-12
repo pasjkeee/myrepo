@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import WithRestoService from '../hoc';
 import styled from 'styled-components';
 import CoursesMain from './courses-main/coursesMain';
 import {toggleCal} from '../../actions';
@@ -89,76 +88,58 @@ const BurgerSpan = styled.span`
     }
 `
 
-class CoursesPage extends React.Component{
+const CoursesPage = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            addActive: false,
-            editActive: false,
-            deleteActive: false
-        };
-        this.OnAddBtnClick = this.OnAddBtnClick.bind(this);
-        this.OnEditBtnClick = this.OnEditBtnClick.bind(this);
-        this.OnDeleteBtnClick = this.OnDeleteBtnClick.bind(this);
-        this.OnEditCloseBtnClick = this.OnEditCloseBtnClick.bind(this);
+    let [addActive, setAddActive] = useState(false);
+    let [editActive, setEditActive] = useState(false);
+    let [deleteActive, setDeleteActive] = useState(false);
+
+    const OnAddBtnClick = () => {
+        const active = !addActive;
+        setAddActive(active);
     }
 
-    OnAddBtnClick(){
-        const active = !this.state.addActive;
-        this.setState({
-            addActive: active
-        });
-        console.log(active, "hi");
+    const OnEditCloseBtnClick = () => {
+        setEditActive(false);
     }
 
-    OnEditCloseBtnClick(){
-        this.setState({
-            editActive: false
-        });
+    const OnDeleteCloseBtnClick = () => {
+        setDeleteActive(false);
     }
 
-    OnEditBtnClick(){
-        this.setState({
-            editActive: true
-        });
+    const OnEditBtnClick = () => {
+        setEditActive(true)
     }
 
-    OnDeleteBtnClick(){
-        this.setState({
-            deleteActive: true
-        });
+    const OnDeleteBtnClick = () => {
+        setDeleteActive(true)
     }
 
-    GetCurrenEditCourse(item){
+    const GetCurrenEditCourse = (item) => {
         console.log(item);
     }
 
-    render(){
-
-        return(
-            <CoursesPageWrapper>
-                <Container>
-                    <CoursesHeader>
-                        <CoursesTitle>
-                            Список предметов:
-                        </CoursesTitle>
-                        <Burger onClick={()=>{this.props.toggleCal()}}>
-                            <BurgerSpan/>
-                        </Burger>
-                    </CoursesHeader>
-                    <CoursesMain OnEditBtnClick={this.OnEditBtnClick} OnDeleteBtnClick={this.OnDeleteBtnClick}></CoursesMain>
-                    <Calendar isMounted={this.props.isMounted}></Calendar>
-                    <CoursesMainItemModalAdd active={this.state.addActive} OnCloseBtnClick={this.OnAddBtnClick}/>
-                    <CoursesMainItemModalEdit active={this.state.editActive} OnEditCloseBtnClick={this.OnEditCloseBtnClick} GetCurrenEditCourse={this.GetCurrenEditCourse}/>
-                    <CoursesMainItemModalDelete active={this.state.deleteActive} OnEditCloseBtnClick={this.OnEditCloseBtnClick} GetCurrenEditCourse={this.GetCurrenEditCourse}/>
-                    <CoursesMainItemBtns OnAddBtnClick={this.OnAddBtnClick}/>
-                </Container>
-                <BackImgWrapper src={BgImg}></BackImgWrapper>
-            </CoursesPageWrapper>
-        )
-    }
-
+    return(
+        <CoursesPageWrapper>
+            <Container>
+                <CoursesHeader>
+                    <CoursesTitle>
+                        Список предметов:
+                    </CoursesTitle>
+                    <Burger onClick={()=>{props.toggleCal()}}>
+                        <BurgerSpan/>
+                    </Burger>
+                </CoursesHeader>
+                <CoursesMain OnEditBtnClick={OnEditBtnClick} OnDeleteBtnClick={OnDeleteBtnClick}></CoursesMain>
+                <Calendar isMounted={props.isMounted}></Calendar>
+                <CoursesMainItemModalAdd active={addActive} OnCloseBtnClick={OnAddBtnClick}/>
+                <CoursesMainItemModalEdit active={editActive} OnEditCloseBtnClick={OnEditCloseBtnClick} GetCurrenEditCourse={GetCurrenEditCourse}/>
+                <CoursesMainItemModalDelete active={deleteActive} OnEditCloseBtnClick={OnDeleteCloseBtnClick} GetCurrenEditCourse={GetCurrenEditCourse}/>
+                <CoursesMainItemBtns OnAddBtnClick={OnAddBtnClick}/>
+            </Container>
+            <BackImgWrapper src={BgImg}></BackImgWrapper>
+        </CoursesPageWrapper>
+    )
 }
 
 const mapStateToProps = (state) => {

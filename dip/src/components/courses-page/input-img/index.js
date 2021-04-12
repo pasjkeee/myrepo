@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -57,93 +57,57 @@ const InputImgButton = styled.div`
     }
 `
 
-export default class InputImg extends React.Component{
+ const InputImg = (props) => {
+     
+    let [active, setActive] = useState(false);
+    let [choosedIcon, setChoosedIcon] = useState(0);
+    
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            active: false,
-            choosedIcon: 0
-        };
-        this.OnActive= this.OnActive.bind(this);
-        this.OnChoose= this.OnChoose.bind(this);
-        this.choosedIcon = this.props.getImgNum;
+    const OnActive = () => {
+        const newActive = !active;
+        setActive(newActive);
     }
 
-    OnActive(){
-        const active = !this.state.active;
-        this.setState({
-            active: active
-        })
+    const OnChoose = (e) => {
+        setChoosedIcon(e.target.getAttribute("data-num"));
     }
 
-    OnChoose(e){
-        this.setState({
-            choosedIcon: e.target.getAttribute("data-num")
-        })
-        this.choosedIcon(e.target.getAttribute("data-num"));
-    }
-
-    componentDidUpdate(prevProps){
-        if(this.props.textTeacherActive !== prevProps.textTeacherActive && this.props.textTeacherActive === true){
-            this.setState({
-                active: false
-            })
-        }
-    }
-
-
-
-    render(){
-        let icon;
-
-        
-        switch(this.state.choosedIcon){
-            case "1":
-                icon = <img src={Img1} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="1"/>;
-                break;
-            case "2":
-                icon = <img src={Img2} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="2"/>;
-                break;
-            case "3":
-                icon = <img src={Img3} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="3"/>;
-                break;
-            case "4":
-                icon = <img src={Img4} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="4"/>;
-                break;
-            case "5":
-                icon = <img src={Img5} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="5"/>;
-                break;
-            case "6":
-                icon = <img src={Img6} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num="6"/>;
-                break;
-            default:
-                if(this.props.currentImgId){
-                    icon = <img src={Img[this.props.currentImgId-1]} alt="img"/>;
-                } else {
-                    icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>
-                }
+    useEffect(()=>{
+        setChoosedIcon(props.getImgNum);
+        if(props.textTeacherActive === true){
+            setActive(false);
         }
 
-        if(!this.state.active){
-            return(
-                <InputImgButton onClick={()=>{this.OnActive()}}>
-                    {icon}
-                </InputImgButton>
-            )
-        }
+    },[props.textTeacherActive, props.getImgNum]);
 
-        let container = (!this.props.textTeacherActive) ? <div className="img-container"> { Img.map((item, i) => <img src={item} key={i} alt="img" onClick={(e)=>{ this.OnChoose(e) }} data-num={i+1}/>) } </div> : false;
+    let icon
 
-        
+    if(choosedIcon > 0 || choosedIcon < 7){
+        icon = <img src={Img[choosedIcon-1]} alt="img" onClick={(e)=>{ OnChoose(e) }} data-num={choosedIcon}/>;
+    } else if(props.currentImgId){
+        icon = <img src={Img[props.currentImgId-1]} alt="img"/>;
+    } else {
+        icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>
+    }
 
+    if(!active){
         return(
-            <>
-                <InputImgButton onClick={()=>{this.OnActive()}}>
-                    {icon}
-                    {container}
-                </InputImgButton>
-            </>
+            <InputImgButton onClick={()=>{OnActive()}}>
+                {icon}
+            </InputImgButton>
         )
     }
+
+    let container = (!props.textTeacherActive) ? <div className="img-container"> { Img.map((item, i) => <img src={item} key={i} alt="img" onClick={(e)=>{ OnChoose(e) }} data-num={i+1}/>) } </div> : false;
+
+    return(
+        <>
+            <InputImgButton onClick={()=>{OnActive()}}>
+                {icon}
+                {container}
+            </InputImgButton>
+        </>
+    )
 }
+
+export default InputImg;

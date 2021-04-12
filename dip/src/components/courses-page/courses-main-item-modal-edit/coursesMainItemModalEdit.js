@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {connect} from 'react-redux';
-import WithRestoService from '../../hoc';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes} from "@fortawesome/free-solid-svg-icons";

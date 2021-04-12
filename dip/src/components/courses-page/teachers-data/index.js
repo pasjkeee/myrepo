@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 import {connect} from 'react-redux';
-import WithRestoService from '../../hoc';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight} from "@fortawesome/free-solid-svg-icons";
@@ -71,56 +70,44 @@ const TeachersContainer = styled.div`
     }
 `
 
-class TeachersData extends React.Component{
+const TeachersData = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            active: false,
-            choosedTeacher: {}
-        };
-        this.OnActive= this.OnActive.bind(this);
-        this.OnTeacherSet= this.OnTeacherSet.bind(this);
-    }
+    let [active, setActive] = useState(false);
+    let [choosedTeacher, setChoosedTeacher] = useState({});
 
-    OnActive(){
-        const active = !this.state.active;
-        if(active){
-            this.props.ChangeImgActiveTrue();
+    const OnActive = () => {
+        const newActive = !active;
+        if(newActive){
+            props.ChangeImgActiveTrue();
         } else {
-            this.props.ChangeImgActiveFalse();
+            props.ChangeImgActiveFalse();
         }
-        this.setState({
-            active: active
-        })
+        setActive(newActive);
     }
 
-    OnTeacherSet(teacher_id){
-        const teacher = this.props.teachersData.find((item) => item.teacher_id === teacher_id);
-        this.setState({
-            choosedTeacher: teacher
-        });
+    const OnTeacherSet = (teacher_id) => {
+        const teacher = props.teachersData.find((item) => item.teacher_id === teacher_id);
+        setChoosedTeacher(teacher);
     }
 
-
-    render(){
-
-        const teachersData = (this.state.active) ? (<TeachersContainer> { this.props.teachersData.map(item => <div className="item" key={item.teacher_id} onClick={()=>{this.OnTeacherSet(item.teacher_id)}}>{item.teacher}</div>)} </TeachersContainer>) : false;
-        const iconRotation = (this.state.active) ? 90 : 0; 
+        const teachersData = (active) ? (<TeachersContainer> 
+                                            { props.teachersData.map(item => <div className="item" key={item.teacher_id} onClick={()=>{OnTeacherSet(item.teacher_id)}}>{item.teacher}</div>)} 
+                                        </TeachersContainer>) : false;
+        const iconRotation = (active) ? 90 : 0; 
         let defaultText = "";
-        if(this.props.type === "add"){
+        if(props.type === "add"){
             defaultText = "Выберите преподавателя"
         }
-        if(this.props.type === "edit"){
+        if(props.type === "edit"){
             defaultText = "Выберите преподавателя"
         }
-        const teacherChoosed = (this.state.choosedTeacher.teacher_id) ? this.state.choosedTeacher.teacher : defaultText;
+        const teacherChoosed = (choosedTeacher.teacher_id) ? choosedTeacher.teacher : defaultText;
 
         return(
             <>
                 <Wrapper>
                     <div className="teacher-title">Преподаватель: </div>
-                    <MainContainer onClick={()=>{this.OnActive()}}>
+                    <MainContainer onClick={()=>{OnActive()}}>
                         <FontAwesomeIcon icon={faAngleRight} size="2x" rotation={iconRotation} color="#7D9FF4" style={{marginRight: "15px"}}/>
                         <div className="text">
                             {teacherChoosed}
@@ -132,7 +119,6 @@ class TeachersData extends React.Component{
         )
     }
 
-}
 
 const mapStateToProps = (state) => {
     return {
