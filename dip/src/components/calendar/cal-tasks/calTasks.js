@@ -1,6 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import WithRestoService from '../../hoc';
 import styled from 'styled-components';
 import CalTasksItem from '../cal-tasks-item';
 
@@ -16,27 +14,25 @@ const CalTasksDiv = styled.div`
 `
 
 
-class CalTasks extends React.Component{
-    render(){
-        return(
-            <CalTasksDiv>
-                {
-                    this.props.date.map(objItem => {
-                        return (
-                            <CalTasksItem key={objItem.task_id}
-                            subj={objItem.subject}
-                            date={objItem.date}
-                            title={objItem.task}
-                            type={objItem.task_type}
-                            text={objItem.description}
-                            />
-                        )
-                    })
-                }
-                
-            </CalTasksDiv>
-        )
-    }
+const CalTasks = (props) => {
+    return(
+        <CalTasksDiv>
+            {
+                props.date.map(objItem => {
+                    return (
+                        <CalTasksItem key={objItem.task_id}
+                                    subj={objItem.subject}
+                                    date={objItem.date}
+                                    title={objItem.task}
+                                    type={objItem.task_type}
+                                    text={objItem.description}
+                        />
+                    )
+                })
+            }
+            
+        </CalTasksDiv>
+    )
 }
 
 

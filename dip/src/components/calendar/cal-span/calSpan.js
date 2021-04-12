@@ -1,9 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const CalSpanObj = styled.span`
-
-`
 
 function CalSpan({text, colored}){
 
