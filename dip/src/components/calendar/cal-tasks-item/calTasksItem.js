@@ -1,6 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import WithRestoService from '../../hoc';
 import styled from 'styled-components';
 
 const CalTasksItemDiv = styled.div`
@@ -36,7 +34,6 @@ const TaskDate = styled.div`
     text-align: end;
 `
 
-
 const TaskTitle = styled.div`
     color: #5B5B5B;
     font-size: 16px;
@@ -64,12 +61,11 @@ const TaskText = styled.div`
     padding: 10px;
 `
 
-class CalTasksItem extends React.Component{
-    render(){
+const CalTasksItem = (props) => {
+    
+    const {subj, date, title, type, text} = props;
 
-        const {subj, date, title, type, text} = this.props;
-
-        return(
+    return(
             <CalTasksItemDiv>
                 <TaskUp>
                     <TaskSubj>{subj}</TaskSubj>
@@ -83,9 +79,7 @@ class CalTasksItem extends React.Component{
                     {text}
                 </TaskText>
             </CalTasksItemDiv>
-        )
-    }
+    )
 }
-
 
 export default CalTasksItem;
