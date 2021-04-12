@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import WithRestoService from '../hoc';
 import styled from 'styled-components';
 
 import CalContainer from './cal-container';
@@ -32,20 +31,13 @@ const CalWrapper = styled.div`
     height: 100%;
 `
 
-class Calendar extends React.Component{
+const Calendar = (props) => {
 
-    _isMounted = false;
+    let [datas, setDatas] = useState({});
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            datas: {}
-        }
-    }
-
-    componentDidMount(){
-        if(this.props.isMounted === true){
-            const datas = this.props.obj.map(data => {
+    useEffect(()=>{
+        if(props.isMounted === true){
+            const datas = props.obj.map(data => {
                 const date = data.date.split('.');
                 const endDate = data.end_date.split('.');
                 date[0] = +date[0]; date[1] = +date[1]; endDate[0] = +endDate[0]; endDate[1] = +endDate[1];
@@ -54,53 +46,25 @@ class Calendar extends React.Component{
                     endDate
                 }
             });
-            this.setState({
-                datas: datas
-            });
+            setDatas(datas);
         }
+        
+    },[props.isMounted, props.obj]);
+
+    let calDisplay = {
+        transform: ((props.calDisplay) ? "translate(-50%, 0%)" : "translate(-50%, -150%)")
     }
 
-        componentDidUpdate(prevProps){
-        if(prevProps.isMounted !== this.props.isMounted){
-            const datas = this.props.obj.map(data => {
-                const date = data.date.split('.');
-                const endDate = data.end_date.split('.');
-                date[0] = +date[0]; date[1] = +date[1]; endDate[0] = +endDate[0]; endDate[1] = +endDate[1];
-                return{
-                    date,
-                    endDate
-                }
-            });
-            this.setState({
-                datas: datas
-            });
-        }
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
-    render(){
-
-            
-
-        let calDisplay = {
-            transform: ((this.props.calDisplay) ? "translate(-50%, 0%)" : "translate(-50%, -150%)")
-        }
-
-        return (
-                <Cal style={calDisplay}>
-                    <CalWrapper>
-                        <CalTasks date={this.props.obj}></CalTasks>
-                        <CalContainer date={this.state.datas} mounted={this.props.isMounted}></CalContainer>
-                    </CalWrapper>
-                </Cal>
-            )
-    }
+    return (
+        <Cal style={calDisplay}>
+            <CalWrapper>
+                <CalTasks date={props.obj}></CalTasks>
+                <CalContainer date={datas} mounted={props.isMounted}></CalContainer>
+            </CalWrapper>
+        </Cal>
+    )
 
 }
-
 
 const mapStateToProps = (state) => {
     return {
