@@ -234,17 +234,12 @@ class CalContainerItem extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        envYear: state.envYear,
-        envMonth: state.envMonth,
-        envDay: state.envDay,
-        obj: state.obj,
-        mounted: state.isMounted
+        envYear: state.coursesPage.envYear,
+        envMonth: state.coursesPage.envMonth,
+        envDay: state.coursesPage.envDay,
+        obj: state.coursesPage.obj,
+        mounted: state.coursesPage.isMounted
     }
 }
 
-const mapDispatchToProps = {
-    
-};
-
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(CalContainerItem));
+export default WithRestoService()(connect(mapStateToProps)(CalContainerItem));

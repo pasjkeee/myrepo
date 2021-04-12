@@ -36,12 +36,12 @@ router.post('/login',
                 return res.status(400).json({message: "Неверный пароль, попробуйте снова"})
             }
 
-            const token = jwt.sign({userId: data.user_id}, "pavel", { expiresIn: '15m' });
+            //const token = jwt.sign({userId: data.user_id}, "pavel", { expiresIn: '15m' });
             req.session.authenticated = true;
-            req.session.user = data.user_id;
+            req.session.userId = data.user_id;
             req.session.access_lvl = data.access_lvl;
                 
-            res.json({ token, userId: data.user_id});
+            res.json({authenticated: req.session.authenticated, userId: req.session.userId, access_lvl: req.session.access_lvl});
         });
     } 
     catch (e) {

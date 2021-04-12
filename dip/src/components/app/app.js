@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import WithRestoService from '../hoc';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import CoursesPage from '../courses-page';
 import MainPage from '../main-page';
@@ -10,8 +9,9 @@ import Tasks from '../tasks';
 
 const App = (props) => {
 
+    console.log(props);
     let isAuthenticated = false;
-    if(props.userData || localStorage.getItem("userData")){
+    if(props.isAutorized){
         isAuthenticated = true;
     }
 
@@ -35,10 +35,9 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        isAutorized: state.isAutorized,
-        userData: state.userData
+        isAutorized: state.login.isAutorized
     }
 }
 
 
-export default WithRestoService()(connect(mapStateToProps)(App));
+export default connect(mapStateToProps)(App);

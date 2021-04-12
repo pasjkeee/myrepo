@@ -34,12 +34,7 @@ const MainText = styled.div`
     }
 `
 
-export default class MainPage extends React.Component {
-
-
-
-    render(){
-
+const MainPage = (props) => {
 
         return(
             <MainPageWrapper>
@@ -55,5 +50,6 @@ export default class MainPage extends React.Component {
                 <ModalLogIn></ModalLogIn>
             </MainPageWrapper>
         )
-    }
 }
+
+export default MainPage;

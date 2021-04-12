@@ -39,15 +39,5 @@ class CalTasks extends React.Component{
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        
-    }
-}
 
-const mapDispatchToProps = {
-    
-};
-
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(CalTasks));
+export default CalTasks;

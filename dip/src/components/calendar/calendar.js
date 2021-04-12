@@ -104,15 +104,11 @@ class Calendar extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        calDisplay: state.calDisplay,
-        obj: state.obj,
-        isMounted: state.isMounted
+        calDisplay: state.coursesPage.calDisplay,
+        obj: state.coursesPage.obj,
+        isMounted: state.coursesPage.isMounted
     }
 }
 
-const mapDispatchToProps = {
-    
-};
 
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(Calendar));
+export default connect(mapStateToProps)(Calendar);

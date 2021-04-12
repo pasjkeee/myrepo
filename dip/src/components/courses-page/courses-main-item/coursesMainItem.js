@@ -115,14 +115,9 @@ class CoursesMainItem extends React.Component{
     }
 }
 
-const mapStateToProps = (state) => {
-
-
-}
-
 const mapDispatchToProps = {
     setCurrentEditCourse
 };
 
 
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(CoursesMainItem));
+export default connect(null, mapDispatchToProps)(CoursesMainItem);

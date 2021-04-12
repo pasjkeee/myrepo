@@ -163,7 +163,7 @@ class CoursesPage extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        isMounted: state.isMounted
+        isMounted: state.coursesPage.isMounted
     }
 }
 
@@ -172,4 +172,4 @@ const mapDispatchToProps = {
 };
 
 
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(CoursesPage));
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);

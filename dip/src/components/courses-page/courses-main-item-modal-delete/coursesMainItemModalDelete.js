@@ -7,8 +7,6 @@ import WithRestoService from '../../hoc';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes} from "@fortawesome/free-solid-svg-icons";
 
-import InputImg from '../input-img';
-import TeachersData from '../teachers-data';
 
 const Wrapper = styled.div`
     position: absolute;
@@ -170,10 +168,10 @@ class CoursesMainItemModalDelete extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        currentEditCourse: state.currentEditCourse
+        currentEditCourse: state.coursesPage.currentEditCourse
     }
 }
 
 
 
-export default WithRestoService()(connect(mapStateToProps)(CoursesMainItemModalDelete));
+export default connect(mapStateToProps)(CoursesMainItemModalDelete);

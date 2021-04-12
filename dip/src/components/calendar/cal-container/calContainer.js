@@ -106,8 +106,8 @@ class CalContainer extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        envMonth: state.envMonth,
-        envYear: state.envYear
+        envMonth: state.coursesPage.envMonth,
+        envYear: state.coursesPage.envYear
     }
 }
 
@@ -117,4 +117,4 @@ const mapDispatchToProps = {
 };
 
 
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(CalContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(CalContainer);

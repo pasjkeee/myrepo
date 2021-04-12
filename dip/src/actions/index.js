@@ -28,11 +28,12 @@ const toggleCal = () => {
     }
 }
 
-const logIn = (userId, userData) => {
+const logIn = (authenticated, userId, access_lvl) => {
     return {
         type: 'LOG_IN',
-        userId: userId,
-        userData: userData
+        authenticated,
+        userId,
+        access_lvl
     }
 }
 

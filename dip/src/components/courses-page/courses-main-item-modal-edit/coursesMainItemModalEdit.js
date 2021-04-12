@@ -188,10 +188,10 @@ class CoursesMainItemModalEdit extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        currentEditCourse: state.currentEditCourse
+        currentEditCourse: state.coursesPage.currentEditCourse
     }
 }
 
 
 
-export default WithRestoService()(connect(mapStateToProps)(CoursesMainItemModalEdit));
+export default connect(mapStateToProps)(CoursesMainItemModalEdit);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faKey, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -136,90 +136,62 @@ const ModalClose = styled.div`
     }
 `
 
-class ModalLogIn extends React.Component{
+const ModalLogIn = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            pas: ''   
-        };
-        this.server = new RestoService();
-        this.loginChange = this.loginChange.bind(this);
-        this.pasChange = this.pasChange.bind(this);
-        this.consloeLog = this.consloeLog.bind(this);
-        this.registerHandler = this.registerHandler.bind(this);
-    }
+    let [email, setEmail] = useState("");
+    let [pas, setPas] = useState("");
 
+    const server = new RestoService();
 
-    loginChange(event) {
-        this.setState({email: event.target.value});
-    }
-
-    pasChange(event) {
-        this.setState({pas: event.target.value});
-    }
-
-    consloeLog(e) {
-        e.preventDefault();
-        console.log(this.state);
-    }
-
-    registerHandler = async (e) => {
+    const registerHandler = async (e) => {
         e.preventDefault();
         try {
-            const data = await this.server.getData('/api/auth/login', 'POST', {...this.state});
-            this.props.logIn(data.userId, data.token);
+            const data = await server.getData('/api/auth/login', 'POST', {email, pas});
+            props.logIn(data.authenticated, data.userId, data.access_lvl);
         } catch(e) {
             console.log(e.message);
         }
     }
 
-    render(){
 
-        
-
-        if(this.props.modalDisplay === "none"){
+        if(props.modalDisplay === "none"){
             return 0;
         }
 
-        return(
-            <Modal>
-                <ModalDialog>
-                    <ModalHeader>
-                        Авторизация
-                    </ModalHeader>
-                    <ModalClose
-                        onClick={()=>{this.props.closeModal()}}
-                    >
-                        <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4" />
-                    </ModalClose>
-                    <Form> 
-                        <Inputs>
-                            <Log>
-                                <FontAwesomeIcon icon={faUsers} size="xs" color="#fff" />
-                            </Log>
-                            <Input required placeholder="Ваш логин *"  name="login" type="text" value={this.state.login} onChange={this.loginChange}/>
-                        </Inputs>
-                        <Inputs>
-                        <Pas>
-                            <FontAwesomeIcon icon={faKey} size="xs" color="#fff" />
-                        </Pas>
-                            <Input required placeholder="Пароль *"  name="password" type="password" value={this.state.pas} onChange={this.pasChange}/>
-                        </Inputs>
-                        <ModalButton type="submit" onClick={this.registerHandler}>
-                            Войти
-                        </ModalButton>
-                    </Form>
-                </ModalDialog>
-            </Modal>
-        )
-    }
-} 
+    return(
+        <Modal>
+            <ModalDialog>
+                <ModalHeader>
+                    Авторизация
+                </ModalHeader>
+                <ModalClose onClick={()=>{props.closeModal()}} >
+                    <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4" />
+                </ModalClose>
+                <Form> 
+                    <Inputs>
+                        <Log>
+                            <FontAwesomeIcon icon={faUsers} size="xs" color="#fff" />
+                        </Log>
+                        <Input required placeholder="Ваш логин *"  name="login" type="text" value={email} onChange={(event) => {setEmail(event.target.value)}}/>
+                    </Inputs>
+                    <Inputs>
+                    <Pas>
+                        <FontAwesomeIcon icon={faKey} size="xs" color="#fff" />
+                    </Pas>
+                        <Input required placeholder="Пароль *"  name="password" type="password" value={pas} onChange={(event) => {setPas(event.target.value)}}/>
+                    </Inputs>
+                    <ModalButton type="submit" onClick={registerHandler}>
+                        Войти
+                    </ModalButton>
+                </Form>
+            </ModalDialog>
+        </Modal>
+    )
+}
 
 const mapStateToProps = (state) => {
     return {
-        modalDisplay: state.modalDisplay
+        modalDisplay: state.login.modalDisplay
     }
 }
 

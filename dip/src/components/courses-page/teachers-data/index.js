@@ -136,10 +136,10 @@ class TeachersData extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-        teachersData: state.teachersData
+        teachersData: state.coursesPage.teachersData
     }
 }
 
 
 
-export default WithRestoService()(connect(mapStateToProps)(TeachersData));
+export default connect(mapStateToProps)(TeachersData);

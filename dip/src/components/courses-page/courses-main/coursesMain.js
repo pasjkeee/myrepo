@@ -84,12 +84,6 @@ class CoursesMain extends React.Component{
     }
 }
 
-
-const mapStateToProps = (state) => {
-
-
-}
-
 const mapDispatchToProps = {
     changeTasks,
     isMounted,
@@ -98,4 +92,4 @@ const mapDispatchToProps = {
 };
 
 
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(CoursesMain));
+export default WithRestoService()(connect(null, mapDispatchToProps)(CoursesMain));

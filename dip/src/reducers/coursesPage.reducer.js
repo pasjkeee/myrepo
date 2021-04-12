@@ -11,7 +11,7 @@ const initialState = {
     teachersData: []
 }
 
-function allReducer(state = initialState, action){
+function coursesPageReducer(state = initialState, action){
     switch (action.type) {
         case 'NEXT_MONTH':
             let monthNext = state.envMonth;
@@ -82,4 +82,4 @@ function allReducer(state = initialState, action){
     }
 }
 
-export default allReducer;
+export default coursesPageReducer;

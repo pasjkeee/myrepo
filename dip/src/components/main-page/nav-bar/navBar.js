@@ -77,43 +77,33 @@ const NavBarListLogIn = styled.a`
 
 `
 
-class NavBar extends React.Component {
+const NavBar = (props) => {
 
-    render() {
-
-        return(
-            <NavBarContainer>
-                <NavBarLogo href="#" >
-                    МЭИ
-                </NavBarLogo>
-                <NavBarList>
-                    <NavBarListItem>
-                        <NavBarListLink href="#" >Новости</NavBarListLink>
-                    </NavBarListItem>
-                    <NavBarListItem>
-                        <NavBarListLink href="#" >О нас</NavBarListLink>
-                    </NavBarListItem>
-                    <NavBarListItem>
-                        <NavBarListLink href="#" >Обратная связь</NavBarListLink>
-                    </NavBarListItem>
-                    <NavBarListItem>
-                        <NavBarListLogIn onClick={()=>{this.props.openModal()}} >Войти</NavBarListLogIn>
-                    </NavBarListItem>
-                </NavBarList>
-
-            </NavBarContainer>
-        )
-    }
-}
-
-const mapStateToProps = (state) => {
-    return {
-        modalDisplay: state.modalDisplay
-    }
+    return(
+        <NavBarContainer>
+            <NavBarLogo href="#" >
+                МЭИ
+            </NavBarLogo>
+            <NavBarList>
+                <NavBarListItem>
+                    <NavBarListLink href="#" >Новости</NavBarListLink>
+                </NavBarListItem>
+                <NavBarListItem>
+                    <NavBarListLink href="#" >О нас</NavBarListLink>
+                </NavBarListItem>
+                <NavBarListItem>
+                    <NavBarListLink href="#" >Обратная связь</NavBarListLink>
+                </NavBarListItem>
+                <NavBarListItem>
+                    <NavBarListLogIn onClick={()=>{props.openModal()}} >Войти</NavBarListLogIn>
+                </NavBarListItem>
+            </NavBarList>
+        </NavBarContainer>
+    )
 }
 
 const mapDispatchToProps = {
     openModal
 };
 
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(NavBar));
+export default connect(null, mapDispatchToProps)(NavBar);
