@@ -106,13 +106,13 @@ const App: React.FC<IProps> = (props: IProps) => {
         if(player === "B" && choosed === "one"){
             for(let i=0; i<rows; i++){
                 newTable[i] = [[]]; 
-                for(let j=0; j<rows; j++){
+                for(let j=0; j<columns; j++){
                     newTable[i][j] = [];
-                    newTable[i][j][0] = -table[i][j][0];
+                    newTable[i][j][index] = -table[i][j][index];
                 }
             } 
         } else {
-            newTable = table;
+            newTable = [...table];
         }
 
         for(let i=0; i<((type === "rows") ? rows : columns); i++){
@@ -132,7 +132,7 @@ const App: React.FC<IProps> = (props: IProps) => {
                 }
                 
                 if(countMin === ((type === "rows") ? columns : rows)){
-                    resListSet.add(`${player}${props.columnsStrategy[i]} СИЛЬНО доминируемый относительно ${player}${props.columnsStrategy[k]}`);
+                    resListSet.add(`${player}${(type === "rows") ? props.rowsStrategy[i] : props.columnsStrategy[i]} СИЛЬНО доминируемый относительно ${player}${(type === "rows") ? props.rowsStrategy[k] : props.columnsStrategy[k]}`);
 
                     let count: number = columnsSet.size;
                     columnsSet.add(`${i}${type}`);
@@ -141,7 +141,7 @@ const App: React.FC<IProps> = (props: IProps) => {
                         newListStrongDomintaionSet.add([i, type]);
                     }
                 } else if(countEq+countMin === ((type === "rows") ? columns : rows)){
-                    resListSet.add(`${player}${props.rowsStrategy[i]} СЛАБО доминируемый относительно ${player}${props.rowsStrategy[k]}`);
+                    resListSet.add(`${player}${(type === "rows") ? props.rowsStrategy[i] : props.columnsStrategy[i]} СЛАБО доминируемый относительно ${player}${(type === "rows") ? props.rowsStrategy[k] : props.columnsStrategy[k]}`);
 
                     let count: number = rowsSet.size;
                     rowsSet.add(`${i}${type}`);
@@ -157,7 +157,7 @@ const App: React.FC<IProps> = (props: IProps) => {
 
         resList = Array.from(resListSet.values());
         return resList
-    }, [newListStrongDomintaionSet, newListWeaklyDomintaionSet, props.columnsStrategy, props.rowsStrategy])
+    }, [newListStrongDomintaionSet, newListWeaklyDomintaionSet, props.columnsStrategy, props.rowsStrategy, choosed])
 
     const updDomination = useCallback(() => {
         let newList: string[] = [];
@@ -281,6 +281,8 @@ const App: React.FC<IProps> = (props: IProps) => {
 
     const setMINMAX = () => {
 
+        if(choosed === "one"){
+
             let minIndexA = findMinIndexColumn(rows, columns, table, 0);
             let maxIndexA = findMaxIndexColumn(rows, columns, table, 0);
             let minIndexB = findMinIndexRow(rows, columns, table, 0);
@@ -294,17 +296,23 @@ const App: React.FC<IProps> = (props: IProps) => {
             setMAXMINA(MAXMINIndexA);
             setMINMAXB(MINMAXIndexB);
             setMAXMINB(MAXMINIndexB);
+        }
 
-            if(choosed === "two"){
-                let minIndexB = findMinIndexRow(rows, columns, table, 1);
-                let MINMAXIndexB = findMINMAXIndex(minIndexB);
-
-                let maxIndexB = findMinIndexRow(rows, columns, table, 1);
-                let MAXMINIndexB = findMAXMINIndex(maxIndexB);
-
-                setMINMAXB(MINMAXIndexB);
-                setMAXMINB(MAXMINIndexB);
-            }
+        if(choosed === "two"){
+            let minIndexA = findMinIndexColumn(rows, columns, table, 0);
+            let maxIndexA = findMaxIndexColumn(rows, columns, table, 0);
+            let minIndexB = findMinIndexRow(rows, columns, table, 1);
+            let maxIndexB = findMaxIndexRow(rows, columns, table, 1);
+            let MINMAXIndexA = findMINMAXIndex(minIndexA);
+            let MAXMINIndexA = findMAXMINIndex(maxIndexA);
+            let MAXMINIndexB = findMINMAXIndex(minIndexB);
+            let MINMAXIndexB = findMAXMINIndex(maxIndexB);
+            
+            setMINMAXA(MINMAXIndexA);
+            setMAXMINA(MAXMINIndexA);
+            setMINMAXB(MINMAXIndexB);
+            setMAXMINB(MAXMINIndexB);
+        }
     }
 
     const delDomClick = (item: string) => {
@@ -414,12 +422,6 @@ const App: React.FC<IProps> = (props: IProps) => {
                         <OutTableRows textRow="MAXMIN А Строка: " textColumn="MAXMIN А Столбец " textValue="MAXMIN А Занчение" data={MAXMINA}/>
                         <OutTableRows textRow="MINMAX B Строка: " textColumn="MINMAX B Столбец " textValue="MINMAX B Занчение" data={MINMAXB}/>
                         <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={MAXMINB}/>
-                        {
-                            (choosed === "two") ? (<>
-                                <OutTableRows textRow="MAXMIN A Строка: " textColumn="MAXMIN A Столбец " textValue="MAXMIN A Занчение" data={MAXMINA}/>
-                                <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={MAXMINB}/>
-                            </>) : false
-                        }
                     </TableBody>
                 </Table>
             </TableContainer>

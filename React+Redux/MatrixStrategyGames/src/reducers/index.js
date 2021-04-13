@@ -43,20 +43,20 @@ const reducer = (state = initialState, action) => {
                  ...state,
                  table: table,
                  rows: rows,
-                 counterRows: counterRows,
-                 rowsStrategy: rowsStrategy
+                 rowsStrategy: rowsStrategy,
+                 counterRows
             };
         
         case 'DEL_ROW':
             table = state.table;
             rows = state.rows;
-            counterRows = state.counterRows;
             rowsStrategy = [...state.rowsStrategy];
+            counterRows = state.counterRows;
 
             if(state.rows !== 1){
                 rows = state.rows - 1;
-                counterRows = state.counterRows-1;
-                rowsStrategy.splice(counterRows);
+                counterRows = counterRows - 1
+                rowsStrategy.pop();
                 table.splice(rows);
             }
 
@@ -64,26 +64,25 @@ const reducer = (state = initialState, action) => {
                  ...state,
                  table: table,
                  rows: rows,
-                 counterRows: counterRows,
-                 rowsStrategy: rowsStrategy
+                 rowsStrategy: rowsStrategy,
+                 counterRows
          };
 
         case 'ADD_COLUMN':
             table = state.table;
             table.map(item => item.push([0,0]));
             columns = state.columns + 1;
-
             counterColumns = state.counterColumns;
             columnsStrategy = [...state.columnsStrategy];
             columnsStrategy.push(counterColumns);
-            counterColumns++;
+            counterColumns = counterColumns + 1;
 
             return { 
                  ...state,
                  table: table,
                  columns: columns,
-                 counterColumns,
-                 columnsStrategy
+                 columnsStrategy,
+                 counterColumns
             };
 
         case 'DEL_COLUMN':
@@ -94,11 +93,9 @@ const reducer = (state = initialState, action) => {
             columnsStrategy = [...state.columnsStrategy];
 
             if(state.columns!==1){
-
-                counterColumns = state.counterColumns-1;
-                columnsStrategy.splice(counterColumns);
-
                 columns = state.columns - 1;
+                counterColumns--;
+                columnsStrategy.pop();
                 table.map(item => item.splice(columns));
             }
 
@@ -106,8 +103,8 @@ const reducer = (state = initialState, action) => {
                  ...state,
                  table: table,
                  columns: columns,
-                 counterColumns,
-                 columnsStrategy
+                 columnsStrategy,
+                 counterColumns
             };
 
         case 'EDIT_TABLE':
@@ -159,31 +156,23 @@ const reducer = (state = initialState, action) => {
             rows = state.rows;
             columns = state.columns;
 
-            counterColumns = state.counterColumns;
             columnsStrategy = [...state.columnsStrategy];
-
-            counterRows = state.counterRows;
             rowsStrategy = [...state.rowsStrategy];
 
                 if(str[0] === "B"){
-                    table.splice(parseInt(str[1]+str[2]), 1);
+                    table.splice(parseInt(str[1]+str[2]) - 1, 1);
                     rows--;
-
-                    rowsStrategy = rowsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]));
-
-                    console.log(parseInt(str[1]+str[2], 10));
+                    rowsStrategy = rowsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]) - 1);
+                    console.log(parseInt(str[1]+str[2]))
                 }
 
                 if(str[0] === "A"){
                     for(let j=0; j<table.length; j++){
-                        table[j].splice(parseInt(str[1]+str[2]), 1);
+                        table[j].splice(parseInt(str[1]+str[2]) - 1, 1);
                     }
                     columns--;
-
-                    columnsStrategy = columnsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]));
-                    
-                    console.log(parseInt(str[1]+str[2], 10));
-                    console.log(table);
+                    columnsStrategy = columnsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]) - 1);
+                    console.log(parseInt(str[1]+str[2]))
                 }
 
             return { 
@@ -193,9 +182,7 @@ const reducer = (state = initialState, action) => {
                 columns: columns,
                 ready: true,
                 rowsStrategy,
-                columnsStrategy,
-                counterColumns,
-                counterRows
+                columnsStrategy
             };
 
             case 'RANDOM_REFILLING':
