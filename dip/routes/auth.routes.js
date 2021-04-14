@@ -53,26 +53,49 @@ router.get('/subjects',
 async (req, res) => {
         try {
             console.log(req.session);
-            const {access_lvl, user, authenticated} = req.session;
+            const {access_lvl, userId, authenticated} = req.session;
 
             if(!authenticated){
                 res.status(401);
             }
             
             if(access_lvl === 1){
-                let data = await Subject.findAll();
                 let resData = {};
+
+                resData.teachers = [];
+
+                let dataTeachers = await sequelize.query(`SELECT teacher_id, first_name, last_name, patronymic FROM teachers`, { type: QueryTypes.SELECT });
+
+                resData.teachers = [...dataTeachers];
+
                 resData.subjects = [];
-                let teacher = new Set();
 
-                for(let i = 0; i < data.length; i++){
-                    let dataTeacher = await Teacher.findAll({where: {subject_id: data[i].subject_id}});
-
-                    for(let j = 0; j < dataTeacher.length; j++){
-                    teacher.add(`${dataTeacher[j].first_name} ${dataTeacher[j].last_name[0]}. ${dataTeacher[j].patronymic[0]}.`);
+                let dataSubjects = await sequelize.query(`SELECT subjects.subject, teachers.teacher_id, teachers.first_name, teachers.last_name, teachers.patronymic FROM subjects JOIN teachers ON subjects.subject_id = teachers.subject_id`, { type: QueryTypes.SELECT }); 
+                
+                let newDataSubjects = [];
+                let iter = -1;
+                let setSubkectName = new Set();
+                dataSubjects.forEach(item => {
+                    if(!setSubkectName.has(item.subject)){
+                        iter++;
+                        setSubkectName.add(item.subject);
+                        let newItem = {...item};
+                        newItem.teacher_id = [item.teacher_id];
+                        newItem.teachers = `${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        newDataSubjects[iter] = newItem;
+                    } else {
+                        let newItem = {...newDataSubjects[iter]};
+                        newItem.teacher_id.push(item.teacher_id);
+                        newItem.teachers = newItem.teachers+`, ${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        newDataSubjects[iter] = newItem;
                     }
-                    resData.subjects.push({...data[i].dataValues, teachers: [...teacher].join(' ,')});
-                }
+                });
+
+                console.log(newDataSubjects);
+
+                resData.subjects = [...newDataSubjects];
+
+                
                 
                 let dataTask = await sequelize.query(`SELECT tasks.task_id, tasks.task, tasks.task_type_id, tasks.theme_id, tasks.date, tasks.end_date, tasks.description, tasks.link, themes.theme, subjects.subject, task_types.task_type FROM tasks JOIN subjects JOIN themes JOIN task_types ON tasks.subject_id = subjects.subject_id AND tasks.theme_id = themes.theme_id AND tasks.task_type_id = task_types.task_type_id`, { type: QueryTypes.SELECT });
 
@@ -89,15 +112,54 @@ async (req, res) => {
             }
 
             if(access_lvl === 2){
-                const data = await Teacher.findAll({where: {user_id: user}});
-                let resData = [];
-                for(let i = 0; i < data.length; i ++){
-                    let data1 = await Subject.findAll({where: {subject_id: data[i].subject_id}});
-                    for(let j = 0; j < data1.length; j++){
-                        resData.push(data1[j].dataValues);
+                let resData = {};
+
+                resData.teachers = [];
+
+                let dataTeachers = await sequelize.query(`SELECT teacher_id, first_name, last_name, patronymic FROM teachers`, { type: QueryTypes.SELECT });
+
+                resData.teachers = [...dataTeachers];
+
+                resData.subjects = [];
+
+                let dataSubjects = await sequelize.query(`SELECT subjects.subject, teachers.teacher_id, teachers.first_name, teachers.last_name, teachers.patronymic FROM subjects JOIN teachers ON subjects.subject_id = teachers.subject_id WHERE teachers.user_id = ${userId}`, { type: QueryTypes.SELECT }); 
+                
+                let newDataSubjects = [];
+                let iter = -1;
+                let setSubkectName = new Set();
+                dataSubjects.forEach(item => {
+                    if(!setSubkectName.has(item.subject)){
+                        iter++;
+                        setSubkectName.add(item.subject);
+                        let newItem = {...item};
+                        newItem.teacher_id = [item.teacher_id];
+                        newItem.teachers = `${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        newDataSubjects[iter] = newItem;
+                    } else {
+                        let newItem = {...newDataSubjects[iter]};
+                        newItem.teacher_id.push(item.teacher_id);
+                        newItem.teachers = newItem.teachers+`, ${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        newDataSubjects[iter] = newItem;
                     }
-                }
-                console.log(resData);
+                });
+
+                console.log(newDataSubjects);
+
+                resData.subjects = [...newDataSubjects];
+
+                
+                
+                let dataTask = await sequelize.query(`SELECT tasks.task_id, tasks.task, tasks.task_type_id, tasks.theme_id, tasks.date, tasks.end_date, tasks.description, tasks.link, themes.theme, subjects.subject, task_types.task_type FROM tasks JOIN subjects JOIN themes JOIN task_types ON tasks.subject_id = subjects.subject_id AND tasks.theme_id = themes.theme_id AND tasks.task_type_id = task_types.task_type_id`, { type: QueryTypes.SELECT });
+
+                let newDataTask = dataTask.map(item => {
+                    let newItem = {...item};
+                    newItem.date = newItem.date.toLocaleDateString();
+                    newItem.end_date = newItem.end_date.toLocaleDateString();
+                    return newItem;
+                })
+
+                resData.tasks = newDataTask;
+
                 res.json(resData);
             }
         }

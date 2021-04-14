@@ -25,25 +25,21 @@ class CoursesMain extends React.Component{
         try {
             const data = await this.server.getData('/api/auth/subjects');
 
-            const teachersData = [{
-                teacher_id: 1,
-                teacher: "Иванов И.И"
-            },{
-                teacher_id: 2,
-                teacher: "Иванова И.И"
-            },{
-                teacher_id: 3,
-                teacher: "Петров И.И"
-            },{
-                teacher_id: 4,
-                teacher: "Кузюкин И.И"
-            }]
+            const teachersData = data.teachers.map(item => {
+                return {
+                    teacher_id: item.teacher_id,
+                    teacher: `${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                }
+            });
+
+            console.log(teachersData)
             
             this.setState({
                 data: [...data.subjects]
             })
             this.props.getTeachersData(teachersData);
             this.props.changeTasks(data.tasks);
+            console.log(data.subjects);
             this.props.isMounted();
 
         } catch(e) {
@@ -61,17 +57,15 @@ class CoursesMain extends React.Component{
             <>
                 {
                     this.state.data.map((item) => {
-                        console.log(item.subject_id);
-
-
-
                         return (
                             <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }} key = {item.subject_id}>
                                 <CoursesMainItem
+                                    key = {item.subject_id}
                                     courseKey = {item.subject_id}
                                     imgId="2"
                                     text = {item.subject}
-                                    teacher = {` (${item.teachers})`}
+                                    teacher_id = {item.teacher_id}
+                                    teacher = {`(${item.teachers})`}
                                 />    
                             </Link>
                         )
