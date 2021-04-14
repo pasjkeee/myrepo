@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import {connect} from 'react-redux';
+
+import {coursesOpenModalAdd, coursesOpenModalEdit, coursesOpenModalDelete} from '../../../actions'
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
@@ -61,13 +65,13 @@ const CoursesMainItemBtns = (props) => {
     const OnEditClick = (e) => {
         e.preventDefault();
         props.getCourse();
-        props.OnEditBtnClick();
+        props.coursesOpenModalEdit();
     }
 
     const OnDeleteClick = (e) => {
         e.preventDefault();
         props.getCourse();
-        props.OnDeleteBtnClick();
+        props.coursesOpenModalDelete();
     }
         
     if(props.type === "edit"){
@@ -85,10 +89,17 @@ const CoursesMainItemBtns = (props) => {
     }
 
     return(
-            <ButtonAdd onClick={()=>{props.OnAddBtnClick()}}>
+            <ButtonAdd onClick={()=>{props.coursesOpenModalAdd()}}>
                 Добавить новый предмет
             </ButtonAdd>
     )
 }
 
-export default CoursesMainItemBtns;
+
+const mapDispatchToProps = {
+    coursesOpenModalAdd,
+    coursesOpenModalEdit,
+    coursesOpenModalDelete,
+}
+
+export default connect(null, mapDispatchToProps)(CoursesMainItemBtns);

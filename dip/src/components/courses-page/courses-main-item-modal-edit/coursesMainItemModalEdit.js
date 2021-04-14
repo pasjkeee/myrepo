@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 
 import {connect} from 'react-redux';
 
+import {coursesCloseModal} from '../../../actions'
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes} from "@fortawesome/free-solid-svg-icons";
 
@@ -14,7 +16,6 @@ const CoursesMainItemModalEdit = (props) => {
     
     let [imgNum, setImgNum] = useState(0);
     let [textareaText, setTextareaText] = useState("");
-    let [textTeacherActive, setTextTeacherActive] = useState(false);
 
     useEffect(()=>{
         setTextareaText(props.currentEditCourse.text);
@@ -27,21 +28,13 @@ const CoursesMainItemModalEdit = (props) => {
     const OnTextareaChange = (e) => {
         setTextareaText(e.target.value);
     }
-
-    const ChangeImgActiveTrue = () => {
-        setTextTeacherActive(true);
-    }
-
-    const ChangeImgActiveFalse = () => {
-        setTextTeacherActive(false);
-    }
         
     let style = (props.active) ? { display: "block" } : { display: "none" };
 
     return(
         <div className="wrapper" style={style}>
             <div className="modal">
-                <div className="close-btn" onClick={()=>{props.OnEditCloseBtnClick()}}>
+                <div className="close-btn" onClick={()=>{props.coursesCloseModal()}}>
                     <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4"/>
                 </div>
                     <form>
@@ -57,8 +50,8 @@ const CoursesMainItemModalEdit = (props) => {
                                         value={textareaText}/>
                                 </div>  
                             <div className="modal__content-bottom">
-                                <TeachersData  ChangeImgActiveTrue={ChangeImgActiveTrue} ChangeImgActiveFalse={ChangeImgActiveFalse} type="edit" />
-                                <input type="button" name="btn" className="modal__btn" value="Добавить" onClick={()=>{console.log({imgNum, textareaText, textTeacherActive})}}/>
+                                <TeachersData type="edit" />
+                                <input type="button" name="btn" className="modal__btn" value="Добавить" onClick={()=>{console.log({imgNum, textareaText})}}/>
                                 <input type="hidden" name="imgNum" value={imgNum}/>
                             </div>
                         </div>
@@ -72,10 +65,14 @@ const CoursesMainItemModalEdit = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        currentEditCourse: state.coursesPage.currentEditCourse
+        currentEditCourse: state.coursesPage.currentEditCourse,
+        active: state.coursesMain.deleteActive
     }
 }
 
+const mapDispatchToProps = {
+    coursesCloseModal
+}
 
 
-export default connect(mapStateToProps)(CoursesMainItemModalEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesMainItemModalEdit);

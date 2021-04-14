@@ -86,7 +86,7 @@ const CoursesMainItem = (props) => {
                 {props.text}
                 {props.teacher}
             </div>
-            <CoursesMainItemBtns type="edit" num={props.courseKey} getCourse={getCourse} OnEditBtnClick={props.OnEditBtnClick} OnDeleteBtnClick={props.OnDeleteBtnClick}/>
+            <CoursesMainItemBtns type="edit" num={props.courseKey} getCourse={getCourse}/>
         </CoursesMainItemDiv>
     )
 }

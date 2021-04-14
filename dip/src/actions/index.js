@@ -76,6 +76,90 @@ const getTeachersData = (teachersData) => {
     }
 }
 
+const coursesCloseModal = () => {
+    return{
+        type: 'COURSES_CLOSE_MODAL'
+    }
+}
+
+const coursesOpenModalAdd = () => {
+    return{
+        type: 'COURSES_OPEN_MODAL_ADD'
+    }
+}
+
+const coursesOpenModalEdit = () => {
+    return{
+        type: 'COURSES_OPEN_MODAL_EDIT'
+    }
+}
+
+const coursesOpenModalDelete = () => {
+    return{
+        type: 'COURSES_OPEN_MODAL_DELETE'
+    }
+}
+
+const coursesOpenImg = () => {
+    return{
+        type: 'COURSES_OPEN_IMG'
+    }
+}
+
+const coursesCloseImg = () => {
+    return{
+        type: 'COURSES_CLOSE_IMG'
+    }
+}
+
+const coursesOpenTeacherData = () => {
+    return{
+        type: 'COURSES_OPEN_TEACHER_DATA'
+    }
+}
+
+const coursesCloseTeacherData = () => {
+    return{
+        type: 'COURSES_CLOSE_TEACHER_DATA'
+    }
+}
+
+const addCourse = (courseTitle, courseTeacherIds, imgNum) => {
+    return{
+        type: 'ADD_COURSE',
+        currentInfo: {
+            courseId: -1,
+            courseTitle,
+            imgNum,
+            courseTeacherIds: [...courseTeacherIds]
+        }
+    }
+}
+
+const editCourse = (courseId, courseTitle, imgNum, courseTeacherIds) => {
+    return{
+        type: 'ADD_COURSE',
+        currentInfo: {
+            courseId,
+            courseTitle,
+            imgNum,
+            courseTeacherIds: [...courseTeacherIds]
+        }
+    }
+}
+
+const deleteCourse = (courseId) => {
+    return{
+        type: 'ADD_COURSE',
+        currentInfo: {
+            courseId,
+            courseTitle: "",
+            imgNum: -1,
+            courseTeacherIds: []
+        }
+    }
+}
+
 export {
     closeModal,
     openModal,
@@ -88,5 +172,16 @@ export {
     isMounted,
     notMounted,
     setCurrentEditCourse,
-    getTeachersData
+    getTeachersData,
+    coursesCloseModal,
+    coursesOpenModalAdd,
+    coursesOpenModalEdit,
+    coursesOpenModalDelete,
+    coursesOpenImg,
+    coursesCloseImg,
+    coursesOpenTeacherData,
+    coursesCloseTeacherData,
+    addCourse,
+    editCourse,
+    deleteCourse
 };

@@ -72,8 +72,6 @@ class CoursesMain extends React.Component{
                                     imgId="2"
                                     text = {item.subject}
                                     teacher = {` (${item.teachers})`}
-                                    OnEditBtnClick={this.props.OnEditBtnClick}
-                                    OnDeleteBtnClick={this.props.OnDeleteBtnClick}
                                 />    
                             </Link>
                         )

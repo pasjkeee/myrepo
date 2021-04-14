@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 
 import {connect} from 'react-redux';
 
+import {coursesCloseModal} from '../../../actions'
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes} from "@fortawesome/free-solid-svg-icons";
 
@@ -9,7 +11,6 @@ import '../modalStyle.scss';
 
 const CoursesMainItemModalDelete = (props) => {
 
-    let [imgNum, setImgNum] = useState(0);
     let [textareaText, setTextareaText] = useState("");
 
     const OnTextareaChange = (e) => {
@@ -21,7 +22,7 @@ const CoursesMainItemModalDelete = (props) => {
     return(
         <div className="wrapper"  style={style}>
             <div className="modal">
-                <div className="close-btn"  onClick={()=>{props.OnEditCloseBtnClick()}}>
+                <div className="close-btn"  onClick={()=>{props.coursesCloseModal()}}>
                     <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4"/>
                 </div>
                 <form>
@@ -34,7 +35,6 @@ const CoursesMainItemModalDelete = (props) => {
                                     onChange={(e)=>{OnTextareaChange(e)}} 
                                     value={textareaText}/>
                         <div className="modal__content-bottom">
-                            <input type="hidden" name="imgNum" value={imgNum}/>
                             <div></div>
                             <input type="button" name="btn" className="modal__btn" value="Удалить" onClick={()=>{console.log(textareaText)}}/>
                         </div>
@@ -47,10 +47,16 @@ const CoursesMainItemModalDelete = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        currentEditCourse: state.coursesPage.currentEditCourse
+        currentEditCourse: state.coursesPage.currentEditCourse,
+        active: state.coursesMain.deleteActive
     }
+}
+
+const mapDispatchToProps = {
+    coursesCloseModal
 }
 
 
 
-export default connect(mapStateToProps)(CoursesMainItemModalDelete);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesMainItemModalDelete);

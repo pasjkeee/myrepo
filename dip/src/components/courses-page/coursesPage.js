@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import CoursesMain from './courses-main/coursesMain';
@@ -90,31 +90,6 @@ const BurgerSpan = styled.span`
 
 const CoursesPage = (props) => {
 
-    let [addActive, setAddActive] = useState(false);
-    let [editActive, setEditActive] = useState(false);
-    let [deleteActive, setDeleteActive] = useState(false);
-
-    const OnAddBtnClick = () => {
-        const active = !addActive;
-        setAddActive(active);
-    }
-
-    const OnEditCloseBtnClick = () => {
-        setEditActive(false);
-    }
-
-    const OnDeleteCloseBtnClick = () => {
-        setDeleteActive(false);
-    }
-
-    const OnEditBtnClick = () => {
-        setEditActive(true)
-    }
-
-    const OnDeleteBtnClick = () => {
-        setDeleteActive(true)
-    }
-
     const GetCurrenEditCourse = (item) => {
         console.log(item);
     }
@@ -130,12 +105,12 @@ const CoursesPage = (props) => {
                         <BurgerSpan/>
                     </Burger>
                 </CoursesHeader>
-                <CoursesMain OnEditBtnClick={OnEditBtnClick} OnDeleteBtnClick={OnDeleteBtnClick}></CoursesMain>
+                <CoursesMain/>
                 <Calendar isMounted={props.isMounted}></Calendar>
-                <CoursesMainItemModalAdd active={addActive} OnCloseBtnClick={OnAddBtnClick}/>
-                <CoursesMainItemModalEdit active={editActive} OnEditCloseBtnClick={OnEditCloseBtnClick} GetCurrenEditCourse={GetCurrenEditCourse}/>
-                <CoursesMainItemModalDelete active={deleteActive} OnEditCloseBtnClick={OnDeleteCloseBtnClick} GetCurrenEditCourse={GetCurrenEditCourse}/>
-                <CoursesMainItemBtns OnAddBtnClick={OnAddBtnClick}/>
+                <CoursesMainItemModalAdd/>
+                <CoursesMainItemModalEdit GetCurrenEditCourse={GetCurrenEditCourse}/>
+                <CoursesMainItemModalDelete GetCurrenEditCourse={GetCurrenEditCourse}/>
+                <CoursesMainItemBtns/>
             </Container>
             <BackImgWrapper src={BgImg}></BackImgWrapper>
         </CoursesPageWrapper>

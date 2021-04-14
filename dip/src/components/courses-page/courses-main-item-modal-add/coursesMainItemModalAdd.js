@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 
+import {connect} from 'react-redux';
+import {coursesCloseModal} from '../../../actions'
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes} from "@fortawesome/free-solid-svg-icons";
 
@@ -13,7 +16,6 @@ const CoursesMainItemModalAdd = (props) => {
 
     let [imgNum, setImgNum] = useState(0);
     let [textareaText, setTextareaText] = useState("");
-    let [textTeacherActive, setTextTeacherActive] = useState(false);
 
     const getImgNum = (imgNum) => {
         setImgNum(imgNum);
@@ -23,33 +25,35 @@ const CoursesMainItemModalAdd = (props) => {
         setTextareaText(e.target.value);
     }
 
-    const ChangeImgActiveTrue = () => {
-        setTextTeacherActive(true);
-    }
-
-    const ChangeImgActiveFalse = () => {
-        setTextTeacherActive(false);
-    }
-
     let style = (props.active) ? { display: "block" } : { display: "none" };
 
     return(
         <div className="wrapper" style={style}>
             <div className="modal">
-                <div className="close-btn" onClick={()=>{props.OnCloseBtnClick()}}>
+                <div className="close-btn" onClick={()=>{props.coursesCloseModal()}}>
                     <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4"/>
                 </div>
                     <form>
                         <div className="modal__title">Добавить новый предмет</div>
                         <div className="modal__content">
                             <div className="modal__content-up">
-                                <InputImg getImgNum={getImgNum} textTeacherActive={textTeacherActive}/>
-                                <textarea name="textarea" rows="2" placeholder="Введите название предмета" required onChange={(e)=>{OnTextareaChange(e)}}></textarea>
+                                <InputImg getImgNum={getImgNum}/>
+                                <textarea name="textarea" 
+                                          rows="2" 
+                                          placeholder="Введите название предмета" 
+                                          required 
+                                          onChange={(e)=>{OnTextareaChange(e)}}/>
                             </div>
                             <div className="modal__content-bottom">
-                                <TeachersData ChangeImgActiveTrue={ChangeImgActiveTrue} ChangeImgActiveFalse={ChangeImgActiveFalse} type="add"/>
-                                <input type="button" name="btn" className="modal__btn" value="Добавить" onClick={()=>{console.log(imgNum, textareaText, textTeacherActive)}}/>
-                                <input type="hidden" name="imgNum" value={imgNum}/>
+                                <TeachersData type="add"/>
+                                <input type="button" 
+                                       name="btn" 
+                                       className="modal__btn" 
+                                       value="Добавить" 
+                                       onClick={()=>{console.log(imgNum, textareaText)}}/>
+                                <input type="hidden" 
+                                       name="imgNum" 
+                                       value={imgNum}/>
                             </div>
                         </div>
                     </form>
@@ -58,4 +62,14 @@ const CoursesMainItemModalAdd = (props) => {
     )
 }
 
-export default CoursesMainItemModalAdd;
+const mapStateToProps = (state) => {
+    return {
+        active: state.coursesMain.addActive
+    }
+}
+
+const mapDispatchToProps = {
+    coursesCloseModal
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesMainItemModalAdd);

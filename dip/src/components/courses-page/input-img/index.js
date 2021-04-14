@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
+import {connect} from 'react-redux';
+
+import { coursesOpenImg, coursesCloseImg} from '../../../actions'
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages} from "@fortawesome/free-solid-svg-icons";
 
@@ -60,38 +64,27 @@ const InputImgButton = styled.div`
 
  const InputImg = (props) => {
      
-    let [active, setActive] = useState(false);
     let [choosedIcon, setChoosedIcon] = useState(0);
     
-
     const OnActive = () => {
-        const newActive = !active;
-        setActive(newActive);
+        const newActive = !props.imgActive;
+        (newActive) ? props.coursesOpenImg() : props.coursesCloseImg();
     }
 
     const OnChoose = (e) => {
         setChoosedIcon(e.target.getAttribute("data-num"));
     }
 
-    useEffect(()=>{
-        setChoosedIcon(props.getImgNum);
-        if(props.textTeacherActive === true){
-            setActive(false);
-        }
+    let icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>;
 
-    },[props.textTeacherActive, props.getImgNum]);
-
-    let icon
-
-    if(choosedIcon > 0 || choosedIcon < 7){
+    if(choosedIcon > 0 && choosedIcon < 7){
         icon = <img src={Img[choosedIcon-1]} alt="img" onClick={(e)=>{ OnChoose(e) }} data-num={choosedIcon}/>;
-    } else if(props.currentImgId){
+    } else if(props.currentImgId > 0){
+        
         icon = <img src={Img[props.currentImgId-1]} alt="img"/>;
-    } else {
-        icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>
-    }
+    } 
 
-    if(!active){
+    if(!props.imgActive){
         return(
             <InputImgButton onClick={()=>{OnActive()}}>
                 {icon}
@@ -99,7 +92,9 @@ const InputImgButton = styled.div`
         )
     }
 
-    let container = (!props.textTeacherActive) ? <div className="img-container"> { Img.map((item, i) => <img src={item} key={i} alt="img" onClick={(e)=>{ OnChoose(e) }} data-num={i+1}/>) } </div> : false;
+    let container = <div className="img-container"> 
+                        { Img.map((item, i) => <img src={item} key={i} alt="img" onClick={(e)=>{ OnChoose(e) }} data-num={i+1}/>) } 
+                    </div>;
 
     return(
         <>
@@ -111,4 +106,16 @@ const InputImgButton = styled.div`
     )
 }
 
-export default InputImg;
+const mapStateToProps = (state) => {
+    return {
+        teachersData: state.coursesPage.teachersData,
+        imgActive: state.coursesMain.imgActive
+    }
+}
+
+const mapDispatchToProps = {
+    coursesOpenImg,
+    coursesCloseImg
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InputImg);

@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight} from "@fortawesome/free-solid-svg-icons";
 
+import { coursesOpenTeacherData, coursesCloseTeacherData} from '../../../actions'
+
 const Wrapper = styled.div`
     display: flex;
     align-items: center;
@@ -71,17 +73,15 @@ const TeachersContainer = styled.div`
 
 const TeachersData = (props) => {
 
-    let [active, setActive] = useState(false);
     let [choosedTeacher, setChoosedTeacher] = useState({});
 
     const OnActive = () => {
-        const newActive = !active;
+        const newActive = !props.teacherDataActive;
         if(newActive){
-            props.ChangeImgActiveTrue();
+            props.coursesOpenTeacherData();
         } else {
-            props.ChangeImgActiveFalse();
+            props.coursesCloseTeacherData();
         }
-        setActive(newActive);
     }
 
     const OnTeacherSet = (teacher_id) => {
@@ -89,17 +89,24 @@ const TeachersData = (props) => {
         setChoosedTeacher(teacher);
     }
 
-        const teachersData = (active) ? (<TeachersContainer> 
-                                            { props.teachersData.map(item => <div className="item" key={item.teacher_id} onClick={()=>{OnTeacherSet(item.teacher_id)}}>{item.teacher}</div>)} 
-                                        </TeachersContainer>) : false;
-        const iconRotation = (active) ? 90 : 0; 
+        const teachersData = (props.teacherDataActive) && (
+                    <TeachersContainer> 
+                        { props.teachersData.map(item => <div className="item" 
+                                                              key={item.teacher_id} 
+                                                              onClick={()=>{OnTeacherSet(item.teacher_id)}}>{item.teacher}
+                                                         </div>)} 
+                    </TeachersContainer>);
+
+        const iconRotation = (props.teacherDataActive) ? 90 : 0; 
+
         let defaultText = "";
         if(props.type === "add"){
             defaultText = "Выберите преподавателя"
         }
         if(props.type === "edit"){
-            defaultText = "Выберите преподавателя"
+            defaultText = "Выберите преподавателя" //TDOD: исправить
         }
+
         const teacherChoosed = (choosedTeacher.teacher_id) ? choosedTeacher.teacher : defaultText;
 
         return(
@@ -121,10 +128,15 @@ const TeachersData = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        teachersData: state.coursesPage.teachersData
+        teachersData: state.coursesPage.teachersData,
+        teacherDataActive: state.coursesMain.teacherDataActive
     }
 }
 
+const mapDispatchToProps = {
+    coursesOpenTeacherData,
+    coursesCloseTeacherData
+}
 
 
-export default connect(mapStateToProps)(TeachersData);
+export default connect(mapStateToProps, mapDispatchToProps)(TeachersData);
