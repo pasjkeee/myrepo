@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import WithRestoService from '../../hoc';
 import styled from 'styled-components';
 
 import CoursesMainItemBtns from '../courses-main-item-btns'; 
@@ -14,8 +13,12 @@ import Img4 from '../courses-main/Asset 106.svg';
 import Img5 from '../courses-main/Asset 107.svg';
 import Img6 from '../courses-main/Asset 108.svg';
 
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages} from "@fortawesome/free-solid-svg-icons";
+
+
+let img = [Img1, Img2, Img3, Img4, Img5, Img6];
 
 const CoursesMainItemDiv = styled.div`
     position: relative;
@@ -54,65 +57,38 @@ const CoursesMainItemImg = styled.img`
     border-radius: 10px;
 `
 
-class CoursesMainItem extends React.Component{
+const CoursesMainItem = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: this.props.text,
-            id: this.props.courseKey,
-            imgId: this.props.imgId,
-            teacher: this.props.teacher
-        }
-        this.getCourse = this.getCourse.bind(this);
+
+    const text = props.text;
+    const id = props.courseKey;
+    const imgId = props.imgId;
+    const teacher = props.teacher;
+
+
+    const getCourse = () => {
+        props.setCurrentEditCourse({text, id, imgId, teacher});
+
     }
 
-    getCourse(){
-        this.props.setCurrentEditCourse(this.state);
-        console.log(this.state);
+    let icon;
+
+    if(props.imgId > 0 || props.imgId < 7){
+        icon = <CoursesMainItemImg src={img[+props.imgId-1]}/>;
+    } else {
+        icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>
     }
 
-    render(){
-
-        console.log(this.props.courseKey);
-
-        let icon;
-
-        
-        switch(this.props.imgId){
-            case "1":
-                icon = <CoursesMainItemImg src={Img1}/>;
-                break;
-            case "2":
-                icon = <CoursesMainItemImg src={Img2}/>;
-                break;
-            case "3":
-                icon = <CoursesMainItemImg src={Img3}/>;
-                break;
-            case "4":
-                icon = <CoursesMainItemImg src={Img4}/>;
-                break;
-            case "5":
-                icon = <CoursesMainItemImg src={Img5}/>;
-                break;
-            case "6":
-                icon = <CoursesMainItemImg src={Img6}/>;
-                break;
-            default:
-                icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>
-        }
-
-        return(
-            <CoursesMainItemDiv>
-                <div className="courses-text">
-                    {icon}
-                    {this.props.text}
-                    {this.props.teacher}
-                </div>
-                <CoursesMainItemBtns type="edit" num={this.props.courseKey} getCourse={this.getCourse} OnEditBtnClick={this.props.OnEditBtnClick} OnDeleteBtnClick={this.props.OnDeleteBtnClick}/>
-            </CoursesMainItemDiv>
-        )
-    }
+    return(
+        <CoursesMainItemDiv>
+            <div className="courses-text">
+                {icon}
+                {props.text}
+                {props.teacher}
+            </div>
+            <CoursesMainItemBtns type="edit" num={props.courseKey} getCourse={getCourse} OnEditBtnClick={props.OnEditBtnClick} OnDeleteBtnClick={props.OnDeleteBtnClick}/>
+        </CoursesMainItemDiv>
+    )
 }
 
 const mapDispatchToProps = {

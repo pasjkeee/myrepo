@@ -9,10 +9,9 @@ import { faAngleRight} from "@fortawesome/free-solid-svg-icons";
 const Wrapper = styled.div`
     display: flex;
     align-items: center;
-    margin: 15px 0px 0px 0px;
 
     .teacher-title{
-        margin: 0px 20px 0px 30px;
+        margin-right: 20px;
         font-weight: 500;
         color: #7D9FF4;
         font-size: 18px;
@@ -45,7 +44,7 @@ const TeachersContainer = styled.div`
     border: 2px solid #7D9FF4;
     border-top: none;
     border-radius: 0px 0px 4px 4px;
-    left: 184px;
+    left: 154px;
     bottom: 0px;
     transform: translateY(100%);
     background-color: white;

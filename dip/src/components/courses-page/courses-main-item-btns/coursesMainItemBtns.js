@@ -56,59 +56,39 @@ const ButtonDelete = styled(Button)`
     }
 `
 
-export default class CoursesMainItemBtns extends React.Component{
+const CoursesMainItemBtns = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            num: this.props.num
-        };
-        this.OnEditClick = this.OnEditClick.bind(this);
-        this.OnAddClick = this.OnAddClick.bind(this);
-        this.OnDeleteClick = this.OnDeleteClick.bind(this);
-        this.OnEditBtnClick = this.props.OnEditBtnClick;
-    }
-
-    OnAddClick(e){
+    const OnEditClick = (e) => {
         e.preventDefault();
+        props.getCourse();
+        props.OnEditBtnClick();
     }
 
-    OnEditClick(e){
+    const OnDeleteClick = (e) => {
         e.preventDefault();
-        console.log(this.state.num);
-        this.props.getCourse();
-        this.props.OnEditBtnClick();
+        props.getCourse();
+        props.OnDeleteBtnClick();
     }
-
-    OnDeleteClick(e){
-        e.preventDefault();
-        this.props.getCourse();
-        this.props.OnDeleteBtnClick();
-    }
-
-    render(){
-
-
-        if(this.props.type === "edit"){
-            return(
-
-                <ButtonGroup>
-                    <ButtonEdit onClick={(e)=>{this.OnEditClick(e)}}>
-                        <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF"/>
-                    </ButtonEdit>
-                    <ButtonDelete onClick={(e)=>{this.OnDeleteClick(e)}}>
-                        <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
-                    </ButtonDelete>
-                    
-                </ButtonGroup>
-            )
-        }
-
+        
+    if(props.type === "edit"){
         return(
-                <ButtonAdd onClick={()=>{this.props.OnAddBtnClick()}}>
-                    Добавить новый предмет
-                </ButtonAdd>
+            <ButtonGroup>
+                <ButtonEdit onClick={(e)=>{OnEditClick(e)}}>
+                    <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF"/>
+                </ButtonEdit>
+                <ButtonDelete onClick={(e)=>{OnDeleteClick(e)}}>
+                    <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
+                </ButtonDelete>
+                
+            </ButtonGroup>
         )
     }
+
+    return(
+            <ButtonAdd onClick={()=>{props.OnAddBtnClick()}}>
+                Добавить новый предмет
+            </ButtonAdd>
+    )
 }
 
+export default CoursesMainItemBtns;

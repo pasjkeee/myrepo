@@ -23,6 +23,7 @@ const InputImgButton = styled.div`
     border-radius: 5px;
     border: 1px solid #7D9FF4;
     position: relative;
+    margin-right: 40px;
 
     .img-container{
         position: absolute;
