@@ -19,6 +19,17 @@ const CoursesMainItemModalDelete = (props) => {
         
     let style = (props.active) ? { display: "block" } : { display: "none" };
 
+    const deleteCourse = () => {
+        if(textareaText === props.currentEditCourse.text){
+            let result = window.confirm("Вы действительно хотите удалить предмет?");
+            if(result){
+                console.log("Deleted");
+            }
+        } else {
+            alert("Введите точное название прдемета, как в выделенном тексте")
+        }
+    }
+
     return(
         <div className="wrapper"  style={style}>
             <div className="modal">
@@ -36,7 +47,7 @@ const CoursesMainItemModalDelete = (props) => {
                                     value={textareaText}/>
                         <div className="modal__content-bottom">
                             <div></div>
-                            <input type="button" name="btn" className="modal__btn" value="Удалить" onClick={()=>{console.log(textareaText)}}/>
+                            <input type="button" name="btn" className="modal__btn" value="Удалить" onClick={()=>{deleteCourse()}}/>
                         </div>
                     </div>
                 </form>

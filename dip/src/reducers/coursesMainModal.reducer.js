@@ -23,14 +23,16 @@ function coursesMainModalReducer(state = initialState, action){
                 editActive: false,
                 deleteActive: false,
                 teacherDataActive: false,
-                imgActive: false
+                imgActive: false,
+                currentInfo: []
             };
         case 'COURSES_OPEN_MODAL_ADD':
             return { 
                 ...state,
                 addActive: true,
                 editActive: false,
-                deleteActive: false
+                deleteActive: false,
+                currentInfo: []
             };
 
         case 'COURSES_OPEN_MODAL_EDIT':
@@ -38,14 +40,16 @@ function coursesMainModalReducer(state = initialState, action){
                 ...state,
                 addActive: false,
                 editActive: true,
-                deleteActive: false
+                deleteActive: false,
+                currentInfo: []
             };
         case 'COURSES_OPEN_MODAL_DELETE': 
             return { 
                 ...state,
                 addActive: false,
                 editActive: false,
-                deleteActive: true
+                deleteActive: true,
+                currentInfo: []
             };
 
         case 'COURSES_OPEN_IMG': 
