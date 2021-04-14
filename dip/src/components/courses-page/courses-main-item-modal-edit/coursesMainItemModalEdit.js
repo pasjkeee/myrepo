@@ -51,7 +51,11 @@ const CoursesMainItemModalEdit = (props) => {
                                 </div>  
                             <div className="modal__content-bottom">
                                 <TeachersData type="edit" />
-                                <input type="button" name="btn" className="modal__btn" value="Добавить" onClick={()=>{console.log({imgNum, textareaText})}}/>
+                                <input type="button" 
+                                       name="btn" 
+                                       className="modal__btn" 
+                                       value="Добавить" 
+                                       onClick={()=>{console.log({imgNum, textareaText})}}/>
                                 <input type="hidden" name="imgNum" value={imgNum}/>
                             </div>
                         </div>
@@ -66,7 +70,7 @@ const CoursesMainItemModalEdit = (props) => {
 const mapStateToProps = (state) => {
     return {
         currentEditCourse: state.coursesPage.currentEditCourse,
-        active: state.coursesMain.deleteActive
+        active: state.coursesMain.editActive
     }
 }
 

@@ -160,6 +160,13 @@ const deleteCourse = (courseId) => {
     }
 }
 
+const setCurrentActiveTeacher = (currentActiveTeacher) => {
+    return{
+        type: 'SET_CURRENT_ACTIVE_TEACHER',
+        currentActiveTeacher
+    }
+}
+
 export {
     closeModal,
     openModal,
@@ -183,5 +190,6 @@ export {
     coursesCloseTeacherData,
     addCourse,
     editCourse,
-    deleteCourse
+    deleteCourse,
+    setCurrentActiveTeacher
 };

@@ -4,6 +4,7 @@ const initialState = {
     editActive: false,
     deleteActive: false,
     teacherDataActive: false,
+    currentActiveTeacher: 0,
     imgActive: false,
     currentInfo: {
         courseId: -1,
@@ -90,6 +91,12 @@ function coursesMainModalReducer(state = initialState, action){
                 ...state,
                 currentInfo: action.currentInfo
             };
+        
+        case 'SET_CURRENT_ACTIVE_TEACHER':
+            return{
+                ...state,
+                currentActiveTeacher: action.currentActiveTeacher
+            }
 
         default: 
             return state;

@@ -73,6 +73,7 @@ const InputImgButton = styled.div`
 
     const OnChoose = (e) => {
         setChoosedIcon(e.target.getAttribute("data-num"));
+        props.getImgNum(e.target.getAttribute("data-num"));
     }
 
     let icon = <FontAwesomeIcon icon={faImages} size="3x" color="#7D9FF4"/>;

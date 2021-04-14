@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 
 import {connect} from 'react-redux';
-import {coursesCloseModal} from '../../../actions'
+import {coursesCloseModal, addCourse} from '../../../actions'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes} from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faPlusSquare, faMinusSquare} from "@fortawesome/free-solid-svg-icons";
 
 import InputImg from '../input-img';
 
@@ -16,13 +16,69 @@ const CoursesMainItemModalAdd = (props) => {
 
     let [imgNum, setImgNum] = useState(0);
     let [textareaText, setTextareaText] = useState("");
-
+    let [teachersId, setTeachersId] = useState([]);
+    let [teachersCount, setTeachersCount] = useState([<TeachersData type="add" 
+                                                                    num="0" 
+                                                                    key="0"
+                                                                    setTeachersId={setTeachersId}
+                                                                    teachersId={teachersId}
+                                                        />]);
     const getImgNum = (imgNum) => {
         setImgNum(imgNum);
     }
 
     const OnTextareaChange = (e) => {
         setTextareaText(e.target.value);
+    }
+
+    const onAddClick = () => {
+        let newTeachersCount = [...teachersCount];
+        if(newTeachersCount.length < props.teachersData.length){
+            newTeachersCount.push(<TeachersData type="add" 
+                                            num={newTeachersCount.length} 
+                                            key={newTeachersCount.length}
+                                            setTeachersId={setTeachersId}
+                                            teachersId={teachersId}
+                                            
+                            />);
+            setTeachersCount(newTeachersCount);
+        }
+    }
+
+    const onDelClick = () => {
+        let newTeachersCount = [...teachersCount];
+        let newteachersId = [...teachersId];
+        if(newTeachersCount.length > 1){
+            newTeachersCount.pop();
+            setTeachersCount(newTeachersCount);
+            newteachersId.pop();
+            setTeachersId(newteachersId);
+        }
+    }
+
+    const onAddCourseClick = () => {
+        let flag = true;
+        console.log(teachersCount, teachersId);
+
+        teachersId.forEach(item => {
+            console.log(item);
+            if(!item){
+                flag = false
+            }  
+        })
+        if(!imgNum){
+            alert( "Укажите изобраение" );
+        } else if(!textareaText){
+            alert( "Введите название предмета" );
+        } else if(!teachersId.length){
+            alert( "Укажите преодавателя" );
+        }else if(!flag || teachersId.length !== teachersCount.length){
+            alert( "Укажите всех преодавателей" );
+        }else{
+            props.addCourse(textareaText, imgNum, teachersId);
+            console.log("good");
+        }
+        
     }
 
     let style = (props.active) ? { display: "block" } : { display: "none" };
@@ -45,12 +101,20 @@ const CoursesMainItemModalAdd = (props) => {
                                           onChange={(e)=>{OnTextareaChange(e)}}/>
                             </div>
                             <div className="modal__content-bottom">
-                                <TeachersData type="add"/>
+                                <div className="modal__content-teachers">
+                                    <div className="modal__content-teachers-content">
+                                        {teachersCount.map((item, i) => item)}
+                                    </div>
+                                    <div className="modal__content-teachers-btns">
+                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onAddClick()}}/>
+                                        <FontAwesomeIcon icon={faMinusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onDelClick()}}/>
+                                    </div>
+                                </div>
                                 <input type="button" 
                                        name="btn" 
                                        className="modal__btn" 
                                        value="Добавить" 
-                                       onClick={()=>{console.log(imgNum, textareaText)}}/>
+                                       onClick={()=>{onAddCourseClick()}}/>
                                 <input type="hidden" 
                                        name="imgNum" 
                                        value={imgNum}/>
@@ -64,12 +128,14 @@ const CoursesMainItemModalAdd = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        teachersData: state.coursesPage.teachersData,
         active: state.coursesMain.addActive
     }
 }
 
 const mapDispatchToProps = {
-    coursesCloseModal
+    coursesCloseModal,
+    addCourse
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesMainItemModalAdd);
