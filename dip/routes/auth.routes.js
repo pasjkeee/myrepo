@@ -70,7 +70,7 @@ async (req, res) => {
 
                 resData.subjects = [];
 
-                let dataSubjects = await sequelize.query(`SELECT subjects.subject, teachers.teacher_id, teachers.first_name, teachers.last_name, teachers.patronymic FROM subjects JOIN teachers ON subjects.subject_id = teachers.subject_id`, { type: QueryTypes.SELECT }); 
+                let dataSubjects = await sequelize.query(`SELECT subjects.subject, subjects.subject_id, teachers.teacher_id, teachers.first_name, teachers.last_name, teachers.patronymic FROM subjects JOIN teachers ON subjects.subject_id = teachers.subject_id`, { type: QueryTypes.SELECT }); 
                 
                 let newDataSubjects = [];
                 let iter = -1;

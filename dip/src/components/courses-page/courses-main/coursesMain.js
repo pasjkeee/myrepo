@@ -39,7 +39,6 @@ class CoursesMain extends React.Component{
             })
             this.props.getTeachersData(teachersData);
             this.props.changeTasks(data.tasks);
-            console.log(data.subjects);
             this.props.isMounted();
 
         } catch(e) {

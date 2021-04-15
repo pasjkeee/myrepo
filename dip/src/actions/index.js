@@ -137,20 +137,22 @@ const addCourse = (courseTitle, courseTeacherIds, imgNum) => {
 }
 
 const editCourse = (courseId, courseTitle, imgNum, courseTeacherIds) => {
+    console.log(courseId, courseTitle, imgNum, courseTeacherIds);
+    const data = {
+        courseId,
+        courseTitle,
+        imgNum,
+        courseTeacherIds
+    }
     return{
-        type: 'ADD_COURSE',
-        currentInfo: {
-            courseId,
-            courseTitle,
-            imgNum,
-            courseTeacherIds: [...courseTeacherIds]
-        }
+        type: 'EDIT_COURSE',
+        currentInfo: data
     }
 }
 
 const deleteCourse = (courseId) => {
     return{
-        type: 'ADD_COURSE',
+        type: 'DELETE_COURSE',
         currentInfo: {
             courseId,
             courseTitle: "",

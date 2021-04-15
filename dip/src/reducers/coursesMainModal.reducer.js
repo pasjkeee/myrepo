@@ -8,7 +8,7 @@ const initialState = {
     imgActive: false,
     currentInfo: {
         courseId: -1,
-        courseTitle: "",
+        courseTitle: "21",
         imgNum: -1,
         courseTeacherIds: []
     }
@@ -31,8 +31,7 @@ function coursesMainModalReducer(state = initialState, action){
                 ...state,
                 addActive: true,
                 editActive: false,
-                deleteActive: false,
-                currentInfo: []
+                deleteActive: false
             };
 
         case 'COURSES_OPEN_MODAL_EDIT':
@@ -40,16 +39,14 @@ function coursesMainModalReducer(state = initialState, action){
                 ...state,
                 addActive: false,
                 editActive: true,
-                deleteActive: false,
-                currentInfo: []
+                deleteActive: false
             };
         case 'COURSES_OPEN_MODAL_DELETE': 
             return { 
                 ...state,
                 addActive: false,
                 editActive: false,
-                deleteActive: true,
-                currentInfo: []
+                deleteActive: true
             };
 
         case 'COURSES_OPEN_IMG': 
@@ -85,6 +82,7 @@ function coursesMainModalReducer(state = initialState, action){
             };
 
         case 'EDIT_COURSE':
+            console.log(action.currentInfo)
             return { 
                 ...state,
                 currentInfo: action.currentInfo

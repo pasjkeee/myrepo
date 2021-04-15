@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import CoursesMainItemBtns from '../courses-main-item-btns'; 
 
-import {setCurrentEditCourse} from '../../../actions';
+import {setCurrentEditCourse, editCourse} from '../../../actions';
 
 import Img1 from '../courses-main/Asset 103.svg';
 import Img2 from '../courses-main/Asset 104.svg';
@@ -59,16 +59,8 @@ const CoursesMainItemImg = styled.img`
 
 const CoursesMainItem = (props) => {
 
-
-    const text = props.text;
-    const id = props.courseKey;
-    const imgId = props.imgId;
-    const teacher = props.teacher;
-
-
     const getCourse = () => {
-        props.setCurrentEditCourse({text, id, imgId, teacher});
-
+        props.editCourse(props.courseKey, props.text, props.imgId, props.teacher_id);
     }
 
     let icon;
@@ -92,7 +84,8 @@ const CoursesMainItem = (props) => {
 }
 
 const mapDispatchToProps = {
-    setCurrentEditCourse
+    setCurrentEditCourse,
+    editCourse
 };
 
 

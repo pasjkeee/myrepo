@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 import {connect} from 'react-redux';
@@ -126,8 +126,20 @@ const TeachersData = (props) => {
             defaultText = "Выберите преподавателя"
         }
         if(props.type === "edit"){
-            defaultText = "Выберите преподавателя" //TDOD: исправить
+           console.log(props.teachersData, props.teacher)
+           defaultText = props.teachersData.filter(item => item.teacher_id === props.teacher);
+           defaultText = defaultText[0].teacher;
         }
+
+        useEffect(()=>{
+            if(props.type === "edit"){
+                const teacher = props.teachersData.find((item) => +item.teacher_id ===  props.teacher);
+                let teachersId = [...props.teachersId];
+                teachersId[+props.num] = +props.teacher;
+                props.setTeachersId(teachersId);
+                setChoosedTeacher(teacher);
+            }
+        },[])
 
         const teacherChoosed = (choosedTeacher.teacher_id) ? choosedTeacher.teacher : defaultText;
 
