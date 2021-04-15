@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import Bg from './back.jpg';
 import ModalLogIn from './modal-login';
 
+import TaskThemeModalAdd from '../tasks/taskTehemeModals/taskThemeModalAdd';
+
 const MainPageWrapper = styled.div`
  background: url(${Bg});
  background-repeat: no-repeat;
@@ -39,6 +41,7 @@ const MainPage = (props) => {
         return(
             <MainPageWrapper>
                 <Container>
+                    <TaskThemeModalAdd/>
                     <NavBar></NavBar>
                     <MainText>
                         <h1>
