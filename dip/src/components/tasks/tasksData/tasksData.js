@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import WithRestoService from '../../hoc';
-import {connect} from 'react-redux';
+
 import TasksTheme from '../taskTheme';
 
 const TasksDataContainer = styled.div`
@@ -11,31 +10,13 @@ const TasksDataContainer = styled.div`
     min-height: 100vh;
 `
 
-class TasksData extends React.Component {
+const TasksData = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            
-        };
-    }
-
-    render(){
-        return(
-            <TasksDataContainer>
-                <TasksTheme subjId={this.props.subjId}></TasksTheme>
-            </TasksDataContainer>
-        )
-    }
+    return(
+        <TasksDataContainer>
+            <TasksTheme subjId={props.subjId}></TasksTheme>
+        </TasksDataContainer>
+    )
 }
 
-const mapStateToProps = (state) => {
-    return {
-
-    }
-}
-
-const mapDispatchToProps = {
-};
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(TasksData));
+export default TasksData;

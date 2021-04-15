@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import WithRestoService from '../../hoc';
-import {connect} from 'react-redux';
 
 import Flag from '../flag';
 import TypeCircle from '../typeCircle';
@@ -84,100 +82,73 @@ const DataContentItemContainer = styled.div`
     
 `
 
-class DataContentItem extends React.Component {
+const DataContentItem = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            
-        };
+    const {date, end_date, task, subject, description, task_type} = props.data;
+
+    if(props.filter === "all"){
+        return(
+            <>
+                <DataContentItemContainer>
+                    <div className="dataHeader"> 
+                        <TypeCircle type={task_type}/>
+                        <div className="dataHeaderTitle">
+                            {task}
+                            <div className="subjectName">
+                                {subject}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="dataDescription">
+                        {description}
+                    </div>
+                    <div className="dateContainer">
+                        <div className="fromDate">
+                            <span>C</span> {date}
+                        </div>
+                        <div className="toDate">
+                            <span>До</span> {end_date}
+                        </div>
+                    </div>
+                    <Flag type={task_type}/>
+                    <div className="blur-container">
+                        <TaskBtns type="edit" className="not-blur"/>
+                    </div>
+                </DataContentItemContainer>
+            </>
+        )
     }
 
-    render(){
-
-
-        const {date, end_date, task, subject, description, task_type} = this.props.data;
-
-        console.log(this.props.filter, task_type);
-
-        if(this.props.filter === "all"){
-            return(
-                <>
-                    <DataContentItemContainer>
-                        <div className="dataHeader"> 
-                            <TypeCircle type={task_type}/>
-                            <div className="dataHeaderTitle">
-                                {task}
-                                <div className="subjectName">
-                                    {subject}
-                                </div>
+    if(props.filter === task_type){
+        return(
+            <>
+                <DataContentItemContainer>
+                    <div className="dataHeader"> 
+                        <TypeCircle type={task_type}/>
+                        <div className="dataHeaderTitle">
+                            {task}
+                            <div className="subjectName">
+                                {subject}
                             </div>
                         </div>
-                        <div className="dataDescription">
-                            {description}
+                    </div>
+                    <div className="dataDescription">
+                        {description}
+                    </div>
+                    <div className="dateContainer">
+                        <div className="fromDate">
+                            <span>C</span> {date}
                         </div>
-                        <div className="dateContainer">
-                            <div className="fromDate">
-                                <span>C</span> {date}
-                            </div>
-                            <div className="toDate">
-                                <span>До</span> {end_date}
-                            </div>
+                        <div className="toDate">
+                            <span>До</span> {end_date}
                         </div>
-                        <Flag type={task_type}/>
-                        <div className="blur-container">
-                            <TaskBtns type="edit" className="not-blur"/>
-                        </div>
-                    </DataContentItemContainer>
-
-                </>
-            )
-        }
-
-        if(this.props.filter === task_type){
-            return(
-                <>
-                    <DataContentItemContainer>
-                        <div className="dataHeader"> 
-                            <TypeCircle type={task_type}/>
-                            <div className="dataHeaderTitle">
-                                {task}
-                                <div className="subjectName">
-                                    {subject}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="dataDescription">
-                            {description}
-                        </div>
-                        <div className="dateContainer">
-                            <div className="fromDate">
-                                <span>C</span> {date}
-                            </div>
-                            <div className="toDate">
-                                <span>До</span> {end_date}
-                            </div>
-                        </div>
-                        <Flag type={task_type}/>
-                    </DataContentItemContainer>
-                </>
-            )
-        }
-        return false;
+                    </div>
+                    <Flag type={task_type}/>
+                </DataContentItemContainer>
+            </>
+        )
     }
-
-
+    return false;
 }
 
-
-const mapStateToProps = (state) => {
-    return {
-
-    }
-}
-
-const mapDispatchToProps = {
-};
-
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(DataContentItem));
+export default DataContentItem;

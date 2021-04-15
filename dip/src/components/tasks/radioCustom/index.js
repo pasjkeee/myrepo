@@ -1,6 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import WithRestoService from '../../hoc';
+
 import styled from 'styled-components';
 
 
@@ -25,36 +24,18 @@ const RadioInner = styled.div`
 `
 
 
-class RadioCustom extends React.Component{
+const RadioCustom = (props) => {
 
-
-    render(){
-        if(this.props.enabled){
+        if(props.enabled){
             return(
-                <Radio style={ {border: `2px solid ${this.props.color}` }}>
-                    <RadioInner style={ {backgroundColor: `${this.props.color}` }}>
-
-                    </RadioInner>
+                <Radio style={ {border: `2px solid ${props.color}` }}>
+                    <RadioInner style={ {backgroundColor: `${props.color}` }}/>
                 </Radio>
             )
         }
+
         return(
-            <Radio style={ {border: `2px solid ${this.props.color}` }}>
-                
-            </Radio>
+            <Radio style={ {border: `2px solid ${props.color}` }}/>
         )
-    }
 }
-
-const mapStateToProps = (state) => {
-    return {
-        
-    }
-}
-
-const mapDispatchToProps = {
-    
-};
-
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(RadioCustom));
+export default RadioCustom;

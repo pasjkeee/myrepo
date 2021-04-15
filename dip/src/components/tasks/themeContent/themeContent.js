@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import WithRestoService from '../../hoc';
+
 import {connect} from 'react-redux';
 
 
@@ -51,71 +51,46 @@ const DataContent = styled.div`
 `
 
 
-class ThemeContent extends React.Component {
+const ThemeContent = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            active: false
-        };
-        this.OnActiveChange = this.OnActiveChange.bind(this);
+    let [active, seActive] = useState(false);
+
+    const OnActiveChange = () => {
+        let newActive = !active;
+        seActive(newActive)
     }
-
-    OnActiveChange(){
-        let active = !this.state.active;
-        this.setState({
-            active: active
-        })
+        
+    if(!active){
+        return(
+            <DataContentTitle onClick={()=>{OnActiveChange()}}>
+                <FontAwesomeIcon icon={faCaretRight} size="2x" color="#2E3D54;" />
+                <ThemeName>
+                    {props.data[0].theme}
+                </ThemeName>
+                <ThemeBtns type="edit"/>
+            </DataContentTitle>
+        )
     }
-
-    render(){
-
-        if(!this.state.active){
-            return(
-                <DataContentTitle onClick={()=>{this.OnActiveChange()}}>
-                    <FontAwesomeIcon icon={faCaretRight} size="2x" color="#2E3D54;" />
-                    <ThemeName>
-                        {this.props.data[0].theme}
-                    </ThemeName>
-                    <ThemeBtns type="edit"/>
-                </DataContentTitle>
-            )
-        }
-
-        console.log(this.props.filter);
 
         return(
             <>
-                <DataContentTitle onClick={()=>{this.OnActiveChange()}}>
+                <DataContentTitle onClick={()=>{OnActiveChange()}}>
                 <FontAwesomeIcon icon={faCaretRight} size="2x" rotation={90} color="#2E3D54;" />
                     <ThemeName>
-                        {this.props.data[0].theme}
+                        {props.data[0].theme}
                     </ThemeName>
                     <ThemeBtns type="edit"/>
                 </DataContentTitle>
                 <DataContent >
                     {
-                        this.props.data.map(item => {
-                            return <DataContentItem key={item.task_id} data={item} filter={this.props.filter}/>
+                        props.data.map(item => {
+                            return <DataContentItem key={item.task_id} data={item} filter={props.filter}/>
                         })
                     }
                     <TaskBtns/>
                 </DataContent>
             </>
         )
-
     }
 
-}
-
-const mapStateToProps = (state) => {
-    return {
-
-    }
-}
-
-const mapDispatchToProps = {
-};
-
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(ThemeContent));
+export default ThemeContent;

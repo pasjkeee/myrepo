@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import WithRestoService from '../hoc';
-import {connect} from 'react-redux';
+
 import TasksNavBar from './tasksNavBar';
 import TasksData from './tasksData';
 
@@ -20,34 +19,16 @@ const TasksContainer = styled.div`
 
 `
 
-class Tasks extends React.Component {
+const Tasks = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            
-        };
-    }
-
-    render(){
-        return(
-            <Wrapper>
-                <TasksContainer>
-                    <TasksNavBar></TasksNavBar>
-                    <TasksData subjId={this.props.match.params}></TasksData>
-                </TasksContainer>
-            </Wrapper>
-        )
-    }
+    return(
+        <Wrapper>
+            <TasksContainer>
+                <TasksNavBar></TasksNavBar>
+                <TasksData subjId={props.match.params}></TasksData>
+            </TasksContainer>
+        </Wrapper>
+    )
 }
 
-const mapStateToProps = (state) => {
-    return {
-
-    }
-}
-
-const mapDispatchToProps = {
-};
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(Tasks));
+export default Tasks;

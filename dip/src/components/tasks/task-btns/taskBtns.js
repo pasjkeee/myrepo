@@ -89,55 +89,42 @@ const ButtonDelete = styled(Button)`
     }
 `
 
-export default class TaskBtns extends React.Component{
+const TaskBtns = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            
-        };
-        this.OnEditClick = this.OnEditClick.bind(this);
-        this.OnEnterClick = this.OnEnterClick.bind(this);
-        this.OnDeleteClick = this.OnDeleteClick.bind(this);
-    }
-
-    OnEnterClick(e){
+    const OnEnterClick = (e) => {
         e.preventDefault();
     }
 
-    OnEditClick(e){
+    const OnEditClick = (e) => {
         e.preventDefault();
     }
 
-    OnDeleteClick(e){
+    const OnDeleteClick = (e) => {
         e.preventDefault();
     }
 
-    render(){
-
-        if(this.props.type === "edit"){
-            return(
-
-                <ButtonGroup>
-                    <ButtonEnter onClick={(e)=>{this.OnEditClick(e)}}>
-                        <FontAwesomeIcon icon={faDoorOpen} size="2x" color="#FFFFFF" className="on-hover"/>
-                    </ButtonEnter>
-                    <ButtonEdit onClick={(e)=>{this.OnEditClick(e)}}>
-                        <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF" className="on-hover"/>
-                    </ButtonEdit>
-                    <ButtonDelete onClick={(e)=>{this.OnDeleteClick(e)}}>
-                        <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
-                    </ButtonDelete>
-                    
-                </ButtonGroup>
-            )
-        }
-
+    if(props.type === "edit"){
         return(
-                <ButtonAdd onClick={(e)=>{this.OnEditClick(e)}}>
-                    <FontAwesomeIcon icon={faPlusSquare} size="3x" color="#7D9FF4"/>
-                </ButtonAdd>
+            <ButtonGroup>
+                <ButtonEnter onClick={(e)=>{OnEditClick(e)}}>
+                    <FontAwesomeIcon icon={faDoorOpen} size="2x" color="#FFFFFF" className="on-hover"/>
+                </ButtonEnter>
+                <ButtonEdit onClick={(e)=>{OnEditClick(e)}}>
+                    <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF" className="on-hover"/>
+                </ButtonEdit>
+                <ButtonDelete onClick={(e)=>{OnDeleteClick(e)}}>
+                    <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
+                </ButtonDelete>
+                
+            </ButtonGroup>
         )
     }
+
+    return(
+            <ButtonAdd onClick={(e)=>{OnEditClick(e)}}>
+                <FontAwesomeIcon icon={faPlusSquare} size="3x" color="#7D9FF4"/>
+            </ButtonAdd>
+    )
 }
 
+export default TaskBtns;

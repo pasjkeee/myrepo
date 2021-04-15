@@ -25,47 +25,45 @@ const DataTypeCircle = styled.div`{
     }
 }`
 
-export default class TypeCircle extends React.Component{
+const TypeCircle = (props) => {
 
 
+    const type = props.type;
 
-    render() {
+    switch(type){
+        case 'test':
+        return (
+            <DataTypeCircle style={ {border: `1px solid rgb(40, 214, 93)` }}>
+                <img src={test} alt="T"/>
+            </DataTypeCircle>
+        )
 
-        const type = this.props.type;
+        case 'lection':
+        return (
+            <DataTypeCircle style={ {border: `1px solid rgb(254, 184, 60)` }}>
+                <img src={lection} alt="L"/>
+            </DataTypeCircle>
+        )
 
-        switch(type){
-            case 'test':
-            return (
-                <DataTypeCircle style={ {border: `1px solid rgb(40, 214, 93)` }}>
-                    <img src={test} alt="T"/>
-                </DataTypeCircle>
-            )
+        case 'presentation':
+        return (
+            <DataTypeCircle style={ {border: `1px solid rgb(191, 88, 230)` }}>
+                <img src={presentation} alt="P"/>
+            </DataTypeCircle>
+        )
 
-            case 'lection':
-            return (
-                <DataTypeCircle style={ {border: `1px solid rgb(254, 184, 60)` }}>
-                    <img src={lection} alt="L"/>
-                </DataTypeCircle>
-            )
-
-            case 'presentation':
-            return (
-                <DataTypeCircle style={ {border: `1px solid rgb(191, 88, 230)` }}>
-                    <img src={presentation} alt="P"/>
-                </DataTypeCircle>
-            )
-
-            case 'video':
-            return (
-                <DataTypeCircle style={ {border: `1px solid rgb(212, 0, 0)` }}>
-                    <img src={video} alt="V"/>
-                </DataTypeCircle>
-            )
+        case 'video':
+        return (
+            <DataTypeCircle style={ {border: `1px solid rgb(212, 0, 0)` }}>
+                <img src={video} alt="V"/>
+            </DataTypeCircle>
+        )
        
-            default: 
-                return (
-                    <DataTypeCircle/>
-                )
-            }
+        default: 
+            return (
+                <DataTypeCircle/>
+            )
         }
     }
+
+    export default TypeCircle;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import WithRestoService from '../../hoc';
+
 import {connect} from 'react-redux';
 
 const TasksNavBarContainer = styled.div`
@@ -84,67 +84,47 @@ const StudentMenu = styled.div`
     }
 `
 
-class TasksNavBar extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            
-        };
-    }
-
-    render(){
-
-        return(
-            <TasksNavBarContainer>
-                <CourseName>
-                    <Title>
-                        Базы данных
-                    </Title>
-                    <Teacher>
-                        <div className="title">Преподаватели:</div>
-                        <Teachers>
-                            <TeacherName>
-                                Иванов И.И.
-                                <TeacherEmail>
-                                IvanovII@mpei.ru
-                                </TeacherEmail>
-                            </TeacherName>
-                            <TeacherName>
-                                Иванова И.И
-                                <TeacherEmail>
-                                IvanovaII@mpei.ru
-                                </TeacherEmail>
-                            </TeacherName>
-                        </Teachers>
-                    </Teacher>
-                </CourseName>
-                <StudentMenu>
-                    <div>
-                        <div className="name">
-                            Рыбкин Павел Владимирович
-                        </div>
-                        <div className="email">
-                            pasjkeee@gmail.com
-                        </div>
+const TasksNavBar = (props) => {
+    
+    return(
+        <TasksNavBarContainer>
+            <CourseName>
+                <Title>
+                    Базы данных
+                </Title>
+                <Teacher>
+                    <div className="title">Преподаватели:</div>
+                    <Teachers>
+                        <TeacherName>
+                            Иванов И.И.
+                            <TeacherEmail>
+                            IvanovII@mpei.ru
+                            </TeacherEmail>
+                        </TeacherName>
+                        <TeacherName>
+                            Иванова И.И
+                            <TeacherEmail>
+                            IvanovaII@mpei.ru
+                            </TeacherEmail>
+                        </TeacherName>
+                    </Teachers>
+                </Teacher>
+            </CourseName>
+            <StudentMenu>
+                <div>
+                    <div className="name">
+                        Рыбкин Павел Владимирович
                     </div>
-                    <div className="photo">
-                        
+                    <div className="email">
+                        pasjkeee@gmail.com
                     </div>
-                </StudentMenu>
-            
-            </TasksNavBarContainer>
-        )
-    }
+                </div>
+                <div className="photo">
+                    
+                </div>
+            </StudentMenu>
+        </TasksNavBarContainer>
+    )
 }
 
-const mapStateToProps = (state) => {
-    return {
-
-    }
-}
-
-const mapDispatchToProps = {
-};
-
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(TasksNavBar));
+export default TasksNavBar;

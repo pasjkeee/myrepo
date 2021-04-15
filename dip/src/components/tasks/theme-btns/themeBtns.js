@@ -55,46 +55,37 @@ const ButtonDelete = styled(Button)`
     }
 `
 
-export default class ThemeBtns extends React.Component{
+const ThemeBtns = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            
-        };
-        this.OnEditClick = this.OnEditClick.bind(this);
-    }
 
-    OnEditClick(e){
+    const OnEditClick = (e) => {
         e.preventDefault();
     }
 
-    OnDeleteClick(e){
+    const OnDeleteClick = (e) => {
         e.preventDefault();
     }
 
-    render(){
-
-        if(this.props.type === "edit"){
-            return(
-
-                <ButtonGroup>
-                    <ButtonEdit onClick={(e)=>{this.OnEditClick(e)}}>
-                        <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF" className="on-hover"/>
-                    </ButtonEdit>
-                    <ButtonDelete onClick={(e)=>{this.OnDeleteClick(e)}}>
-                        <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
-                    </ButtonDelete>
-                    
-                </ButtonGroup>
-            )
-        }
-
+    if(props.type === "edit"){
         return(
-                <ButtonAdd onClick={(e)=>{this.OnEditClick(e)}}>
-                    Добавить новую тему
-                </ButtonAdd>
+            <ButtonGroup>
+                <ButtonEdit onClick={(e)=>{OnEditClick(e)}}>
+                    <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF" className="on-hover"/>
+                </ButtonEdit>
+                <ButtonDelete onClick={(e)=>{OnDeleteClick(e)}}>
+                    <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
+                </ButtonDelete>
+                
+            </ButtonGroup>
         )
     }
+
+    return(
+            <ButtonAdd onClick={(e)=>{OnEditClick(e)}}>
+                Добавить новую тему
+            </ButtonAdd>
+    )
 }
 
+
+export default ThemeBtns;
