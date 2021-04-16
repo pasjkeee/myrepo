@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import TasksNavBar from './tasksNavBar';
 import TasksData from './tasksData';
 
+import TaskThemeModalAdd from './taskTehemeModals/taskThemeModalAdd';
+import TaskThemeModalEdit from './taskTehemeModals/taskThemeModalEdit';
+import TaskThemeModalDelete from './taskTehemeModals/taskThemeModalDelete';
+
 const Wrapper = styled.div`
     background: rgb(255,255,255);
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(148,187,233,1) 100%);
@@ -26,6 +30,7 @@ const Tasks = (props) => {
             <TasksContainer>
                 <TasksNavBar></TasksNavBar>
                 <TasksData subjId={props.match.params}></TasksData>
+                <TaskThemeModalDelete/>
             </TasksContainer>
         </Wrapper>
     )

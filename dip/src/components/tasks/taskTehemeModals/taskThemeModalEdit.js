@@ -4,6 +4,8 @@ import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPlusSquare, faMinusSquare} from "@fortawesome/free-solid-svg-icons";
 
+import SelectPosition from './selectPosition';
+
 import './modals.scss';
 
 
@@ -27,7 +29,7 @@ const TaskThemeModalEdit = (props) => {
                         <div className="task-theme-modal__subtitle-value">
                             {"Предмет: "} 
                             <span className="task-theme-modal__subtitle-value-subject">
-                                Ситемы автоматизированного проектирования
+                                Системы автоматизированного проектирования
                             </span>
                         </div>
                         <div className="task-theme-modal__subtitle-value">
@@ -38,19 +40,24 @@ const TaskThemeModalEdit = (props) => {
                         </div>
                     </div>
                     <div className="task-theme-modal__lable-text-area">
-                        <label htmlFor="theme_modal_add_teaxtarea"                          className="task-theme-modal__textarea-label">
-                                Введите новое название темы
+                        <div className="task-theme-modal__lable-text-area">
+                        <label      htmlFor="task-theme-modal_modal_edit_teaxtarea"                                  className="task-theme-modal__textarea-label">
+                                Введите название темы
                         </label>
-                        <textarea   id="task-theme-modal_modal_add_teaxtarea"
+                        <textarea   id="task-theme-modal_modal_edit_teaxtarea"
                                     className="task-theme-modal__textarea"
                                     name="textarea" 
                                     rows="2" 
                                     placeholder="Введите новое название темы"/>
+                        </div>
                     </div>
-                    <input type="button" 
-                                       name="btn" 
+                    <div className="task-theme-modal__bottom">
+                        <SelectPosition/>
+                        <input type="button" 
+                                name="btn" 
                                        className="task-theme-modal__btn" 
                                        value="Изменить" />
+                    </div>
                 </div>
             </div>
         </div>

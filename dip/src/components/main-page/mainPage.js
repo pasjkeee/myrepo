@@ -41,7 +41,6 @@ const MainPage = (props) => {
         return(
             <MainPageWrapper>
                 <Container>
-                    <TaskThemeModalAdd/>
                     <NavBar></NavBar>
                     <MainText>
                         <h1>
