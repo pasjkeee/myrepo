@@ -103,12 +103,32 @@
             }
         }
 
-        &__title{
-            margin-bottom: 20px;
+        &__title {
+            color: #22313F;
+            text-align: center;
+            font-size: 22px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-weight: 700;
+                
+            &-name{
+                color: #4056B9;
+                font-size: 20px;
+                text-transform: none;
+                font-weight: 700;
+    
+                &-to-delete{
+                    text-transform: none;
+                    font-weight: 700;
+                    font-size: 22px;
+                    color: #4056B9;
+                }
+            }
+        }
+
+        &__lable-text-area{
             position: relative;
-            color: #7D9FF4;
-            font-size: 18px;
-            max-width: 90%;
+            width: 100%
         }
 
         textarea{
@@ -121,6 +141,17 @@
             outline: none;
             border: 1px solid #7D9FF4;
             border-radius: 5px; 
+        }
+
+        &__textarea-label {
+            font-size: 16px;
+            color: #4056B9;
+            display: block;
+            padding: 3px 10px;
+            background-color: white;
+            position: absolute;
+            top: -5px;
+            left: 10px; 
         }
     }
 }

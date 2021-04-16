@@ -46,11 +46,13 @@ const TaskThemeModalAdd = (props) => {
                                     rows="2" 
                                     placeholder="Введите название темы"/>
                     </div>
-                    <SelectPosition/>
-                    <input type="button" 
-                                       name="btn" 
+                    <div className="task-theme-modal__bottom">
+                        <SelectPosition/>
+                        <input type="button" 
+                                name="btn" 
                                        className="task-theme-modal__btn" 
                                        value="Добавить" />
+                    </div>
                 </div>
             </div>
         </div>

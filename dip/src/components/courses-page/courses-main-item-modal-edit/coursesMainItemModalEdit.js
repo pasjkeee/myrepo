@@ -79,16 +79,22 @@ const CoursesMainItemModalEdit = (props) => {
                     <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4"/>
                 </div>
                     <form>
-                        <div className="modal__title">Изменить предмет <b>{courseTitle}</b></div>
+                        <div className="modal__title">Изменить предмет <div className="modal__title-name">{courseTitle}</div></div>
                         <div className="modal__content">
                             <div className="modal__content-up">
                                 <InputImg getImgNum={getImgNum} currentImgId={imgId}/>
-                                <textarea   name="textarea" 
-                                        rows="2" 
-                                        placeholder="Введите название предмета" 
-                                        required 
-                                        onChange={(e)=>{OnTextareaChange(e)}} 
-                                        value={textareaText}/>
+                                <div className="modal__lable-text-area">
+                                    <label htmlFor="theme_modal_add_teaxtarea"                                               className="modal__textarea-label">
+                                        Введите новое название предмета
+                                    </label>
+                                    <textarea   id="theme_modal_add_teaxtarea"
+                                                name="textarea" 
+                                                rows="2" 
+                                                placeholder="Введите название предмета" 
+                                                required 
+                                                onChange={(e)=>{OnTextareaChange(e)}} 
+                                                value={textareaText}/>
+                                </div>
                                 </div>  
                             <div className="modal__content-bottom">
                             <div className="modal__content-teachers">

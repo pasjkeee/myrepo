@@ -20,7 +20,7 @@ const CoursesMainItemModalDelete = (props) => {
     let style = (props.active) ? { display: "block" } : { display: "none" };
 
     const deleteCourse = () => {
-        if(textareaText === props.currentEditCourse.text){
+        if(textareaText === props.currentEditCourse.courseTitle){
             let result = window.confirm("Вы действительно хотите удалить предмет?");
             if(result){
                 console.log("Deleted");
@@ -37,14 +37,20 @@ const CoursesMainItemModalDelete = (props) => {
                     <FontAwesomeIcon icon={faTimes} size="2x" color="#7D9FF4"/>
                 </div>
                 <form>
-                    <div className="modal__title">Введите выделенный текст, чтобы удалить предмет <b>{props.currentEditCourse.text}</b></div>
+                    <div className="modal__title">Введите выделенный текст, чтобы удалить предмет <div className="modal__title-name-to-delete">{props.currentEditCourse.courseTitle}</div></div>
                     <div className="modal__content">
-                        <textarea name="textarea" 
-                                    rows="2" 
-                                    placeholder="Ввведите выделенный текст, чтобы удалить предмет" 
-                                    required 
-                                    onChange={(e)=>{OnTextareaChange(e)}} 
-                                    value={textareaText}/>
+                    <div className="modal__lable-text-area">
+                                    <label htmlFor="theme_modal_add_teaxtarea"                                               className="modal__textarea-label">
+                                        Введите выделенный текст
+                                    </label>
+                                        <textarea name="textarea" 
+                                        id="theme_modal_add_teaxtarea"
+                                        rows="2" 
+                                        placeholder="Ввведите выделенный текст, чтобы удалить предмет" 
+                                        required 
+                                        onChange={(e)=>{OnTextareaChange(e)}} 
+                                        value={textareaText}/>
+                                </div>
                         <div className="modal__content-bottom">
                             <div></div>
                             <input type="button" name="btn" className="modal__btn" value="Удалить" onClick={()=>{deleteCourse()}}/>
@@ -58,7 +64,7 @@ const CoursesMainItemModalDelete = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        currentEditCourse: state.coursesPage.currentEditCourse,
+        currentEditCourse: state.coursesMain.currentInfo,
         active: state.coursesMain.deleteActive
     }
 }

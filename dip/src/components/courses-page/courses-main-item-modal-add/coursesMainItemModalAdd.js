@@ -94,11 +94,17 @@ const CoursesMainItemModalAdd = (props) => {
                         <div className="modal__content">
                             <div className="modal__content-up">
                                 <InputImg getImgNum={getImgNum}/>
-                                <textarea name="textarea" 
-                                          rows="2" 
-                                          placeholder="Введите название предмета" 
-                                          required 
-                                          onChange={(e)=>{OnTextareaChange(e)}}/>
+                                <div className="modal__lable-text-area">
+                                    <label htmlFor="theme_modal_add_teaxtarea"                                               className="modal__textarea-label">
+                                        Введите название предмета
+                                    </label>
+                                        <textarea   id="theme_modal_add_teaxtarea"
+                                                    name="textarea" 
+                                                    rows="2" 
+                                                    placeholder="Введите название предмета" 
+                                                    required 
+                                                    onChange={(e)=>{OnTextareaChange(e)}}/>
+                                </div>
                             </div>
                             <div className="modal__content-bottom">
                                 <div className="modal__content-teachers">
