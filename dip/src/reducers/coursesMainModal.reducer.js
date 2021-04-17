@@ -24,7 +24,12 @@ function coursesMainModalReducer(state = initialState, action){
                 deleteActive: false,
                 teacherDataActive: false,
                 imgActive: false,
-                currentInfo: []
+                currentInfo: {
+                    courseId: -1,
+                    courseTitle: "",
+                    imgNum: -1,
+                    courseTeacherIds: []
+                }
             };
         case 'COURSES_OPEN_MODAL_ADD':
             return { 

@@ -1,157 +1,69 @@
-const closeModal = () => {
-    return {
-        type: 'CLOSE_MODAL'
-    }
-}
+//loginReducer
+export const closeModal = () =>  ({ type: 'CLOSE_MODAL' })
+export const openModal = () => ({  type: 'OPEN_MODAL'})
 
-const openModal = () => {
-    return {
-        type: 'OPEN_MODAL'
-    }
-}
+export const logIn = (authenticated, userId, access_lvl) => ({
+    type: 'LOG_IN',
+    authenticated,
+    userId,
+    access_lvl
+})
+export const logOut = () => ({ type: 'LOG_OUT' })
 
-const nextMonth = () => {
-    return {
-        type: 'NEXT_MONTH'
-    }
-}
 
-const prevMonth = () => {
-    return {
-        type: 'PREV_MONTH'
-    }
-}
+//coursesPageReducer
+export const nextMonth = () => ({ type: 'NEXT_MONTH'})
+export const prevMonth = () => ({type: 'PREV_MONTH'})
+        
+export const toggleCal = () => ({ type: 'TOGGLE_CAL' })
 
-const toggleCal = () => {
-    return {
-        type: 'TOGGLE_CAL'
-    }
-}
-
-const logIn = (authenticated, userId, access_lvl) => {
-    return {
-        type: 'LOG_IN',
-        authenticated,
-        userId,
-        access_lvl
-    }
-}
-
-const logOut = () => {
-    return {
-        type: 'LOG_OUT'
-    }
-}
-
-const changeTasks = (taskData) => {
-    return{
+export const changeTasks = (taskData) => ({
         type: 'CHANGE_TASKS',
         taskData: taskData
-    }
-}
+    })
+export const isMounted = () => ({ type: 'IS_MOUNTED' })
+export const notMounted = () => ({ type: 'NOT_MOUNTED' })
 
-const isMounted = () => {
-    return{
-        type: 'IS_MOUNTED'
-    }
-}
-
-const notMounted = () => {
-    return{
-        type: 'NOT_MOUNTED'
-    }
-}
-
-const setCurrentEditCourse = (data) => {
-    return{
+export const setCurrentEditCourse = (data) => ({
         type: 'SET_CURRENT_EDIT_COURSE',
         data: data
-    }
-}
+    })
 
-const getTeachersData = (teachersData) => {
-    return{
-        type: 'GET_TEACHERS_DATA',
-        teachersData: teachersData
-    }
-}
+export const getTeachersData = (teachersData) => ({
+    type: 'GET_TEACHERS_DATA',
+    teachersData: teachersData
+})
 
-const coursesCloseModal = () => {
-    return{
-        type: 'COURSES_CLOSE_MODAL'
-    }
-}
-
-const coursesOpenModalAdd = () => {
-    return{
-        type: 'COURSES_OPEN_MODAL_ADD'
-    }
-}
-
-const coursesOpenModalEdit = () => {
-    return{
-        type: 'COURSES_OPEN_MODAL_EDIT'
-    }
-}
-
-const coursesOpenModalDelete = () => {
-    return{
-        type: 'COURSES_OPEN_MODAL_DELETE'
-    }
-}
-
-const coursesOpenImg = () => {
-    return{
-        type: 'COURSES_OPEN_IMG'
-    }
-}
-
-const coursesCloseImg = () => {
-    return{
-        type: 'COURSES_CLOSE_IMG'
-    }
-}
-
-const coursesOpenTeacherData = () => {
-    return{
-        type: 'COURSES_OPEN_TEACHER_DATA'
-    }
-}
-
-const coursesCloseTeacherData = () => {
-    return{
-        type: 'COURSES_CLOSE_TEACHER_DATA'
-    }
-}
-
-const addCourse = (courseTitle, courseTeacherIds, imgNum) => {
-    return{
-        type: 'ADD_COURSE',
+//coursesMainModalReducer
+export const coursesCloseModal = () => ({ type: 'COURSES_CLOSE_MODAL' });
+export const coursesOpenModalAdd = () => ({ type: 'COURSES_OPEN_MODAL_ADD' });
+export const coursesOpenModalEdit = () => ({ type: 'COURSES_OPEN_MODAL_EDIT' });
+export const coursesOpenModalDelete = () => ({ type: 'COURSES_OPEN_MODAL_DELETE'});
+export const coursesOpenImg = () => ({ type: 'COURSES_OPEN_IMG' });
+export const coursesCloseImg = () => ({ type: 'COURSES_CLOSE_IMG' });
+export const coursesOpenTeacherData = () => ({ type: 'COURSES_OPEN_TEACHER_DATA' });
+export const coursesCloseTeacherData = () => ({ type: 'COURSES_CLOSE_TEACHER_DATA' });
+export const addCourse = (courseTitle, courseTeacherIds, imgNum) => ({
+    type: 'ADD_COURSE',
         currentInfo: {
             courseId: -1,
             courseTitle,
             imgNum,
             courseTeacherIds: [...courseTeacherIds]
         }
-    }
-}
+});
 
-const editCourse = (courseId, courseTitle, imgNum, courseTeacherIds) => {
-    console.log(courseId, courseTitle, imgNum, courseTeacherIds);
-    const data = {
-        courseId,
-        courseTitle,
-        imgNum,
-        courseTeacherIds
-    }
-    return{
+export const editCourse = (courseId, courseTitle, imgNum, courseTeacherIds) => ({
         type: 'EDIT_COURSE',
-        currentInfo: data
-    }
-}
+        currentInfo: {
+            courseId,
+            courseTitle,
+            imgNum,
+            courseTeacherIds
+        }
+});
 
-const deleteCourse = (courseId) => {
-    return{
+export const deleteCourse = (courseId) => ({
         type: 'DELETE_COURSE',
         currentInfo: {
             courseId,
@@ -159,39 +71,9 @@ const deleteCourse = (courseId) => {
             imgNum: -1,
             courseTeacherIds: []
         }
-    }
-}
+});
 
-const setCurrentActiveTeacher = (currentActiveTeacher) => {
-    return{
+export const setCurrentActiveTeacher = (currentActiveTeacher) => ({
         type: 'SET_CURRENT_ACTIVE_TEACHER',
         currentActiveTeacher
-    }
-}
-
-export {
-    closeModal,
-    openModal,
-    nextMonth,
-    prevMonth,
-    toggleCal,
-    logIn,
-    logOut,
-    changeTasks,
-    isMounted,
-    notMounted,
-    setCurrentEditCourse,
-    getTeachersData,
-    coursesCloseModal,
-    coursesOpenModalAdd,
-    coursesOpenModalEdit,
-    coursesOpenModalDelete,
-    coursesOpenImg,
-    coursesCloseImg,
-    coursesOpenTeacherData,
-    coursesCloseTeacherData,
-    addCourse,
-    editCourse,
-    deleteCourse,
-    setCurrentActiveTeacher
-};
+});
