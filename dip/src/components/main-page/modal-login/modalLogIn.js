@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faKey, faTimes } from "@fortawesome/free-solid-svg-icons";
-import {closeModal, logIn, logOut} from '../../../actions';
+import {closeModal, logIn, logOut, registerHandler} from '../../../actions';
 import {connect} from 'react-redux';
 import WithRestoService from '../../hoc';
 import RestoService from '../../../services/resto-service';
@@ -141,22 +141,14 @@ const ModalLogIn = (props) => {
     let [email, setEmail] = useState("");
     let [pas, setPas] = useState("");
 
-    const server = new RestoService();
-
     const registerHandler = async (e) => {
         e.preventDefault();
-        try {
-            const data = await server.getData('/api/auth/login', 'POST', {email, pas});
-            props.logIn(data.authenticated, data.userId, data.access_lvl);
-        } catch(e) {
-            console.log(e.message);
-        }
+        props.registerHandler(email, pas)
     }
 
-
-        if(props.modalDisplay === "none"){
-            return 0;
-        }
+    if(props.modalDisplay === "none"){
+        return 0;
+    }
 
     return(
         <Modal>
@@ -198,7 +190,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     closeModal,
     logIn,
-    logOut
+    logOut,
+    registerHandler
 };
 
 export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(ModalLogIn));

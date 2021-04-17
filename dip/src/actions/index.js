@@ -105,3 +105,14 @@ export const getCoursesMainData = () => {
         dispatch(isMounted());
     }
 }
+
+export const registerHandler = (email, pas) => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/auth/login', 'POST', {email, pas});
+
+        dispatch(logIn(data.authenticated, data.userId, data.access_lvl));
+    }
+}
