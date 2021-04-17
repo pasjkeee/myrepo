@@ -26,12 +26,17 @@ const TasksContainer = styled.div`
 const Tasks = (props) => {
 
     return(
-        <Wrapper>
-            <TasksContainer>
-                <TasksNavBar></TasksNavBar>
-                <TasksData subjId={props.match.params}></TasksData>
-            </TasksContainer>
-        </Wrapper>
+        <>
+            <Wrapper>
+                <TasksContainer>
+                    <TasksNavBar></TasksNavBar>
+                    <TasksData subjId={props.match.params}></TasksData>
+                </TasksContainer>
+            </Wrapper>
+            <TaskThemeModalAdd/>
+            <TaskThemeModalEdit/>
+            <TaskThemeModalDelete/>
+        </>
     )
 }
 

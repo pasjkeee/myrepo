@@ -1,6 +1,10 @@
 
 import React from 'react';
 
+import {connect} from 'react-redux';
+
+import {taskThemeCloseModal } from '../../../actions'
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPlusSquare, faMinusSquare} from "@fortawesome/free-solid-svg-icons";
 
@@ -11,12 +15,16 @@ import './modals.scss';
 
 const TaskThemeModalAdd = (props) => {
 
+    if(!props.addActive){
+        return false
+    }
 
     return(
         <div className="task-theme-modal">
             <div className="task-theme-modal__dialog">
                 <div className="task-theme-modal__content">
-                    <div className="task-theme-modal__close">
+                    <div className="task-theme-modal__close"
+                        onClick={()=>{props.taskThemeCloseModal()}}>
                         <FontAwesomeIcon icon={faTimes} size="1x" color="#4056B9"/>
                     </div>
                     <div className="task-theme-modal__title">
@@ -59,4 +67,14 @@ const TaskThemeModalAdd = (props) => {
     )
 }
 
-export default TaskThemeModalAdd;
+const mapStateToProps = (state) => {
+    return {
+        addActive: state.taskTheme.addActive
+    }
+}
+
+const mapDispatchToProps = {
+    taskThemeCloseModal
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskThemeModalAdd);

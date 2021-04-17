@@ -91,6 +91,11 @@ export const setCurrentActiveTeacher = (currentActiveTeacher) => ({
 export const setTaskThemeData = (taskThemeData) => ({ type: 'SET_TASK_THEME_DATA', taskThemeData });
 export const setTaskThemeMounted = (taskThemeMounted) => ({type: 'SET_TASK_THEME_MOUNTED', taskThemeMounted })
 
+export const taskThemeCloseModal = () => ({ type: 'TASK_THEME_CLOSE_MODAL' });
+export const taskThemeOpenModalAdd = () => ({ type: 'TASK_THEME_OPEN_MODAL_ADD' });
+export const taskThemeOpenModalEdit = () => ({ type: 'TASK_THEME_OPEN_MODAL_EDIT' });
+export const taskThemeOpenModalDelete = () => ({ type: 'TASK_THEME_OPEN_MODAL_DELETE'});
+
 
 //Thunk
 

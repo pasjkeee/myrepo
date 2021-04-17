@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import {connect} from 'react-redux';
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+
+import {taskThemeOpenModalAdd, taskThemeOpenModalEdit, taskThemeOpenModalDelete} from '../../../actions'
 
 const ButtonGroup = styled.div`
     width: 80px;
@@ -57,13 +61,21 @@ const ButtonDelete = styled(Button)`
 
 const ThemeBtns = (props) => {
 
+    const OnAddClick = (e) => {
+        e.preventDefault();
+        console.log("hi");
+        props.taskThemeOpenModalAdd();
+    }
 
     const OnEditClick = (e) => {
         e.preventDefault();
+        console.log("hi");
+        props.taskThemeOpenModalEdit();
     }
 
     const OnDeleteClick = (e) => {
         e.preventDefault();
+        props.taskThemeOpenModalDelete();
     }
 
     if(props.type === "edit"){
@@ -81,11 +93,22 @@ const ThemeBtns = (props) => {
     }
 
     return(
-            <ButtonAdd onClick={(e)=>{OnEditClick(e)}}>
+            <ButtonAdd onClick={(e)=>{OnAddClick(e)}}>
                 Добавить новую тему
             </ButtonAdd>
     )
 }
 
 
-export default ThemeBtns;
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = {
+    taskThemeOpenModalAdd,
+    taskThemeOpenModalEdit,
+    taskThemeOpenModalDelete
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThemeBtns);

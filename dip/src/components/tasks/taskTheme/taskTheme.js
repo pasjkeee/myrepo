@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import WithRestoService from '../../hoc';
+
 import {connect} from 'react-redux';
 import RadioCustom from '../radioCustom';
 import ThemeContent from '../themeContent';
@@ -147,4 +147,4 @@ const mapDispatchToProps = {
     getTaskThemeData
 };
 
-export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(TasksTheme));
+export default connect(mapStateToProps, mapDispatchToProps)(TasksTheme);
