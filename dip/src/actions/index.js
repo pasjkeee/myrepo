@@ -1,4 +1,6 @@
 //loginReducer
+import RestoService from '../services/resto-service';
+
 export const closeModal = () =>  ({ type: 'CLOSE_MODAL' })
 export const openModal = () => ({  type: 'OPEN_MODAL'})
 
@@ -19,19 +21,24 @@ export const toggleCal = () => ({ type: 'TOGGLE_CAL' })
 
 export const changeTasks = (taskData) => ({
         type: 'CHANGE_TASKS',
-        taskData: taskData
+        taskData
     })
 export const isMounted = () => ({ type: 'IS_MOUNTED' })
 export const notMounted = () => ({ type: 'NOT_MOUNTED' })
 
 export const setCurrentEditCourse = (data) => ({
         type: 'SET_CURRENT_EDIT_COURSE',
-        data: data
+        data
     })
 
 export const getTeachersData = (teachersData) => ({
     type: 'GET_TEACHERS_DATA',
-    teachersData: teachersData
+    teachersData
+})
+
+export const setCoursesData = (coursesData) => ({
+    type: 'SET_COURSES_DATA',
+    coursesData
 })
 
 //coursesMainModalReducer
@@ -77,3 +84,24 @@ export const setCurrentActiveTeacher = (currentActiveTeacher) => ({
         type: 'SET_CURRENT_ACTIVE_TEACHER',
         currentActiveTeacher
 });
+
+export const getCoursesMainData = () => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/auth/subjects');
+
+        const teachersData = data.teachers.map(item => {
+            return {
+                teacher_id: item.teacher_id,
+                teacher: `${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+            }
+        });
+
+        dispatch(setCoursesData(data.subjects));
+        dispatch(getTeachersData(teachersData));
+        dispatch(changeTasks(data.tasks));
+        dispatch(isMounted());
+    }
+}

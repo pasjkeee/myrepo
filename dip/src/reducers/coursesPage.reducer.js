@@ -8,7 +8,8 @@ const initialState = {
     obj: [],
     isMounted: false,
     currentEditCourse: {},
-    teachersData: []
+    teachersData: [],
+    coursesData: []
 }
 
 function coursesPageReducer(state = initialState, action){
@@ -75,6 +76,11 @@ function coursesPageReducer(state = initialState, action){
                 ...state,
                 teachersData: action.teachersData
             };
+        case 'SET_COURSES_DATA':
+            return{
+                ...state,
+                coursesData: action.coursesData
+            }
        
         default: 
             return state;
