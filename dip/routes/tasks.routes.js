@@ -10,9 +10,11 @@ const { QueryTypes } = require('sequelize');
 
 router.get('/tasks',
 async (req, res) => {
+    console.log(req);
     try {
         console.log(req.query);
         console.log(req.session);
+        console.log("huisu");
 
         const {access_lvl, user, authenticated} = req.session;
 

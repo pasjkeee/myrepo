@@ -85,6 +85,15 @@ export const setCurrentActiveTeacher = (currentActiveTeacher) => ({
         currentActiveTeacher
 });
 
+
+//taskThemeReducer
+
+export const setTaskThemeData = (taskThemeData) => ({ type: 'SET_TASK_THEME_DATA', taskThemeData });
+export const setTaskThemeMounted = (taskThemeMounted) => ({type: 'SET_TASK_THEME_MOUNTED', taskThemeMounted })
+
+
+//Thunk
+
 export const getCoursesMainData = () => {
 
     return async (dispatch) => {
@@ -114,5 +123,21 @@ export const registerHandler = (email, pas) => {
         const data = await server.getData('/api/auth/login', 'POST', {email, pas});
 
         dispatch(logIn(data.authenticated, data.userId, data.access_lvl));
+    }
+}
+
+export const getTaskThemeData = (numPath) => {
+
+    return async (dispatch) => {
+
+        dispatch(setTaskThemeMounted(false))
+
+        const server = new RestoService();
+        const data = await server.getData(`/api/tasks/tasks?subjId=${numPath}`);
+
+        console.log(data, "lol");
+
+        dispatch(setTaskThemeData(data));
+        dispatch(setTaskThemeMounted(true))
     }
 }

@@ -30,7 +30,6 @@ const Tasks = (props) => {
             <TasksContainer>
                 <TasksNavBar></TasksNavBar>
                 <TasksData subjId={props.match.params}></TasksData>
-                <TaskThemeModalDelete/>
             </TasksContainer>
         </Wrapper>
     )

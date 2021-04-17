@@ -91,11 +91,7 @@ async (req, res) => {
                     }
                 });
 
-                console.log(newDataSubjects);
-
                 resData.subjects = [...newDataSubjects];
-
-                
                 
                 let dataTask = await sequelize.query(`SELECT tasks.task_id, tasks.task, tasks.task_type_id, tasks.theme_id, tasks.date, tasks.end_date, tasks.description, tasks.link, themes.theme, subjects.subject, task_types.task_type FROM tasks JOIN subjects JOIN themes JOIN task_types ON tasks.subject_id = subjects.subject_id AND tasks.theme_id = themes.theme_id AND tasks.task_type_id = task_types.task_type_id`, { type: QueryTypes.SELECT });
 

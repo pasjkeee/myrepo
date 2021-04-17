@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import WithRestoService from '../../hoc';
 import {connect} from 'react-redux';
 import RadioCustom from '../radioCustom';
 import ThemeContent from '../themeContent';
 
-import RestoService from '../../../services/resto-service';
+import {getTaskThemeData} from '../../../actions'
+
 import ThemeBtns from '../theme-btns';
 
 
@@ -39,37 +40,23 @@ const DataFilter = styled.div`
 `
 
 
-class TasksTheme extends React.Component {
+const TasksTheme  = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            dropdownOpen: false,
-            toggle: false,
-            currentFiletr: "all",
-            enabled: [true, false, false, false, false],
-            data: []
-        };
-        this.server = new RestoService();
-        this.changeFilter = this.changeFilter.bind(this);
-    }
+    let [dropdownOpen, setDropdownOpen] = useState(false);
+    let [toggle, setToggle] = useState(false);
+    let [currentFiletr, setCurrentFiletr] = useState("all");
+    let [enabled, setEnabled] = useState([true, false, false, false, false]);
+    let [data, setData] = useState([]);
 
-    async componentDidMount(){
+    useEffect(()=>{
+        props.getTaskThemeData(props.subjId.courseId);
+    },[])
 
-        try {
-            console.log(this.props.subjId);
-        const data = await this.server.getData(`/api/tasks/tasks?subjId=${this.props.subjId.courseId}`);
-        this.setState({
-            data: data
-        })
+    useEffect(()=>{
+        setData(props.taskThemeData)
+    },[props.taskThemeData])
 
-        } catch(e) {
-            console.log(e.message);
-        }
-    }
-
-
-    changeFilter(e){
+    const changeFilter = (e) => {
         let currentNum = [false, false, false, false, false];
         if(e.target.name){
 
@@ -91,69 +78,73 @@ class TasksTheme extends React.Component {
                     break;
             }
 
-            this.setState({
-                currentFiletr: e.target.name,
-                enabled: currentNum
-            })
+            setCurrentFiletr(e.target.name);
+            setEnabled(currentNum);
         }
     }
 
-    render(){
-        let newSet = new Set();
-        let newObj = {};
-        for(let i=0; i<this.state.data.length; i++){
-            if(!newSet.has(this.state.data[i].theme_id)){
-                newSet.add(this.state.data[i].theme_id)
-                newObj[`${this.state.data[i].theme_id}`] = [];
+    console.log(props.taskThemeData);
+
+    if(!props.taskThemeMounted || data.length === 0){
+        return <></>
+    }
+
+    let newSet = new Set();
+    let newObj = {};
+    for(let i=0; i<data.length; i++){
+        if(!newSet.has(data[i].theme_id)){
+            newSet.add(data[i].theme_id)
+            newObj[`${data[i].theme_id}`] = [];
+        }
+        newObj[`${data[i].theme_id}`].push(data[i]);
+    }
+    newSet = [...newSet];
+
+    return(
+        <>   
+            <DataFilter>
+                <form>
+                    <label onClick={(e)=>{changeFilter(e)}}>
+                        <RadioCustom color="#ABAEB3" enabled={enabled[0]}/>
+                         <input name="all" type="radio" /> Все
+                    </label>
+                    <label onClick={(e)=>{changeFilter(e)}}>
+                        <RadioCustom color="#FEB83C" enabled={enabled[1]}/>
+                        <input name="lection" type="radio" /> Лекции
+                    </label>
+                    <label onClick={(e)=>{changeFilter(e)}}>
+                        <RadioCustom color="#28D65D" enabled={enabled[2]}/>
+                        <input name="test" type="radio" /> Тесты
+                    </label>
+                    <label onClick={(e)=>{changeFilter(e)}}>
+                        <RadioCustom color="#BF58E6" enabled={enabled[3]}/>
+                        <input name="presentation" type="radio" /> Презентации
+                    </label>
+                    <label onClick={(e)=>{changeFilter(e)}}>
+                        <RadioCustom color="#D40000" enabled={enabled[4]}/>
+                        <input name="video" type="radio" /> Видеo
+                    </label>
+                </form>
+            </DataFilter>
+            {
+                newSet.map(item => {
+                    return <ThemeContent key={item} data={newObj[item]} filter={currentFiletr}/>
+                })
             }
-            newObj[`${this.state.data[i].theme_id}`].push(this.state.data[i]);
-        }
-        newSet = [...newSet];
-
-        return(
-            <>   
-                <DataFilter>
-                    <form>
-                        <label onClick={(e)=>{this.changeFilter(e)}}>
-                            <RadioCustom color="#ABAEB3" enabled={this.state.enabled[0]}/>
-                             <input name="all" type="radio" /> Все
-                        </label>
-                        <label onClick={(e)=>{this.changeFilter(e)}}>
-                            <RadioCustom color="#FEB83C" enabled={this.state.enabled[1]}/>
-                            <input name="lection" type="radio" /> Лекции
-                        </label>
-                        <label onClick={(e)=>{this.changeFilter(e)}}>
-                            <RadioCustom color="#28D65D" enabled={this.state.enabled[2]}/>
-                            <input name="test" type="radio" /> Тесты
-                        </label>
-                        <label onClick={(e)=>{this.changeFilter(e)}}>
-                            <RadioCustom color="#BF58E6" enabled={this.state.enabled[3]}/>
-                            <input name="presentation" type="radio" /> Презентации
-                        </label>
-                        <label onClick={(e)=>{this.changeFilter(e)}}>
-                            <RadioCustom color="#D40000" enabled={this.state.enabled[4]}/>
-                            <input name="video" type="radio" /> Видеo
-                        </label>
-                    </form>
-                </DataFilter>
-                {
-                    newSet.map(item => {
-                        return <ThemeContent key={item} data={newObj[item]} filter={this.state.currentFiletr}/>
-                    })
-                }
-                <ThemeBtns/>
-            </>
-        )
-    }
+            <ThemeBtns/>
+        </>
+    )
 }
 
 const mapStateToProps = (state) => {
     return {
-
+        taskThemeData: state.taskTheme.taskThemeData,
+        taskThemeMounted: state.taskTheme.taskThemeMounted
     }
 }
 
 const mapDispatchToProps = {
+    getTaskThemeData
 };
 
 export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(TasksTheme));
