@@ -2,7 +2,11 @@
 
 # dependencies
 /node_modules
+<<<<<<< HEAD
 /dip/node_modules
+=======
+/SDE(React+Redux+Express+SQL)/node_modules
+>>>>>>> master
 /.pnp
 .pnp.js
 
