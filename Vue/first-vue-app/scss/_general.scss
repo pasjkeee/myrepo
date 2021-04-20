@@ -1,0 +1,38 @@
+.container{
+    width: 1170px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding-bottom:60px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.burger-menu{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    z-index: 10;
+    background-color: #FFCF26;
+    align-items: center;
+    transform: translateX(0%);
+}
+
+.burger-wrapper{
+    width: 30px;
+    height: 20px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.burger{
+    position: relative;
+    width: 30px;
+    height: 2px;
+    background-color: #ffffff;
+    z-index: 10;
+}
+

@@ -1,0 +1,18 @@
+.transform0{
+    transform: translateY(0px);
+}
+
+.transform100{
+    transition: 0.4s all ease;
+    position: absolute;
+    top: -100%;
+}
+
+.rotate180{
+    transition: 0.4s all ease;
+    transform: rotate(180deg);
+}
+
+.translateX0{
+    transform: translateX(0%);
+}

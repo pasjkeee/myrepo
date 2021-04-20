@@ -2,7 +2,6 @@
 
 # dependencies
 /node_modules
-/SDE(React+Redux+Express+SQL)/node_modules
 /.pnp
 .pnp.js
 
