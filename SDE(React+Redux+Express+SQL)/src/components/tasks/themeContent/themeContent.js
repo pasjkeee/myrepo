@@ -55,14 +55,22 @@ const ThemeContent = (props) => {
 
     let [active, seActive] = useState(false);
 
-    const OnActiveChange = () => {
-        let newActive = !active;
-        seActive(newActive)
+    const OnActiveChange = (e) => {
+        if(e){
+            if(e.target.getAttribute("data-type") !== "button"){
+                let newActive = !active;
+                seActive(newActive)
+            };
+        } else {
+            let newActive = !active;
+            seActive(newActive)
+        }
+        
     }
         
     if(!active){
         return(
-            <DataContentTitle onClick={()=>{OnActiveChange()}}>
+            <DataContentTitle onClick={(e)=>{OnActiveChange(e)}}>
                 <FontAwesomeIcon icon={faCaretRight} size="2x" color="#2E3D54;" />
                 <ThemeName>
                     {props.data[0].theme}

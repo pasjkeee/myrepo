@@ -81,10 +81,10 @@ const ThemeBtns = (props) => {
     if(props.type === "edit"){
         return(
             <ButtonGroup>
-                <ButtonEdit onClick={(e)=>{OnEditClick(e)}}>
+                <ButtonEdit onClick={(e)=>{OnEditClick(e)}} data-type="button">
                     <FontAwesomeIcon icon={faPen} size="1x" color="#FFFFFF" className="on-hover"/>
                 </ButtonEdit>
-                <ButtonDelete onClick={(e)=>{OnDeleteClick(e)}}>
+                <ButtonDelete onClick={(e)=>{OnDeleteClick(e)}} data-type="button">
                     <FontAwesomeIcon icon={faTrashAlt} size="1x" color="#FFFFFF"/>
                 </ButtonDelete>
                 
