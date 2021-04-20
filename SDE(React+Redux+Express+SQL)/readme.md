@@ -132,20 +132,15 @@ $THIS
 
 Добавление нового предмета
 -----------------------------------
-![AddNewCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/addNewCourse.JPG "Добавление нового предмета")​
-
-![AddNewCourse2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/addNewCourse2.JPG "Добавление нового предмета")​
-
-![AddNewCourse3](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/addNewCourse3.jpg "Добавление нового предмета")​
+![AddNewCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/CourseModalAdd.png "Добавление нового предмета")​
 
 Изменение предмета
 -----------------------------------
-![EditCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/editCourse.JPG "Добавление нового предмета")​
-![EditCourse2](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/editCourse2.jpg "Добавление нового предмета")​
+![EditCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/CourseModalEdit.png "Добавление нового предмета")​
 
 Удаление предмета
 -----------------------------------
-![DeleteCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/deleteCourse.JPG "Удаление предмета")​
+![DeleteCourse](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/CourseModalDelete.png "Удаление предмета")​
 
 
 Календарь событий
@@ -155,6 +150,15 @@ $THIS
 Пример страницы предмета
 -----------------------------------
 ![Tasks](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/taskExample.JPG "Пример страницы предмета")​
+
+Добавление новой темы
+-----------------------------------
+![AddNewTheme](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/TaskThemeModalAdd.png "Добавление новой темы")​
+
+Изменение и удаление темы
+-----------------------------------
+![EditTheme](https://github.com/pasjkeee/myrepo/blob/master/SDE(React%2BRedux%2BExpress%2BSQL)/TaskThemeModalEditDelete.png "Изменение и удаление темы")​
+
 
 Пример страницы с наведением на карточку
 -----------------------------------
