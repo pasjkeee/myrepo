@@ -57,7 +57,7 @@ const reducer = (state = initialState, action) => {
                 rows = state.rows - 1;
                 counterRows = counterRows - 1
                 rowsStrategy.pop();
-                table.splice(rows);
+                table.splice(rows, 1);
             }
 
             return { 
@@ -96,7 +96,7 @@ const reducer = (state = initialState, action) => {
                 columns = state.columns - 1;
                 counterColumns--;
                 columnsStrategy.pop();
-                table.map(item => item.splice(columns));
+                table.map(item => item.splice(columns), 1);
             }
 
             return { 
@@ -160,18 +160,34 @@ const reducer = (state = initialState, action) => {
             rowsStrategy = [...state.rowsStrategy];
 
                 if(str[0] === "B"){
-                    table.splice(parseInt(str[1]+str[2]) - 1, 1);
+                    let newI;
+                    for(let i=0; i<rowsStrategy.length; i++){
+                        if(rowsStrategy[i] === parseInt(str[1]+str[2])){
+                            newI = i;
+                        }
+                    }
+                    table.splice(newI, 1);
                     rows--;
-                    rowsStrategy = rowsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]) - 1);
+                    rowsStrategy = rowsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]));
                     console.log(parseInt(str[1]+str[2]))
                 }
 
                 if(str[0] === "A"){
+                    let newI;
+                    for(let i=0; i<columnsStrategy.length; i++){
+                        if(columnsStrategy[i] === parseInt(str[1]+str[2])){
+                            newI = i;
+                        }
+                    }
+                    
                     for(let j=0; j<table.length; j++){
-                        table[j].splice(parseInt(str[1]+str[2]) - 1, 1);
+                        table[j].splice(newI, 1);
+                        console.log(parseInt(str[1]+str[2]));
+                        console.log(table);
                     }
                     columns--;
-                    columnsStrategy = columnsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]) - 1);
+            
+                    columnsStrategy = columnsStrategy.filter((item)=> item !== parseInt(str[1]+str[2]));
                     console.log(parseInt(str[1]+str[2]))
                 }
 

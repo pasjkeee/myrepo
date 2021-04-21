@@ -405,8 +405,8 @@ const App: React.FC<IProps> = (props: IProps) => {
                     <Button  variant="contained" color="secondary" onClick={()=>{updDomination()}} >Upd domination</Button>
                     <Button  variant="contained" color="primary" onClick={()=>{setMINMAX()}} >Upd MAXMIN/MINMAX</Button>
                     <Button  variant="contained" color="secondary" onClick={()=>{rndRefill()}} >RANDOM REFILL</Button>
-                    <Button  variant="contained" color="primary" onClick={()=>{props.removeStrongDomination(listStrongDomintaion)}} disabled>Удалить сильно доминируемые стратегии</Button>  
-                    <Button  variant="contained" color="secondary" onClick={()=>{props.removeStrongDomination(listWeaklyDomintaion)}} disabled>Удалить слабо доминируемые стратегии</Button>  
+                    <Button  variant="contained" color="primary" onClick={()=>{props.removeStrongDomination(listStrongDomintaion)}} disabled style={{display: "none"}}>Удалить сильно доминируемые стратегии</Button>  
+                    <Button  variant="contained" color="secondary" onClick={()=>{props.removeStrongDomination(listWeaklyDomintaion)}} disabled style={{display: "none"}}>Удалить слабо доминируемые стратегии</Button>  
                     </div>
             </div>
             <TableContainer component={Paper} style={tableContainerStyle}>

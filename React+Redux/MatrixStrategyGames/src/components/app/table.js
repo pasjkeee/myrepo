@@ -35,7 +35,7 @@ import Paper from '@material-ui/core/Paper';
                     {
                         props.table.map((items, i) => {
                             let com = <TableCell component="th" scope="row">B{props.rowsStrategy[i]}</TableCell >
-                            let com2 = items.map((row, j) => <TableCell style={{cursor: "pointer", minWidth: "70px"}} onClick={()=>{props.changeCurrent(i, j)}} key={j} align="center">
+                            let com2 = items.map((row, j) => <TableCell style={{cursor: "pointer", minWidth: "70px"}} onClick={()=>{props.changeCurrent(i, j)}} key={Math.random()} align="center">
                                                                 {
                                                                     (props.choosed === "one") ? row[0] : `${row[0]} / ${row[1]}`
                                                                 }
