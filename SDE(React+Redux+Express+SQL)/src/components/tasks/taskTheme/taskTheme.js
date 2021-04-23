@@ -13,10 +13,10 @@ import ThemeBtns from '../theme-btns';
 const DataFilter = styled.div`
     width: 100%;
     height: 60px;
-    border-bottom: 1px solid #CACACA;
+    border-bottom: 1px solid rgba(125, 159, 244, 0.1);
     display: flex;
     justify-content: center;
-    background-color: #f3f6ff;
+    background-color: rgba(125, 159, 244, 0.05);
 
     form{
         display: flex;

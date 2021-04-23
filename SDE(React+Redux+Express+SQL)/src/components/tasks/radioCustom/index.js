@@ -10,6 +10,7 @@ const Radio = styled.div`
     border: 2px solid #FEB83C;
     margin-right: 7px;
     position: relative;
+    background-color: white;
 `
 
 const RadioInner = styled.div`

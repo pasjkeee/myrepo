@@ -39,8 +39,8 @@ const Button = styled.button`
 const ButtonAdd = styled.button`
     width: 230px;
     min-height: 300px; 
-    border: 1px solid #CBCBCB;
-    background-color: #FFFFFF;
+    border: 1px solid rgba(226,232,255,.5);
+    background: linear-gradient(-45deg ,white,#f3f6ff);
     border-radius: 8px;
     margin-top: 10px;
     position: relative;
@@ -49,9 +49,10 @@ const ButtonAdd = styled.button`
     diaplay: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.4;
+    opacity: 0.5;
         :hover{
-            opacity: 0.7;
+            opacity: 0.9;
+            box-shadow: 0 2px 8px rgb(143 175 255 / 50%);
         }
 `
 

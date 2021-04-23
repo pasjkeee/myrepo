@@ -97,6 +97,15 @@ export const taskThemeOpenModalAdd = () => ({ type: 'TASK_THEME_OPEN_MODAL_ADD' 
 export const taskThemeOpenModalEdit = () => ({ type: 'TASK_THEME_OPEN_MODAL_EDIT' });
 export const taskThemeOpenModalDelete = () => ({ type: 'TASK_THEME_OPEN_MODAL_DELETE'});
 
+//taskReducer
+
+export const setTaskData = (taskData) => ({ type: 'SET_TASK_DATA', taskData });
+export const setTaskMounted = (taskMounted) => ({type: 'SET_TASK_MOUNTED', taskMounted })
+
+export const taskCloseModal = () => ({ type: 'TASK_CLOSE_MODAL' });
+export const taskOpenModalAdd = () => ({ type: 'TASK_OPEN_MODAL_ADD' });
+export const taskOpenModalEdit = () => ({ type: 'TASK_OPEN_MODAL_EDIT' });
+export const taskOpenModalDelete = () => ({ type: 'TASK_OPEN_MODAL_DELETE'});
 
 //Thunk
 

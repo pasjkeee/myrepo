@@ -9,13 +9,14 @@ const DataContentItemContainer = styled.div`
 
     width: 230px;
     min-height: 300px; 
-    border: 1px solid #CBCBCB;
-    background-color: #FFFFFF;
+    border: 1px solid rgba(226,232,255,.5);
+    background: linear-gradient(-45deg ,white,#f3f6ff);
     border-radius: 8px;
     padding: 15px 15px 60px 15px;
     margin-top: 10px;
     position: relative;
-    box-shadow: 1px 1px 4px rgba(203, 203, 203, 0.7);
+
+    
 
     .dataHeader{
         width: 100%;
@@ -48,7 +49,7 @@ const DataContentItemContainer = styled.div`
         bottom: 0px;
         left: 0px;
         height: 60px;
-        background-color: #F7F7F7;
+        background-color: rgba(125, 159, 244, 0.1);
         border-radius: 0px 0px 8px 8px;
         padding: 10px;
         display: flex;
@@ -56,7 +57,7 @@ const DataContentItemContainer = styled.div`
         justify-content: center;
         align-items: center;
         color: #9C9C9C;
-        border-top: 1px solid #EBEBEB;
+        border-top: 1px solid rgba(125, 159, 244, 0.2);
     }
 
     .blur-container{
@@ -67,6 +68,9 @@ const DataContentItemContainer = styled.div`
         .dataHeader, .dataDescription, .dateContainer{
             filter: blur(2px);
         }
+
+        background-color: #f1f4ff;
+        box-shadow: 0 2px 8px rgb(143 175 255 / 50%);
 
         
         .blur-container{
