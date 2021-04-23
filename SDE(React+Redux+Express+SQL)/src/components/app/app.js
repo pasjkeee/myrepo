@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import CoursesPage from '../courses-page';
 import MainPage from '../main-page';
 import Tasks from '../tasks';
 
+import {getAuthenticated} from '../../actions/index';
+
 
 
 const App = (props) => {
 
-    console.log(props);
+    useEffect(()=>{
+        props.getAuthenticated();
+    }, [])
+
     let isAuthenticated = false;
     if(props.isAutorized){
         isAuthenticated = true;
@@ -39,5 +44,9 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = {
+    getAuthenticated
+}
 
-export default connect(mapStateToProps)(App);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

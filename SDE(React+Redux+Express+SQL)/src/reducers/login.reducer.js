@@ -40,6 +40,12 @@ function loginReducer(state = initialState, action){
                  isAutorized: false
             };
 
+        case 'SET_AUTHORIZED':
+            return { 
+                 ...state,
+                 isAutorized: action.auth
+            };
+
         default: 
             return state;
     }

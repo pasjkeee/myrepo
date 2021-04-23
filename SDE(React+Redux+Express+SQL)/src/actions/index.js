@@ -11,6 +11,7 @@ export const logIn = (authenticated, userId, access_lvl) => ({
     access_lvl
 })
 export const logOut = () => ({ type: 'LOG_OUT' })
+export const setAuthorized = (auth) => ({ type: 'SET_AUTHORIZED', auth})
 
 
 //coursesPageReducer
@@ -144,5 +145,19 @@ export const getTaskThemeData = (numPath) => {
 
         dispatch(setTaskThemeData(data));
         dispatch(setTaskThemeMounted(true))
+    }
+}
+
+export const getAuthenticated = () => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData(`/api/auth/getAuthenticated`);
+        if(data?.authenticated === true){
+            dispatch(setAuthorized(true));
+        } else {
+            dispatch(setAuthorized(false));
+        }
     }
 }
