@@ -9,7 +9,7 @@ const initialState = {
     isMounted: false,
     currentEditCourse: {},
     teachersData: [],
-    coursesData: []
+    coursesData: [] //Информация по предметам
 }
 
 function coursesPageReducer(state = initialState, action){
@@ -77,6 +77,13 @@ function coursesPageReducer(state = initialState, action){
                 teachersData: action.teachersData
             };
         case 'SET_COURSES_DATA':
+            return{
+                ...state,
+                coursesData: action.coursesData
+            }
+        case 'ADD_NEW_COURSE':
+            let newDataItem = action.coursesData;
+            newDataItem.subject_id = +(new Date());
             return{
                 ...state,
                 coursesData: action.coursesData

@@ -28,7 +28,6 @@ const Button = styled.button`
     display: inline-block;
     cursor: pointer;
     box-shadow: 0 10px 30px 0 rgba(125,159,244,0.4);
-    opacity: 0.7;
 
     :hover{
         box-shadow: 0 10px 30px 0 rgba(125,159,244,0.9);
@@ -58,7 +57,7 @@ const ButtonEdit = styled(Button)`
 `
 
 const ButtonDelete = styled(Button)`
-    opacity: 0.5;
+    opacity: 0.8;
     border-radius: 0px 0px 10px 0px;
     background-color: #FFFFFF;
     border: 1px solid rgba(212, 0, 0, 0.5);

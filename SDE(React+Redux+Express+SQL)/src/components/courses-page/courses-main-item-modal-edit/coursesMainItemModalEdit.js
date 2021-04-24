@@ -102,7 +102,7 @@ const CoursesMainItemModalEdit = (props) => {
                                         {teachersCount.map((item, i) => item)}
                                     </div>
                                     <div className="modal__content-teachers-btns">
-                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onAddClick()}}/>
+                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onAddClick()}} style={{marginRight: "5px"}}/>
                                         <FontAwesomeIcon icon={faMinusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onDelClick()}}/>
                                     </div>
                                 </div>

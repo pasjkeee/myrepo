@@ -42,6 +42,11 @@ export const setCoursesData = (coursesData) => ({
     coursesData
 })
 
+export const addNewCourse = (coursesData) => ({
+    type: 'ADD_NEW_COURSE',
+    coursesData
+})
+
 //coursesMainModalReducer
 export const coursesCloseModal = () => ({ type: 'COURSES_CLOSE_MODAL' });
 export const coursesOpenModalAdd = () => ({ type: 'COURSES_OPEN_MODAL_ADD' });

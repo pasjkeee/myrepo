@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {connect} from 'react-redux';
-import {coursesCloseModal, addCourse} from '../../../actions'
+import {coursesCloseModal, addCourse, addNewCourse} from '../../../actions'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPlusSquare, faMinusSquare} from "@fortawesome/free-solid-svg-icons";
@@ -95,7 +95,7 @@ const CoursesMainItemModalAdd = (props) => {
                             <div className="modal__content-up">
                                 <InputImg getImgNum={getImgNum}/>
                                 <div className="modal__lable-text-area">
-                                    <label htmlFor="theme_modal_add_teaxtarea"                                               className="modal__textarea-label">
+                                    <label htmlFor="theme_modal_add_teaxtarea" className="modal__textarea-label">
                                         Введите название предмета
                                     </label>
                                         <textarea   id="theme_modal_add_teaxtarea"
@@ -112,7 +112,7 @@ const CoursesMainItemModalAdd = (props) => {
                                         {teachersCount.map((item, i) => item)}
                                     </div>
                                     <div className="modal__content-teachers-btns">
-                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onAddClick()}}/>
+                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onAddClick()}} style={{marginRight: "5px"}}/>
                                         <FontAwesomeIcon icon={faMinusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onDelClick()}}/>
                                     </div>
                                 </div>
@@ -141,7 +141,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     coursesCloseModal,
-    addCourse
+    addCourse,
+    addNewCourse
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesMainItemModalAdd);

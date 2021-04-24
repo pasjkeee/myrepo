@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 
     .teacher-title{
         margin-right: 20px;
-        font-weight: 500;
+        font-weight: 400;
         color: #7D9FF4;
         font-size: 18px;
     }
@@ -33,18 +33,19 @@ const MainContainer = styled.div`
     align-items: center;
     cursor: pointer;
     position: relative;
-    margin-bottom: 10px;
     margin-left: 0px;
+    margin-top: 0px;
 
     &:first-child{
         margin-left: 0px;
+        margin-top: 5px;
     }
 
     .text{
-        font-weight: 700;
-        color: #7D9FF4;
-        font-size: 16px;
+        font-weight: 500;
+        font-size: 18px;
         user-select: none;
+        width: 100%;
     }
 `
 
@@ -66,7 +67,7 @@ const TeachersContainer = styled.div`
         height: 40px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        padding-left: 35px;
         border-bottom: 1px solid #7D9FF4;
         user-select: none;
         background-color: #FFFFFF;
@@ -148,7 +149,7 @@ const TeachersData = (props) => {
                 <Wrapper>
                     {teacherTitle}
                     <MainContainer onClick={()=>{OnActive()}}>
-                        <FontAwesomeIcon icon={faAngleRight} size="2x" rotation={iconRotation} color="#7D9FF4" style={{marginRight: "15px"}}/>
+                        <FontAwesomeIcon icon={faAngleRight} size="1x" rotation={iconRotation} color="#7D9FF4" style={{marginRight: "15px", fontSize: "20px"}}/>
                         <div className="text">
                             {teacherChoosed}
                         </div> 

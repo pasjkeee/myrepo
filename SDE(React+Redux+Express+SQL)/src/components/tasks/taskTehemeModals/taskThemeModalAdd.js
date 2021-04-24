@@ -25,7 +25,7 @@ const TaskThemeModalAdd = (props) => {
                 <div className="task-theme-modal__content">
                     <div className="task-theme-modal__close"
                         onClick={()=>{props.taskThemeCloseModal()}}>
-                        <FontAwesomeIcon icon={faTimes} size="1x" color="#4056B9"/>
+                        <FontAwesomeIcon icon={faTimes} size="1x" color="#7D9FF4"/>
                     </div>
                     <div className="task-theme-modal__title">
                         Добавить новую тему

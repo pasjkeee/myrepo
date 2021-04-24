@@ -52,8 +52,10 @@ router.get('/getAuthenticated',
 async (req, res) => {
     try {
         let token;
+        console.log(req.cookies, "lol1");
         const cookiesStr = `${req.cookies.session_cookie_name}`.slice(2, 12);
         const dataCookies = await sequelize.query(`SELECT data FROM sessions WHERE session_id LIKE '${cookiesStr}%'`, { type: QueryTypes.SELECT });
+        console.log(dataCookies, "lol2");
         if(dataCookies.length === 0){
             const result = {
                 authenticated: false
@@ -82,6 +84,7 @@ router.get('/subjects',
 async (req, res) => {
         try {
             let token;
+            console.log(req.cookies);
             const cookiesStr = `${req.cookies.session_cookie_name}`.slice(2, 12);
             const dataCookies = await sequelize.query(`SELECT data FROM sessions WHERE session_id LIKE '${cookiesStr}%'`, { type: QueryTypes.SELECT });
             for (let key of dataCookies){
@@ -89,6 +92,7 @@ async (req, res) => {
                 token = k.split('"data":"')[1].slice(0, -2);
             }
             let decoded = jwt.decode(token, "pavel");
+            console.log(dataCookies);
 
             const {access_lvl, userId, authenticated} = decoded;
             console.log(access_lvl, userId, authenticated);
