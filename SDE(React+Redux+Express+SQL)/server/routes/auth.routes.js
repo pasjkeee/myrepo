@@ -52,10 +52,10 @@ router.get('/getAuthenticated',
 async (req, res) => {
     try {
         let token;
-        console.log(req.cookies, "lol1");
+        
         const cookiesStr = `${req.cookies.session_cookie_name}`.slice(2, 12);
         const dataCookies = await sequelize.query(`SELECT data FROM sessions WHERE session_id LIKE '${cookiesStr}%'`, { type: QueryTypes.SELECT });
-        console.log(dataCookies, "lol2");
+        
         if(dataCookies.length === 0){
             const result = {
                 authenticated: false
@@ -107,31 +107,43 @@ async (req, res) => {
                 resData.teachers = [];
 
                 let dataTeachers = await sequelize.query(`SELECT teacher_id, first_name, last_name, patronymic FROM teachers`, { type: QueryTypes.SELECT });
+                console.log(dataTeachers);
 
                 resData.teachers = [...dataTeachers];
 
                 resData.subjects = [];
 
-                let dataSubjects = await sequelize.query(`SELECT subjects.subject, subjects.subject_id, teachers.teacher_id, teachers.first_name, teachers.last_name, teachers.patronymic FROM subjects JOIN teachers ON subjects.subject_id = teachers.subject_id`, { type: QueryTypes.SELECT }); 
+                let dataSubjects = await sequelize.query(`SELECT subjects.subject, subjects.subject_id, teachers.teacher_id FROM subjects JOIN teachers JOIN teacher_subject ON teacher_subject.subject_id = subjects.subject_id AND teacher_subject.teacher_id = teachers.teacher_id ORDER BY subject_id`, { type: QueryTypes.SELECT }); 
+
+                console.log(dataSubjects);
                 
                 let newDataSubjects = [];
                 let iter = -1;
                 let setSubkectName = new Set();
                 dataSubjects.forEach(item => {
-                    if(!setSubkectName.has(item.subject)){
+                    if(!setSubkectName.has(item.subject_id)){
                         iter++;
-                        setSubkectName.add(item.subject);
+                        setSubkectName.add(item.subject_id);
                         let newItem = {...item};
                         newItem.teacher_id = [item.teacher_id];
-                        newItem.teachers = `${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        dataTeachers.forEach(teach => {
+                            if(teach.teacher_id === item.teacher_id){
+                                newItem.teachers = `${teach.first_name} ${teach.last_name[0]}.${teach.patronymic[0]}.`
+                            }
+                        })
                         newDataSubjects[iter] = newItem;
                     } else {
                         let newItem = {...newDataSubjects[iter]};
                         newItem.teacher_id.push(item.teacher_id);
-                        newItem.teachers = newItem.teachers+`, ${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        dataTeachers.forEach(teach => {
+                            if(teach.teacher_id === item.teacher_id){
+                                newItem.teachers = newItem.teachers+`, ${teach.first_name} ${teach.last_name[0]}.${teach.patronymic[0]}.`
+                            }
+                        })
                         newDataSubjects[iter] = newItem;
                     }
                 });
+                
 
                 resData.subjects = [...newDataSubjects];
                 

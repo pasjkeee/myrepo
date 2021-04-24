@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {connect} from 'react-redux';
-import {coursesCloseModal, addCourse, addNewCourse} from '../../../actions'
+import {coursesCloseModal, addCourse, addNewCourse, addNewCourseToDatabase} from '../../../actions'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPlusSquare, faMinusSquare} from "@fortawesome/free-solid-svg-icons";
@@ -75,7 +75,7 @@ const CoursesMainItemModalAdd = (props) => {
         }else if(!flag || teachersId.length !== teachersCount.length){
             alert( "Укажите всех преодавателей" );
         }else{
-            props.addCourse(textareaText, imgNum, teachersId);
+            props.addNewCourseToDatabase(textareaText, imgNum, teachersId);
             console.log("good");
         }
         
@@ -142,7 +142,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     coursesCloseModal,
     addCourse,
-    addNewCourse
+    addNewCourse,
+    addNewCourseToDatabase
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesMainItemModalAdd);

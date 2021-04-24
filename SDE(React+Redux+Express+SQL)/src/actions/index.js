@@ -175,3 +175,16 @@ export const getAuthenticated = () => {
         }
     }
 }
+
+export const addNewCourseToDatabase = (text, imgNum, teachersId) => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/postsubject', 'POST', {text, imgNum, teachersId});
+
+
+
+    }
+
+}

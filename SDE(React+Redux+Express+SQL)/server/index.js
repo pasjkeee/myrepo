@@ -14,6 +14,7 @@ const PORT = 3030;
 const sequelize = require('./utils/database');
 const routes = require('./routes/auth.routes');
 const routesTasks = require('./routes/tasks.routes');
+const routesCourses = require('./routes/courses.routes');
 
 
 const options = {
@@ -69,6 +70,7 @@ app.use(
 
 app.use('/api/auth', routes);
 app.use('/api/tasks', routesTasks);
+app.use('/api', routesCourses);
 
 async function start () {
     try {
