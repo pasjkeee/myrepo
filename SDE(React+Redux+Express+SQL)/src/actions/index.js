@@ -183,8 +183,26 @@ export const addNewCourseToDatabase = (text, imgNum, teachersId) => {
         const server = new RestoService();
         const data = await server.getData('/api/postsubject', 'POST', {text, imgNum, teachersId});
 
+    }
+}
 
+export const editCourseInDatabase = (text, imgNum, teachersId, subject_id) => {
 
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/editsubject', 'PUT', {text, imgNum, teachersId, subject_id});
+
+    }
+}
+
+export const deleteCourseFromDatabase = (subjectId) => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/deletesubject', 'DELETE', {subject_id: subjectId});
+        
     }
 
 }

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import {connect} from 'react-redux';
 
-import {coursesCloseModal, editCourse} from '../../../actions'
+import {coursesCloseModal, getCoursesMainData, editCourseInDatabase} from '../../../actions'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPlusSquare, faMinusSquare} from "@fortawesome/free-solid-svg-icons";
@@ -69,6 +69,30 @@ const CoursesMainItemModalEdit = (props) => {
             setTeachersId(newteachersId);
         }
     }
+
+    const onEditClick = (e) => {
+        e.preventDefault();
+        let flag = true;
+        teachersId.forEach(item => {
+            if(!item){
+                flag = false
+            }  
+        })
+        if(!imgNum){
+            alert( "Укажите изобраение" );
+        } else if(!textareaText){
+            alert( "Введите название предмета" );
+        } else if(!teachersId.length){
+            alert( "Укажите преодавателя" );
+        }else if(!flag || teachersId.length !== teachersCount.length){
+            alert( "Укажите всех преодавателей" );
+        }else{
+            console.log(textareaText, imgId, teachersId, courseId);
+            props.editCourseInDatabase(textareaText, imgId, teachersId, courseId);
+            props.coursesCloseModal();
+            props.getCoursesMainData();
+         }
+    }
         
     let style = (props.active) ? { display: "block" } : { display: "none" };
 
@@ -110,7 +134,7 @@ const CoursesMainItemModalEdit = (props) => {
                                        name="btn" 
                                        className="modal__btn" 
                                        value="Добавить" 
-                                       onClick={()=>{console.log({imgId, textareaText})}}/>
+                                       onClick={(e)=>{onEditClick(e)}}/>
                                 <input type="hidden" name="imgNum" value={imgId}/>
                             </div>
                         </div>
@@ -131,7 +155,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    coursesCloseModal
+    coursesCloseModal,
+    editCourseInDatabase,
+    getCoursesMainData
 }
 
 
