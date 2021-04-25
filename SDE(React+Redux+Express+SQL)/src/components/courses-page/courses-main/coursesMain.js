@@ -31,14 +31,14 @@ const CoursesMain = (props) => {
                 {
                     data.map((item) => {
                         return (
-                            <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }} key = {item.subject_id}>
+                            <Link to={`/courses/${item.subject_id}`} style={{ textDecoration: 'none' }} key = {item?.subject_id}>
                                 <CoursesMainItem
-                                    key = {item.subject_id}
-                                    courseKey = {item.subject_id}
+                                    key = {item?.subject_id}
+                                    courseKey = {item?.subject_id}
                                     imgId="2"
-                                    text = {item.subject}
-                                    teacher_id = {item.teacher_id}
-                                    teacher = {`(${item.teachers})`}
+                                    text = {item?.subject}
+                                    teacher_id = {item?.teacher_id}
+                                    teacher = {`(${item?.teachers})`}
                                 />    
                             </Link>
                         )

@@ -47,6 +47,7 @@ const DataContent = styled.div`
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 30px;
     justify-items: center;
+    padding-bottom: 10px;
     margin: 20px 30px;
 `
 

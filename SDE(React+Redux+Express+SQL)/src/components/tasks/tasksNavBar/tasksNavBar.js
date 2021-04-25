@@ -5,14 +5,15 @@ import {connect} from 'react-redux';
 
 const TasksNavBarContainer = styled.div`
     width: 1140px;
-    height: 100px;
-    background-color: #2E3D54;
+    height: 160px;
+    background-color: #7D9FF4;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 30px;
+    padding: 0px 50px;
     border-radius: 20px 20px 0px 0px;
+    text-shadow: 1px 1px 2px #4056B9;
 
 `
 
@@ -22,7 +23,7 @@ const CourseName = styled.div`
 `
 
 const Title = styled.div`
-    font-size: 30px;
+    font-size: 36px;
     padding-right: 30px;
     display: flex;
     align-items: center;
@@ -37,25 +38,25 @@ const Teacher = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 300;
 
     .title{
-        margin-bottom: 5px;
-        opacity: 0.5;
+        opacity: 0.8;
+        font-size: 16px;
     }
 
 `
 
 const TeacherName = styled.div`
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 500;
     opacity: 1;
     margin-right: 15px;
 `
 
 const TeacherEmail = styled.div`
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 300;
     opacity: 0.8;
 `
@@ -65,12 +66,12 @@ const StudentMenu = styled.div`
     align-items: center;
 
     .name{
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 500;
     }
 
     .email{
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 300;
         opacity: 0.8;
     }

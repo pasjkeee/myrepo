@@ -1,9 +1,12 @@
 const Sequelize = require('sequelize');
-const DB_NAME = 'diplom';
-const USER_NAME = 'root';
-const PASS = 'root';
+
+require('dotenv').config();
+
+const DB_NAME = process.env.DB_NAME;
+const USER_NAME = process.env.DB_USER;
+const PASS = process.env.DB_PAS;
 const sequelize = new Sequelize(DB_NAME, USER_NAME, PASS, {
-    host: 'localhost',
+    host: process.env.DB_HOST,
     dialect: 'mysql',
     define: {
         timestamps: false

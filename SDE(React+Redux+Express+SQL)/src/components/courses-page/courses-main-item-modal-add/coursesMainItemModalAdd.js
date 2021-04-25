@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {connect} from 'react-redux';
-import {coursesCloseModal, addCourse} from '../../../actions'
+import {coursesCloseModal, addCourse, addNewCourse, addNewCourseToDatabase, getCoursesMainData} from '../../../actions'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPlusSquare, faMinusSquare} from "@fortawesome/free-solid-svg-icons";
@@ -58,10 +58,7 @@ const CoursesMainItemModalAdd = (props) => {
 
     const onAddCourseClick = () => {
         let flag = true;
-        console.log(teachersCount, teachersId);
-
         teachersId.forEach(item => {
-            console.log(item);
             if(!item){
                 flag = false
             }  
@@ -75,8 +72,11 @@ const CoursesMainItemModalAdd = (props) => {
         }else if(!flag || teachersId.length !== teachersCount.length){
             alert( "Укажите всех преодавателей" );
         }else{
-            props.addCourse(textareaText, imgNum, teachersId);
-            console.log("good");
+            props.addNewCourseToDatabase(textareaText, imgNum, teachersId)
+            .then(()=>{
+                props.coursesCloseModal();
+                props.getCoursesMainData();
+            })
         }
         
     }
@@ -95,7 +95,7 @@ const CoursesMainItemModalAdd = (props) => {
                             <div className="modal__content-up">
                                 <InputImg getImgNum={getImgNum}/>
                                 <div className="modal__lable-text-area">
-                                    <label htmlFor="theme_modal_add_teaxtarea"                                               className="modal__textarea-label">
+                                    <label htmlFor="theme_modal_add_teaxtarea" className="modal__textarea-label">
                                         Введите название предмета
                                     </label>
                                         <textarea   id="theme_modal_add_teaxtarea"
@@ -112,7 +112,7 @@ const CoursesMainItemModalAdd = (props) => {
                                         {teachersCount.map((item, i) => item)}
                                     </div>
                                     <div className="modal__content-teachers-btns">
-                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onAddClick()}}/>
+                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onAddClick()}} style={{marginRight: "5px"}}/>
                                         <FontAwesomeIcon icon={faMinusSquare} size="2x" color="#7D9FF4" cursor="pointer" onClick={()=>{onDelClick()}}/>
                                     </div>
                                 </div>
@@ -141,7 +141,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     coursesCloseModal,
-    addCourse
+    addCourse,
+    addNewCourse,
+    addNewCourseToDatabase,
+    getCoursesMainData
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesMainItemModalAdd);

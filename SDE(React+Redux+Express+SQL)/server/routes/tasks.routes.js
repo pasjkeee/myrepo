@@ -12,11 +12,16 @@ router.get('/tasks',
 async (req, res) => {
     console.log(req);
     try {
-        console.log(req.query);
-        console.log(req.session);
-        console.log("huisu");
+        let token;
+            const cookiesStr = `${req.cookies.session_cookie_name}`.slice(2, 12);
+            const dataCookies = await sequelize.query(`SELECT data FROM sessions WHERE session_id LIKE '${cookiesStr}%'`, { type: QueryTypes.SELECT });
+            for (let key of dataCookies){
+                let k = key['data'];
+                token = k.split('"data":"')[1].slice(0, -2);
+            }
+            let decoded = jwt.decode(token, "pavel");
 
-        const {access_lvl, user, authenticated} = req.session;
+            const {access_lvl, userId, authenticated} = decoded;
 
         if(!authenticated){
             res.status(401);

@@ -36,12 +36,11 @@ router.post('/login',
                 return res.status(400).json({message: "Неверный пароль, попробуйте снова"})
             }
 
-            //const token = jwt.sign({userId: data.user_id}, "pavel", { expiresIn: '15m' });
-            req.session.authenticated = true;
-            req.session.userId = data.user_id;
-            req.session.access_lvl = data.access_lvl;
+            const token = jwt.sign({userId: data.user_id, authenticated: true, access_lvl: data.access_lvl}, "pavel", { expiresIn: '7d' });
+            
+            req.session.data = token;
                 
-            res.json({authenticated: req.session.authenticated, userId: req.session.userId, access_lvl: req.session.access_lvl});
+            res.json({authenticated: true, userId: data.user_id, access_lvl: data.access_lvl});
         });
     } 
     catch (e) {
@@ -49,11 +48,54 @@ router.post('/login',
     }
 });
 
+router.get('/getAuthenticated', 
+async (req, res) => {
+    try {
+        let token;
+        
+        const cookiesStr = `${req.cookies.session_cookie_name}`.slice(2, 12);
+        const dataCookies = await sequelize.query(`SELECT data FROM sessions WHERE session_id LIKE '${cookiesStr}%'`, { type: QueryTypes.SELECT });
+        
+        if(dataCookies.length === 0){
+            const result = {
+                authenticated: false
+            }
+            res.json(result);
+        }
+        for (let key of dataCookies){
+            let k = key['data'];
+            token = k.split('"data":"')[1].slice(0, -2);
+        }
+        const decoded = jwt.decode(token, "pavel");
+        const result = {
+            authenticated: decoded.authenticated
+        }
+        res.json(result);
+    }
+    catch(e){
+        res.status(500).json({message: 'Чnо-то пошло не так при обращении к серверу, попробуйте снова'});
+    }
+});
+
+
+
+
 router.get('/subjects', 
 async (req, res) => {
         try {
-            console.log(req.session);
-            const {access_lvl, userId, authenticated} = req.session;
+            let token;
+            console.log(req.cookies);
+            const cookiesStr = `${req.cookies.session_cookie_name}`.slice(2, 12);
+            const dataCookies = await sequelize.query(`SELECT data FROM sessions WHERE session_id LIKE '${cookiesStr}%'`, { type: QueryTypes.SELECT });
+            for (let key of dataCookies){
+                let k = key['data'];
+                token = k.split('"data":"')[1].slice(0, -2);
+            }
+            let decoded = jwt.decode(token, "pavel");
+            console.log(dataCookies);
+
+            const {access_lvl, userId, authenticated} = decoded;
+            console.log(access_lvl, userId, authenticated);
 
             if(!authenticated){
                 res.status(401);
@@ -65,31 +107,43 @@ async (req, res) => {
                 resData.teachers = [];
 
                 let dataTeachers = await sequelize.query(`SELECT teacher_id, first_name, last_name, patronymic FROM teachers`, { type: QueryTypes.SELECT });
+                console.log(dataTeachers);
 
                 resData.teachers = [...dataTeachers];
 
                 resData.subjects = [];
 
-                let dataSubjects = await sequelize.query(`SELECT subjects.subject, subjects.subject_id, teachers.teacher_id, teachers.first_name, teachers.last_name, teachers.patronymic FROM subjects JOIN teachers ON subjects.subject_id = teachers.subject_id`, { type: QueryTypes.SELECT }); 
+                let dataSubjects = await sequelize.query(`SELECT subjects.subject, subjects.subject_id, teachers.teacher_id FROM subjects JOIN teachers JOIN teacher_subject ON teacher_subject.subject_id = subjects.subject_id AND teacher_subject.teacher_id = teachers.teacher_id ORDER BY subject_id`, { type: QueryTypes.SELECT }); 
+
+                console.log(dataSubjects);
                 
                 let newDataSubjects = [];
                 let iter = -1;
                 let setSubkectName = new Set();
                 dataSubjects.forEach(item => {
-                    if(!setSubkectName.has(item.subject)){
+                    if(!setSubkectName.has(item.subject_id)){
                         iter++;
-                        setSubkectName.add(item.subject);
+                        setSubkectName.add(item.subject_id);
                         let newItem = {...item};
                         newItem.teacher_id = [item.teacher_id];
-                        newItem.teachers = `${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        dataTeachers.forEach(teach => {
+                            if(teach.teacher_id === item.teacher_id){
+                                newItem.teachers = `${teach.first_name} ${teach.last_name[0]}.${teach.patronymic[0]}.`
+                            }
+                        })
                         newDataSubjects[iter] = newItem;
                     } else {
                         let newItem = {...newDataSubjects[iter]};
                         newItem.teacher_id.push(item.teacher_id);
-                        newItem.teachers = newItem.teachers+`, ${item.first_name} ${item.last_name[0]}.${item.patronymic[0]}.`
+                        dataTeachers.forEach(teach => {
+                            if(teach.teacher_id === item.teacher_id){
+                                newItem.teachers = newItem.teachers+`, ${teach.first_name} ${teach.last_name[0]}.${teach.patronymic[0]}.`
+                            }
+                        })
                         newDataSubjects[iter] = newItem;
                     }
                 });
+                
 
                 resData.subjects = [...newDataSubjects];
                 

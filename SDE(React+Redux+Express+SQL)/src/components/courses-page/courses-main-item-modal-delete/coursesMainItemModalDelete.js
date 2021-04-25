@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {connect} from 'react-redux';
 
-import {coursesCloseModal} from '../../../actions'
+import {coursesCloseModal, deleteCourseFromDatabase, getCoursesMainData} from '../../../actions'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes} from "@fortawesome/free-solid-svg-icons";
@@ -23,6 +23,12 @@ const CoursesMainItemModalDelete = (props) => {
         if(textareaText === props.currentEditCourse.courseTitle){
             let result = window.confirm("Вы действительно хотите удалить предмет?");
             if(result){
+                console.log(props.currentEditCourse.courseId);
+                props.deleteCourseFromDatabase(props.currentEditCourse.courseId)
+                .then(()=>{
+                    props.coursesCloseModal();
+                    props.getCoursesMainData();
+                });
                 console.log("Deleted");
             }
         } else {
@@ -70,7 +76,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    coursesCloseModal
+    coursesCloseModal,
+    deleteCourseFromDatabase,
+    getCoursesMainData
 }
 
 

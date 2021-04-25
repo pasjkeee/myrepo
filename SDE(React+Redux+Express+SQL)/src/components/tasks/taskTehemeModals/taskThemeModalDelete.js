@@ -22,7 +22,7 @@ const TaskThemeModalDelete = (props) => {
                 <div className="task-theme-modal__content">
                     <div className="task-theme-modal__close"
                         onClick={()=>{props.taskThemeCloseModal()}}>
-                        <FontAwesomeIcon icon={faTimes} size="1x" color="#4056B9"/>
+                        <FontAwesomeIcon icon={faTimes} size="1x" color="#7D9FF4"/>
                     </div>
                     <div className="task-theme-modal__title">
                         Удалить тему
@@ -45,14 +45,14 @@ const TaskThemeModalDelete = (props) => {
                         </div>
                     </div>
                     <div className="task-theme-modal__lable-text-area">
-                        <label htmlFor="theme_modal_add_teaxtarea"                          className="task-theme-modal__textarea-label">
+                        <label htmlFor="theme_modal_add_teaxtarea" className="task-theme-modal__textarea-label">
                             Для удаления введите полное название темы
                         </label>
                         <textarea   id="task-theme-modal_modal_add_teaxtarea"
                                     className="task-theme-modal__textarea"
                                     name="textarea" 
                                     rows="2" 
-                                    placeholder="Введите полное название темы"/>
+                                    placeholder="Для удаления введите полное название темы"/>
                     </div>
                     <input type="button" 
                                        name="btn" 

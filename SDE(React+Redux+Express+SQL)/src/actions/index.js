@@ -11,6 +11,7 @@ export const logIn = (authenticated, userId, access_lvl) => ({
     access_lvl
 })
 export const logOut = () => ({ type: 'LOG_OUT' })
+export const setAuthorized = (auth) => ({ type: 'SET_AUTHORIZED', auth})
 
 
 //coursesPageReducer
@@ -38,6 +39,11 @@ export const getTeachersData = (teachersData) => ({
 
 export const setCoursesData = (coursesData) => ({
     type: 'SET_COURSES_DATA',
+    coursesData
+})
+
+export const addNewCourse = (coursesData) => ({
+    type: 'ADD_NEW_COURSE',
     coursesData
 })
 
@@ -96,6 +102,15 @@ export const taskThemeOpenModalAdd = () => ({ type: 'TASK_THEME_OPEN_MODAL_ADD' 
 export const taskThemeOpenModalEdit = () => ({ type: 'TASK_THEME_OPEN_MODAL_EDIT' });
 export const taskThemeOpenModalDelete = () => ({ type: 'TASK_THEME_OPEN_MODAL_DELETE'});
 
+//taskReducer
+
+export const setTaskData = (taskData) => ({ type: 'SET_TASK_DATA', taskData });
+export const setTaskMounted = (taskMounted) => ({type: 'SET_TASK_MOUNTED', taskMounted })
+
+export const taskCloseModal = () => ({ type: 'TASK_CLOSE_MODAL' });
+export const taskOpenModalAdd = () => ({ type: 'TASK_OPEN_MODAL_ADD' });
+export const taskOpenModalEdit = () => ({ type: 'TASK_OPEN_MODAL_EDIT' });
+export const taskOpenModalDelete = () => ({ type: 'TASK_OPEN_MODAL_DELETE'});
 
 //Thunk
 
@@ -145,4 +160,49 @@ export const getTaskThemeData = (numPath) => {
         dispatch(setTaskThemeData(data));
         dispatch(setTaskThemeMounted(true))
     }
+}
+
+export const getAuthenticated = () => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData(`/api/auth/getAuthenticated`);
+        if(data?.authenticated === true){
+            dispatch(setAuthorized(true));
+        } else {
+            dispatch(setAuthorized(false));
+        }
+    }
+}
+
+export const addNewCourseToDatabase = (text, imgNum, teachersId) => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/postsubject', 'POST', {text, imgNum, teachersId});
+
+    }
+}
+
+export const editCourseInDatabase = (text, imgNum, teachersId, subject_id) => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/editsubject', 'PUT', {text, imgNum, teachersId, subject_id});
+
+    }
+}
+
+export const deleteCourseFromDatabase = (subjectId) => {
+
+    return async (dispatch) => {
+
+        const server = new RestoService();
+        const data = await server.getData('/api/deletesubject', 'DELETE', {subject_id: subjectId});
+        
+    }
+
 }

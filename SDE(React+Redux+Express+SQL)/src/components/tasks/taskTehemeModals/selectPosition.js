@@ -24,7 +24,7 @@ const MainContainer = styled.div`
 
     width: 400px;
     height: 40px;
-    border: 2px solid #7D9FF4;
+    border: 1px solid rgba(125, 159, 244, 0.6);
     border-radius: 4px;
     display: flex;
     padding: 0px 10px;
@@ -39,9 +39,8 @@ const MainContainer = styled.div`
     }
 
     .text{
-        font-weight: 700;
-        color: #7D9FF4;
-        font-size: 16px;
+        font-weight: 400;
+        font-size: 18px;
         user-select: none;
     }
 `
@@ -49,7 +48,7 @@ const MainContainer = styled.div`
 const TeachersContainer = styled.div`
     position: absolute;
     width: 400px;
-    border: 2px solid #7D9FF4;
+    border: 1px solid rgba(125, 159, 244, 0.6);
     border-top: none;
     border-radius: 0px 0px 4px 4px;
     left: -2px;
@@ -61,8 +60,8 @@ const TeachersContainer = styled.div`
     flex-wrap: wrap;
 
     .item{
-        font-weight: 500;
-        font-size: 16px;
+        font-weight: 400;
+        font-size: 15px;
         height: 40px;
         display: flex;
         flex-wrap: wrap;
@@ -123,7 +122,7 @@ const SelectPosition = (props) => {
 
     const labelStyle = {
         fontSize: "14px",
-        color: "#4056B9",
+        color: "#7D9FF4",
         display: "block",
         padding: "2px 6px",
         backgroundColor: "white",
@@ -136,7 +135,7 @@ const SelectPosition = (props) => {
         <>
             <Wrapper>
                 <MainContainer onClick={()=>{OnActive()}}>
-                    <FontAwesomeIcon icon={faAngleRight} size="2x" rotation={iconRotation} color="#7D9FF4" style={{marginRight: "15px"}}/>
+                    <FontAwesomeIcon icon={faAngleRight} size="1x" rotation={iconRotation} color="#7D9FF4" style={{marginRight: "15px", fontSize: "20px"}}/>
                     <label htmlFor="modal-theme-select-text" style={labelStyle}>
                         Номер темы по порядку
                     </label>
