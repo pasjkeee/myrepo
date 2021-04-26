@@ -8,19 +8,19 @@ import {changeTasks,isMounted,notMounted, getTeachersData, getCoursesMainData} f
 
 
 
-const CoursesMain = (props) => {
+const CoursesMain = ({getCoursesMainData, notMounted, coursesData}) => {
 
     let [data, setData] = useState([]);
 
     useEffect(()=>{
-        props.getCoursesMainData();
+        getCoursesMainData();
     },[])
 
     useEffect(()=>{
-        setData(props.coursesData);
+        setData(coursesData);
 
-        return () => {props.notMounted()}
-    },[props.coursesData.length])
+        return () => {notMounted()}
+    },[coursesData, notMounted])
 
     if(data.length === 0){
         return <></>

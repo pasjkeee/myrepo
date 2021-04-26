@@ -47,6 +47,16 @@ export const addNewCourse = (coursesData) => ({
     coursesData
 })
 
+export const setSelectedId = (selectedId) => ({
+    type: 'SET_SELECTED_ID',
+    selectedId
+})
+
+export const removeSelectedId = (selectedId) => ({
+    type: 'REMOVE_SELECTED_ID',
+    selectedId
+})
+
 //coursesMainModalReducer
 export const coursesCloseModal = () => ({ type: 'COURSES_CLOSE_MODAL' });
 export const coursesOpenModalAdd = () => ({ type: 'COURSES_OPEN_MODAL_ADD' });

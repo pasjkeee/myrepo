@@ -147,12 +147,12 @@ async (req, res) => {
 
                 resData.subjects = [...newDataSubjects];
                 
-                let dataTask = await sequelize.query(`SELECT tasks.task_id, tasks.task, tasks.task_type_id, tasks.theme_id, tasks.date, tasks.end_date, tasks.description, tasks.link, themes.theme, subjects.subject, task_types.task_type FROM tasks JOIN subjects JOIN themes JOIN task_types ON tasks.subject_id = subjects.subject_id AND tasks.theme_id = themes.theme_id AND tasks.task_type_id = task_types.task_type_id`, { type: QueryTypes.SELECT });
+                let dataTask = await sequelize.query(`SELECT tasks.task_id, tasks.task, tasks.task_type_id, tasks.theme_id, tasks.date, tasks.end_date, tasks.description, tasks.link, themes.theme, subjects.subject, subjects.subject_id, task_types.task_type FROM tasks JOIN subjects JOIN themes JOIN task_types ON tasks.subject_id = subjects.subject_id AND tasks.theme_id = themes.theme_id AND tasks.task_type_id = task_types.task_type_id WHERE task_types.task_type = 'test'`, { type: QueryTypes.SELECT });
 
                 let newDataTask = dataTask.map(item => {
                     let newItem = {...item};
-                    newItem.date = newItem.date.toLocaleDateString();
-                    newItem.end_date = newItem.end_date.toLocaleDateString();
+                    newItem.date = newItem.date.toLocaleDateString('ru-RU');
+                    newItem.end_date = newItem.end_date.toLocaleDateString('ru-RU');
                     return newItem;
                 })
 

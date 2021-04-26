@@ -9,7 +9,8 @@ const initialState = {
     isMounted: false,
     currentEditCourse: {},
     teachersData: [],
-    coursesData: [] //Информация по предметам
+    coursesData: [], //Информация по предметам,
+    selectedId: -1
 }
 
 function coursesPageReducer(state = initialState, action){
@@ -87,6 +88,24 @@ function coursesPageReducer(state = initialState, action){
             return{
                 ...state,
                 coursesData: action.coursesData
+            }
+
+        case 'SET_SELECTED_ID':
+            if(state.selectedId !==action.selectedId){
+                //console.log(action.selectedId);
+                return{
+                    ...state,
+                    selectedId: action.selectedId
+                }
+            }
+            return{...state}
+            
+
+        case 'REMOVE_SELECTED_ID':
+            //console.log("out");
+            return{
+                ...state,
+                selectedId: -1
             }
        
         default: 

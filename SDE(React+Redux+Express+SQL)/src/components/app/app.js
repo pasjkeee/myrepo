@@ -10,15 +10,15 @@ import {getAuthenticated} from '../../actions/index';
 
 
 const App = (props) => {
+    let isAuthenticated = false;
 
     useEffect(()=>{
         props.getAuthenticated();
-    }, [])
-
-    let isAuthenticated = false;
+    }, []);
     if(props.isAutorized){
         isAuthenticated = true;
     }
+    
 
     if(isAuthenticated){
         return (

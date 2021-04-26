@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import {connect} from 'react-redux';
+
+import {setSelectedId, removeSelectedId} from '../../../actions';
+import Flag from '../cal-flag';
+
 const CalTasksItemDiv = styled.div`
     width: calc(100% - 20px);
     border-radius: 10px;
@@ -8,6 +13,7 @@ const CalTasksItemDiv = styled.div`
     padding: 10px;
     margin: 10px;
     margin-right: 30px;
+    position: relative;
 
     :hover{
         cursor: pointer;
@@ -63,23 +69,32 @@ const TaskText = styled.div`
 
 const CalTasksItem = (props) => {
     
-    const {subj, date, title, type, text} = props;
+    const {subj, date, title, type, text, subjId,taskId} = props;
 
     return(
-            <CalTasksItemDiv>
+            <CalTasksItemDiv
+            onMouseEnter={()=>{props.setSelectedId(props.setSelectedId(taskId))}}
+            onMouseLeave={()=>{props.removeSelectedId()}}
+            >
                 <TaskUp>
                     <TaskSubj>{subj}</TaskSubj>
                     <TaskDate>{date}</TaskDate>
                 </TaskUp>
                 <TaskTitle>
                     <TitleText>{title}</TitleText>
-                    <TitleType>{type}</TitleType>
+                    <TitleType>Тест</TitleType>
                 </TaskTitle>
                 <TaskText>
                     {text}
                 </TaskText>
+                <Flag subjId={subjId}/>
             </CalTasksItemDiv>
     )
 }
 
-export default CalTasksItem;
+const mapDispatchToProps = {
+    setSelectedId,
+    removeSelectedId
+}
+
+export default connect(null, mapDispatchToProps)(CalTasksItem);
