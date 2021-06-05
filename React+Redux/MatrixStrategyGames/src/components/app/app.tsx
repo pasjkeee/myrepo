@@ -74,15 +74,12 @@ const App: React.FC<IProps> = (props: IProps) => {
     let [MINMAXB, setMINMAXB] = useState<number[]>([]);
     let [rerenderTable, setRerenderTable] = useState<boolean>(false);
 
-    let [turpleRow, setTurpleRow] = useState<boolean>(false);
-    let [turpleColumn, setTurpleColumn] = useState<boolean>(false);
 
-    
     let newListStrongDomintaionSet = useMemo(()=>new Set<[number, string]>(), []);
     let newListWeaklyDomintaionSet = useMemo(()=>new Set<[number, string]>(), []);
 
     const {rows, columns, table, choosed} = props;
-    
+
     const changeCurrent = (i: number, j: number) => {
         setEditActive(true);
         setEdit1(props.table[i][j][0]);
@@ -97,7 +94,7 @@ const App: React.FC<IProps> = (props: IProps) => {
 
     const findDomination = useCallback((rows: number, columns: number, table: [[[number, number]]],index: number, list: string[], player: string, type: string) => {
         let countMin: number, countEq: number;
-    
+
         let columnsSet = new Set<string>();
         let rowsSet = new Set<string>();
 
@@ -133,7 +130,7 @@ const App: React.FC<IProps> = (props: IProps) => {
                         }
                     }
                 }
-                
+
                 if(countMin === ((type === "rows") ? columns : rows)){
                     resListSet.add(`${player}${(type === "rows") ? props.rowsStrategy[i] : props.columnsStrategy[i]} СИЛЬНО доминируемый относительно ${player}${(type === "rows") ? props.rowsStrategy[k] : props.columnsStrategy[k]}`);
 
@@ -164,7 +161,7 @@ const App: React.FC<IProps> = (props: IProps) => {
 
     const updDomination = useCallback(() => {
         let newList: string[] = [];
-        
+
         if(choosed === "one"){
             newList = [...findDomination(rows, columns, props.table, 0, newList, "B", "rows")];
             newList = [...newList, ...findDomination(rows, columns, props.table, 0, newList, "A", "columns")];
@@ -294,7 +291,7 @@ const App: React.FC<IProps> = (props: IProps) => {
             let MAXMINIndexA = findMAXMINIndex(maxIndexA);
             let MAXMINIndexB = findMINMAXIndex(minIndexB);
             let MINMAXIndexB = findMAXMINIndex(maxIndexB);
-            
+
             setMINMAXA(MINMAXIndexA);
             setMAXMINA(MAXMINIndexA);
             setMINMAXB(MINMAXIndexB);
@@ -310,7 +307,7 @@ const App: React.FC<IProps> = (props: IProps) => {
             let MAXMINIndexA = findMAXMINIndex(maxIndexA);
             let MAXMINIndexB = findMINMAXIndex(minIndexB);
             let MINMAXIndexB = findMAXMINIndex(maxIndexB);
-            
+
             setMINMAXA(MINMAXIndexA);
             setMAXMINA(MAXMINIndexA);
             setMINMAXB(MINMAXIndexB);
@@ -319,7 +316,7 @@ const App: React.FC<IProps> = (props: IProps) => {
     }
 
     const delDomClick = (item: string) => {
-       
+
         props.removeDom(item);
     }
 
@@ -328,143 +325,6 @@ const App: React.FC<IProps> = (props: IProps) => {
         const ren = rerenderTable;
         setRerenderTable(!ren);
         updDomination();
-    }
-
-    type DominationType = "A" | "B";
-    type Tuple_MAX = [number, number, number]; //[макс число, номер столбца/строки]
-
-    const findMaxInRowJ = (rows: number, columns: number, table: [[[number, number]]], index: number = 0):any => {
-        let tuple_max:Array<Tuple_MAX> = [];
-        for(let i=0; i<columns;i++){
-            let max = Number.MIN_SAFE_INTEGER;
-            for(let j=0; j<rows;j++){
-                if(+table[j][i][index] >= max) {
-                    tuple_max[i] = [0,0,0];
-                    max = +table[j][i][index];
-                    tuple_max[i][0] = +table[j][i][index];
-                    tuple_max[i][1] = +i;
-                    tuple_max[i][2] = +j;
-                }
-            }
-        }
-        return tuple_max;
-    }
-
-    const findDominationRowJ = (rows: number, columns: number, table: [[[number, number]]], index: number = 0):any => { //Маскимальная строка в каждом столбце
-        let tuple_max:Array<Tuple_MAX> = findMaxInRowJ(rows, columns, table, 0);
-
-        let ind:number = tuple_max[0][2];
-        let fl:boolean = true;
-
-        for(let i=1; i<tuple_max.length; i++){
-            if(tuple_max[i][2] !== ind){
-                fl = false;
-            }
-        }
-
-        if(fl){
-            console.log(tuple_max);
-        } else {
-            console.log("norow");
-        }
-
-        setTurpleRow(fl);
-
-        return tuple_max;
-    } 
-
-    const findMaxInColumnJ = (rows: number, columns: number, table: [[[number, number]]], index: number = 0):any => {
-        let tuple_max:Array<Tuple_MAX> = [];
-        for(let i=0; i<rows;i++){
-            let max = Number.MIN_SAFE_INTEGER;
-            for(let j=0; j<columns;j++){
-                if(+table[i][j][index] >= max) {
-                    tuple_max[i] = [0,0,0];
-                    max = +table[i][j][index];
-                    tuple_max[i][0] = +table[i][j][index];
-                    tuple_max[i][1] = +j;
-                    tuple_max[i][2] = +i;
-                }
-            }
-        }
-        return tuple_max;
-    }
-
-    const findDominationColumnJ = (rows: number, columns: number, table: [[[number, number]]], index: number = 0):any => { //Маскимальный столбец в каждой строке
-        let tuple_max:Array<Tuple_MAX> = findMaxInColumnJ(rows, columns, table, 0);
-
-        let ind:number = tuple_max[0][1];
-        let fl:boolean = true;
-
-        for(let i=1; i<tuple_max.length; i++){
-            if(tuple_max[i][1] !== ind){
-                fl = false;
-            }
-        }
-
-        if(fl){
-            console.log(tuple_max);
-        } else {
-            console.log("nocolumn");
-        }
-
-        setTurpleColumn(fl)
-
-        return tuple_max;
-    } 
-
-    const test = () => {
-        let dom1:any = findDominationRowJ(rows, columns, table, 0);
-        let dom2:any = findDominationColumnJ(rows, columns, table, 0);
-
-        console.log(turpleColumn, turpleRow);
-        
-        if(turpleColumn !== false && turpleRow !== false){
-            console.log(dom1[0][1], dom2[0][1]); 
-            alert(`Есть доминирующие стратегии и по строке (${dom1[0][2]}) и по столбцу: (${dom2[0][1]})`)
-            return;
-        } 
-
-        if(turpleRow !== false){
-            let max = Number.MIN_SAFE_INTEGER;
-            for(let i=0; i<columns; i++){
-                if(max < dom1[i][0]){
-                    max = dom1[i][0];
-                }
-            }
-            console.log(dom1[0][1], max); 
-            alert(`Есть доминирующая стратегия по строке (${dom1[0][2]}) и по столбцу: (${max}) лучший ход`)
-            return;
-        }
-
-        if(turpleColumn !== false){
-            let max = Number.MIN_SAFE_INTEGER;
-            for(let i=0; i<rows; i++){
-                if(max < dom2[i][0]){
-                    max = dom2[i][0];
-                }
-            }
-            console.log(max, dom2[0][1]); 
-            alert(`Есть доминирующая стратегия по столбцу (${dom2[0][1]}) и по строке: (${max}) лучший ход`)
-            return;
-        }
-
-        let str:string = "Потенциальное равновесие по Нешу может быть в (Зачение, Столбец, Строка): ";
-
-        for(let i = 0; i < columns; i++){
-
-            for(let j = 0; j < rows; j++){
-
-                if(JSON.stringify(dom1[i]) === JSON.stringify(dom2[j])){
-                    str+=`(${JSON.stringify(dom1[i])})`
-                }
-            }
-        }
-
-        alert(str);
-
-        console.log(dom1);
-        console.log(dom2);
     }
 
     useEffect(()=>{
@@ -531,7 +391,7 @@ const App: React.FC<IProps> = (props: IProps) => {
         <>
             <div style={container} data-prop={props.table}>
                 <MyTable table={props.table} choosed={props.choosed} edit={edit} changeCurrent={changeCurrent} rowsStrategy={props.rowsStrategy} columnsStrategy={props.columnsStrategy}/>
-                
+
                 <div style={selectContainer}>
                     <FormControl component="fieldset" style={{margin: "20px 0px 0px 20px"}}>
                         <FormLabel component="legend">Режим ввода</FormLabel>
@@ -563,10 +423,8 @@ const App: React.FC<IProps> = (props: IProps) => {
                         <OutTableRows textRow="MINMAX B Строка: " textColumn="MINMAX B Столбец " textValue="MINMAX B Занчение" data={MINMAXB}/>
                         <OutTableRows textRow="MAXMIN B Строка: " textColumn="MAXMIN B Столбец " textValue="MAXMIN B Занчение" data={MAXMINB}/>
                     </TableBody>
-                </Table>np
+                </Table>
             </TableContainer>
-
-            <Button  variant="contained" color="secondary" onClick={()=>{test()}} >Test</Button>
         </> 
     )
 }
